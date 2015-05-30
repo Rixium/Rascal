@@ -10,6 +10,7 @@ import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 import com.bourneless.roguelike.map.tile.TileHex;
 import com.bourneless.roguelike.map.tile.TileType;
+import com.bourneless.roguelike.map.tile.WallTileType;
 
 public class Map {
 
@@ -31,7 +32,7 @@ public class Map {
 						+ Integer.toHexString(color.getRGB()).substring(2);
 				if (hex.matches(TileHex.RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.RED_WALL, TileClass.WALL);
+							* Tile.size), WallTileType.RED_WALL, TileClass.WALL);
 				} else if (hex.matches(TileHex.WOOD_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR);
