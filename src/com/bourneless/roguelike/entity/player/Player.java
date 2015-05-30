@@ -12,6 +12,8 @@ import com.bourneless.roguelike.map.tile.Tile;
 
 public class Player extends Entity {
 
+	private int lastKey;
+	
 	public Player(Tile tile, BufferedImage image, int tileX, int tileY) {
 		super(tile, image, tileX, tileY);
 		type = EntityType.PLAYER;
@@ -29,7 +31,7 @@ public class Player extends Entity {
 
 	public void keyPressed(KeyEvent e, Map map) {
 		System.out.println(e.getKeyCode());
-		if (e.getKeyCode() == 65) {
+		if (e.getKeyCode() == 65 && lastKey != 65) {
 			// A Key
 			if (this.image.equals(Main.resourceLoader.player[1])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
@@ -40,7 +42,8 @@ public class Player extends Entity {
 			} else {
 				this.image = Main.resourceLoader.player[1];
 			}
-		} else if (e.getKeyCode() == 68) {
+			lastKey = 65;
+		} else if (e.getKeyCode() == 68 && lastKey != 68) {
 			// D Key
 			if (this.image.equals(Main.resourceLoader.player[2])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
@@ -51,9 +54,10 @@ public class Player extends Entity {
 			} else {
 				this.image = Main.resourceLoader.player[2];
 			}
+			lastKey = 68;
 		}
 
-		if (e.getKeyCode() == 87) {
+		if (e.getKeyCode() == 87 && lastKey != 87) {
 			// W Key
 			if (this.image.equals(Main.resourceLoader.player[3])) {
 				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
@@ -64,7 +68,8 @@ public class Player extends Entity {
 			} else {
 				this.image = Main.resourceLoader.player[3];
 			}
-		} else if (e.getKeyCode() == 83) {
+			lastKey = 87;
+		} else if (e.getKeyCode() == 83 && lastKey != 83) {
 			// S Key
 			if (this.image.equals(Main.resourceLoader.player[0])) {
 				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
@@ -75,7 +80,12 @@ public class Player extends Entity {
 			} else {
 				this.image = Main.resourceLoader.player[0];
 			}
+			lastKey = 83;
 		}
+	}
+	
+	public void keyReleased(KeyEvent e) {
+		lastKey = 0;
 	}
 
 }

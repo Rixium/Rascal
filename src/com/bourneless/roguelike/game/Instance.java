@@ -53,5 +53,9 @@ public class Instance {
 	public void keyPressed(KeyEvent e) {
 		player.keyPressed(e, map);
 	}
+	
+	public void keyReleased(KeyEvent e) {
+		player.keyReleased(e);
+	}
 
 }

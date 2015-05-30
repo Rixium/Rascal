@@ -31,4 +31,8 @@ public class GameScreen extends Screen {
 			Main.game.setScreen(new MenuScreen());
 		}
 	}
+	
+	public void keyReleased(KeyEvent e) {
+		instance.keyReleased(e);
+	}
 }
