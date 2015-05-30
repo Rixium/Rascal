@@ -22,9 +22,12 @@ public class ResourceLoader {
 
 	public BufferedImage map;
 	
+	public BufferedImage player;
+	
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
 		map = getBufferedImage("res/map1.png");
+		player = getBufferedImage("res/entity/player.png");
 	}
 
 	public Clip loadClip(String filename) {
