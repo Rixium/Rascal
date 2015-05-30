@@ -15,34 +15,12 @@ import com.bourneless.roguelike.map.tile.WallTileType;
 
 public class Map {
 
-	private BufferedImage room;
 	private Tile[][] tiles;
+	
+	private Room room;
 
 	public Map() {
-		room = Main.resourceLoader.rooms[0];
-		tiles = new Tile[room.getWidth()][room.getHeight()];
-		createMap();
-	}
-
-	public void createMap() {
-		for (int i = 0; i < room.getWidth(); i++) {
-			for (int j = 0; j < room.getHeight(); j++) {
-				int c = room.getRGB(i, j);
-				Color color = new Color(c);
-				String hex = "#"
-						+ Integer.toHexString(color.getRGB()).substring(2);
-				if (hex.matches(TileHex.RED_WALL)) {
-					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), WallTileType.RED_WALL, TileClass.WALL);
-				} else if (hex.matches(TileHex.WOOD_FLOOR)) {
-					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR);
-				} else if (hex.matches(TileHex.STONE_FLOOR)) {
-					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR);
-				}
-			}
-		}
+		room = new Room();
 	}
 
 	public void update() {
@@ -50,15 +28,11 @@ public class Map {
 	}
 
 	public void paint(Graphics2D g, Player player) {
-		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j].paint(g, player);
-			}
-		}
+		room.paint(g, player);
 	}
 
-	public Tile[][] getTiles() {
-		return this.tiles;
-
+	public Room getRoom() {
+		return this.room;
 	}
+
 }

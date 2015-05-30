@@ -16,7 +16,7 @@ public class Instance {
 
 	public Instance() {
 		map = new Map();
-		player = new Player(map.getTiles()[6][6], Main.resourceLoader.player[0], 6,
+		player = new Player(map.getRoom().getTiles()[6][6], Main.resourceLoader.player[0], 6,
 				6);
 	}
 
