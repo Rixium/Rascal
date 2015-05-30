@@ -19,6 +19,9 @@ public class Room {
 	private BufferedImage image;
 	private Tile[][] tiles;
 	private Random random = new Random();
+	
+	private int xOffset;
+	private int yOffset;
 
 	public Room() {
 		this.image = Main.resourceLoader.rooms[random.nextInt(Main.resourceLoader.rooms.length)];
@@ -43,14 +46,15 @@ public class Room {
 		}
 	}
 
-	public void update() {
-
+	public void update(int xOffset, int yOffset) {
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
 
 	public void paint(Graphics2D g, Player player) {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j].paint(g, player);
+				tiles[i][j].paint(g, player, xOffset, yOffset);
 			}
 		}
 	}

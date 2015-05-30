@@ -16,6 +16,9 @@ public class Entity {
 
 	protected int tileX;
 	protected int tileY;
+	
+	protected int xOffset;
+	protected int yOffset;
 
 	public Entity(Tile tile, BufferedImage image, int tileX, int tileY) {
 		this.pos = new Vector2(tile.getPos().x, tile.getPos().y);
@@ -24,10 +27,6 @@ public class Entity {
 
 		this.tileX = tileX;
 		this.tileY = tileY;
-	}
-
-	public void update() {
-
 	}
 
 	public void paint(Graphics2D g) {
@@ -45,5 +44,8 @@ public class Entity {
 	public int getTileY() {
 		return this.tileY;
 	}
-
+	
+	public Vector2 getPos() {
+		return pos;
+	}
 }

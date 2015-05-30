@@ -10,9 +10,12 @@ import com.bourneless.roguelike.map.Map;
 
 public class Instance {
 
-	Map map;
+	private Map map;
 
-	Player player;
+	private Player player;
+	
+	private int xOffset = 0;
+	private int yOffset = 0;
 
 	public Instance() {
 		map = new Map();
@@ -21,11 +24,15 @@ public class Instance {
 	}
 
 	public void update() {
-
+		xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
+		yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
+		
+		map.update(xOffset, yOffset);
+		player.update(xOffset, yOffset);
 	}
 
 	public void paint(Graphics2D g) {
-		g.setColor(Color.red);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
 		g.setColor(Color.WHITE);
 		g.drawString("Game Screen", 10, 10);

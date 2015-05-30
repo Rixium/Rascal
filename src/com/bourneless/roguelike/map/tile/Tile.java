@@ -31,15 +31,15 @@ public class Tile {
 
 	}
 
-	public void paint(Graphics2D g, Player player) {
+	public void paint(Graphics2D g, Player player, int xOffset, int yOffset) {
 		if (tileClass == TileClass.FLOOR) {
-			g.drawImage(Main.resourceLoader.tiles[tileType], pos.x, pos.y,
+			g.drawImage(Main.resourceLoader.tiles[tileType], pos.x + xOffset, pos.y + yOffset,
 					null);
 			if(player.getTile().getPos() == this.pos) {
 				player.paint(g);
 			}
 		} else if (tileClass == TileClass.WALL) {
-			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x, pos.y - Main.resourceLoader.wallTiles[tileType].getHeight() + size,
+			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x + xOffset, pos.y - Main.resourceLoader.wallTiles[tileType].getHeight() + size + yOffset,
 					null);
 		}
 		

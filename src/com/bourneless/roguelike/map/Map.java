@@ -23,8 +23,8 @@ public class Map {
 		room = new Room();
 	}
 
-	public void update() {
-
+	public void update(int xOffset, int yOffset) {
+		room.update(xOffset, yOffset);
 	}
 
 	public void paint(Graphics2D g, Player player) {

@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.map.Map;
@@ -17,14 +18,15 @@ public class Player extends Entity {
 		type = EntityType.PLAYER;
 	}
 
-	public void update() {
-
-	}
-
 	public void paint(Graphics2D g) {
-		g.drawImage(image, pos.x, pos.y - image.getHeight() / 2, null);
+		g.drawImage(image, pos.x + xOffset, pos.y - image.getHeight() / 2 + yOffset, null);
 	}
 
+	public void update(int xOffset, int yOffset) {
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+	}
+	
 	public void keyPressed(KeyEvent e, Map map) {
 		System.out.println(e.getKeyCode());
 		if (e.getKeyCode() == 65) {
@@ -71,4 +73,5 @@ public class Player extends Entity {
 			}
 		}
 	}
+
 }
