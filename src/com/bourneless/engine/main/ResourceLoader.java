@@ -20,43 +20,60 @@ public class ResourceLoader {
 	public BufferedImage icon;
 
 	// Create Fields here
-	
+
 	// Menu
-	
+
 	public BufferedImage menuBackground;
-	
+
 	// Menu Buttons
-	
+
 	public BufferedImage startGameButtonImage;
 	public BufferedImage exitGameButtonImage;
-	
+
 	// Entities
-	
+
 	public BufferedImage player;
-	
+
+	// Tiles
+
+	public BufferedImage[] tiles;
+
 	// Music
-	
+
 	public Clip menuMusic;
-	
+
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
 		icon = getBufferedImage("res/client/icon.png");
-		
+
 		// Menu
-		
+
 		menuBackground = getBufferedImage("res/menu/menuImage.png");
-		
+
 		// Menu Buttons
-		
+
 		startGameButtonImage = getBufferedImage("res/menu/buttons/newGameButton.png");
 		exitGameButtonImage = getBufferedImage("res/menu/buttons/exitGameButton.png");
-		
+
 		// Entities
-		
+
 		player = getBufferedImage("res/entity/player/player.png");
-		
+
+		// Tiles
+
+		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
+		int rows = tileSheet.getWidth() / 64;
+		int cols = tileSheet.getHeight() / 64;
+		tiles = new BufferedImage[rows * cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				tiles[i] = tileSheet.getSubimage(i * 64, 0, 64, 64);
+			}
+		}
+
 		// Music
-		
+
 		menuMusic = loadClip("/music/menuMusic.wav");
 	}
 
