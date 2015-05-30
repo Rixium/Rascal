@@ -1,4 +1,4 @@
-package com.bourneless.roguelike.map;
+package com.bourneless.roguelike.map.tile;
 
 import java.awt.Graphics2D;
 
