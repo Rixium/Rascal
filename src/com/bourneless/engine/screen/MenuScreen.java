@@ -15,23 +15,28 @@ public class MenuScreen extends Screen {
 	private Button[] menuButtons = new Button[2];
 	private Button startGameButton;
 	private Button exitGameButton;
-	
+
 	public MenuScreen() {
-		Main.resourceLoader.playClip(Main.resourceLoader.menuMusic, -10.0f, true);
-		
+		Main.resourceLoader.playClip(Main.resourceLoader.menuMusic, -10.0f,
+				true);
+
 		initialize();
 	}
-	
+
 	public void initialize() {
-		menuButtons[0] = new Button(Main.resourceLoader.startGameButtonImage, new Vector2( 10, 10));
-		menuButtons[1] = new Button(Main.resourceLoader.exitGameButtonImage, new Vector2(10, 10 + Main.resourceLoader.exitGameButtonImage.getHeight() + 10));
+		menuButtons[0] = new Button(Main.resourceLoader.startGameButtonImage,
+				new Vector2(10, 10));
+		menuButtons[1] = new Button(Main.resourceLoader.exitGameButtonImage,
+				new Vector2(10,
+						10 + Main.resourceLoader.exitGameButtonImage
+								.getHeight() + 10));
 	}
 
 	public void paint(Graphics2D g) {
 		g.drawImage(Main.resourceLoader.menuBackground, 0, 0, Main.GAME_WIDTH,
 				Main.GAME_HEIGHT, null);
-		
-		for(Button button : menuButtons) {
+
+		for (Button button : menuButtons) {
 			button.paint(g);
 		}
 	}
@@ -50,11 +55,12 @@ public class MenuScreen extends Screen {
 
 	public void mouseClicked(MouseEvent e) {
 		Rectangle mouseRect = new Rectangle(e.getX(), e.getY() - 20, 10, 10);
-		
-		if(mouseRect.intersects(menuButtons[0].getRect())) {
-			Main.game.setScreen(new GameScreen());
-		}
 
+		if (mouseRect.intersects(menuButtons[0].getRect())) {
+			Main.game.setScreen(new GameScreen());
+		} else if (mouseRect.intersects(menuButtons[1].getRect())) {
+			System.exit(0);
+		}
 	}
 
 	public void loadGame() {
