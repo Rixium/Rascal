@@ -28,30 +28,46 @@ public class Player extends Entity {
 	public void keyPressed(KeyEvent e, Map map) {
 		System.out.println(e.getKeyCode());
 		if (e.getKeyCode() == 65) {
+			// A Key
 			if (map.getTiles()[(pos.x / 64) - 1][(pos.y / 64)].isPassable()) {
-				this.pos.x -= 64;
-				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
-				this.image = Main.resourceLoader.player[1];
+				if (this.image.equals(Main.resourceLoader.player[1])) {
+					this.pos.x -= 64;
+					this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				} else {
+					this.image = Main.resourceLoader.player[1];
+				}
 			}
 		} else if (e.getKeyCode() == 68) {
+			// D Key
 			if (map.getTiles()[(pos.x / 64) + 1][(pos.y / 64)].isPassable()) {
-				this.pos.x += 64;
-				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
-				this.image = Main.resourceLoader.player[2];
+				if (this.image.equals(Main.resourceLoader.player[2])) {
+					this.pos.x += 64;
+					this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				} else {
+					this.image = Main.resourceLoader.player[2];
+				}
 			}
 		}
 
 		if (e.getKeyCode() == 87) {
+			// W Key
 			if (map.getTiles()[(pos.x / 64)][(pos.y / 64) - 1].isPassable()) {
-				this.pos.y -= 64;
-				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
-				this.image = Main.resourceLoader.player[3];
+				if (this.image.equals(Main.resourceLoader.player[3])) {
+					this.pos.y -= 64;
+					this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				} else {
+					this.image = Main.resourceLoader.player[3];
+				}
 			}
 		} else if (e.getKeyCode() == 83) {
+			// S Key
 			if (map.getTiles()[(pos.x / 64)][(pos.y / 64) + 1].isPassable()) {
-				this.pos.y += 64;
-				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
-				this.image = Main.resourceLoader.player[0];
+				if (this.image.equals(Main.resourceLoader.player[0])) {
+					this.pos.y += 64;
+					this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				} else {
+					this.image = Main.resourceLoader.player[0];
+				}
 			}
 		}
 	}
