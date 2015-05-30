@@ -17,6 +17,7 @@ import javax.sound.sampled.FloatControl;
 public class ResourceLoader {
 
 	public BufferedImage splashImage;
+	public BufferedImage icon;
 
 	// Create Fields here
 	
@@ -34,6 +35,7 @@ public class ResourceLoader {
 	
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
+		icon = getBufferedImage("res/client/icon.png");
 		
 		// Menu
 		
