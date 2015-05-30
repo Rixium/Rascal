@@ -25,6 +25,11 @@ public class ResourceLoader {
 	
 	public BufferedImage menuBackground;
 	
+	// Menu Buttons
+	
+	public BufferedImage startGameButtonImage;
+	public BufferedImage exitGameButtonImage;
+	
 	// Entities
 	
 	public BufferedImage player;
@@ -40,6 +45,11 @@ public class ResourceLoader {
 		// Menu
 		
 		menuBackground = getBufferedImage("res/menu/menuImage.png");
+		
+		// Menu Buttons
+		
+		startGameButtonImage = getBufferedImage("res/menu/buttons/newGameButton.png");
+		exitGameButtonImage = getBufferedImage("res/menu/buttons/exitGameButton.png");
 		
 		// Entities
 		

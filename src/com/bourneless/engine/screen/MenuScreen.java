@@ -1,25 +1,38 @@
 package com.bourneless.engine.screen;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.util.ArrayList;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.engine.math.Vector2;
+import com.bourneless.engine.util.Button;
 
 public class MenuScreen extends Screen {
 
+	private Button[] menuButtons = new Button[2];
+	private Button startGameButton;
+	private Button exitGameButton;
+	
 	public MenuScreen() {
 		Main.resourceLoader.playClip(Main.resourceLoader.menuMusic, -10.0f, true);
+		
+		initialize();
+	}
+	
+	public void initialize() {
+		menuButtons[0] = new Button(Main.resourceLoader.startGameButtonImage, new Vector2( 10, 10));
+		menuButtons[1] = new Button(Main.resourceLoader.exitGameButtonImage, new Vector2(10, 10 + Main.resourceLoader.exitGameButtonImage.getHeight() + 10));
 	}
 
 	public void paint(Graphics2D g) {
 		g.drawImage(Main.resourceLoader.menuBackground, 0, 0, Main.GAME_WIDTH,
 				Main.GAME_HEIGHT, null);
+		
+		for(Button button : menuButtons) {
+			button.paint(g);
+		}
 	}
 
 	public void update() {
