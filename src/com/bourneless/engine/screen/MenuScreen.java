@@ -53,10 +53,11 @@ public class MenuScreen extends Screen {
 			tile.paint(g);
 		}
 		g.setColor(Color.MAGENTA);
+		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
 	}
 
 	public void update() {
-		
+
 	}
 
 	public void keyPressed(KeyEvent e) {
