@@ -8,8 +8,8 @@ public class Tile {
 
 	private Vector2 pos;
 	
-	public Tile() {
-
+	public Tile(Vector2 pos) {
+		this.pos = pos;
 	}
 
 	public void update() {
