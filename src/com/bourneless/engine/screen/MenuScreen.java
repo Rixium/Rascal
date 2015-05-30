@@ -16,9 +16,6 @@ public class MenuScreen extends Screen {
 	BufferedImage map;
 	byte[] mapImage;
 
-	private int renderX = 0;
-	private int renderY = 0;
-
 	public MenuScreen() {
 		map = Main.resourceLoader.map;
 		mapImage = ((DataBufferByte) map.getRaster().getDataBuffer()).getData();
