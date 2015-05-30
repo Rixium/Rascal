@@ -10,13 +10,9 @@ import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
 
 import com.bourneless.engine.main.Main;
-import com.bourneless.engine.math.Vector2;
-import com.bourneless.mapread.Tile;
-import com.bourneless.mapread.TileType;
 
 public class MenuScreen extends Screen {
 
-	ArrayList<Tile> tiles = new ArrayList<Tile>();
 	BufferedImage map;
 	byte[] mapImage;
 
@@ -38,20 +34,15 @@ public class MenuScreen extends Screen {
 				String hex = "#"
 						+ Integer.toHexString(color.getRGB()).substring(2);
 				if (hex.matches("#" + "1800ff")) {
-					tiles.add(new Tile(new Vector2(i * 32, j * 32),
-							TileType.BLOCK));
+
 				} else if (hex.matches("#" + "ff0202")) {
-					tiles.add(new Tile(new Vector2(i * 32, j * 32),
-							TileType.FREE));
+
 				}
 			}
 		}
 	}
 
 	public void paint(Graphics2D g) {
-		for (Tile tile : tiles) {
-			tile.paint(g);
-		}
 		g.setColor(Color.MAGENTA);
 		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
 	}
