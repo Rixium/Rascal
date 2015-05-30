@@ -8,7 +8,7 @@ import com.bourneless.engine.input.InputListener;
 
 public class Main {
 
-	public final static String title = ""; // Game Title.
+	public final static String title = "RogueLike"; // Game Title.
 
 	public static final int SCALE = 2;
 	public final static int GAME_WIDTH = 640 * SCALE; // Default Width.
