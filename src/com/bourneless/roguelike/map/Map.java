@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.roguelike.entity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 import com.bourneless.roguelike.map.tile.TileHex;
@@ -48,10 +49,10 @@ public class Map {
 
 	}
 
-	public void paint(Graphics2D g) {
+	public void paint(Graphics2D g, Player player) {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j].paint(g);
+				tiles[i][j].paint(g, player);
 			}
 		}
 	}

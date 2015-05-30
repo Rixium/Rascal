@@ -8,9 +8,9 @@ import com.bourneless.roguelike.map.tile.Tile;
 
 public class Entity {
 
-	private Vector2 pos;
-	private Tile tile;
-	private BufferedImage image;
+	protected Vector2 pos;
+	protected Tile tile;
+	protected BufferedImage image;
 
 	protected int type;
 

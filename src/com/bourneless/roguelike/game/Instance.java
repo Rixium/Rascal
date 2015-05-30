@@ -12,12 +12,12 @@ public class Instance {
 
 	Map map;
 
-	Player p;
+	Player player;
 
 	public Instance() {
 		map = new Map();
-		p = new Player(map.getTiles()[5][5], Main.resourceLoader.player[0], 5,
-				5);
+		player = new Player(map.getTiles()[6][6], Main.resourceLoader.player[0], 6,
+				6);
 	}
 
 	public void update() {
@@ -30,12 +30,11 @@ public class Instance {
 		g.setColor(Color.WHITE);
 		g.drawString("Game Screen", 10, 10);
 
-		map.paint(g);
-		p.paint(g);
+		map.paint(g, player);
 	}
 
 	public void keyPressed(KeyEvent e) {
-
+		player.keyPressed(e, map);
 	}
 
 }
