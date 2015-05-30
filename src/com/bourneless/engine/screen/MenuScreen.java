@@ -14,12 +14,12 @@ import com.bourneless.engine.main.Main;
 public class MenuScreen extends Screen {
 
 	public MenuScreen() {
-
+		Main.resourceLoader.playClip(Main.resourceLoader.menuMusic, -10.0f, true);
 	}
 
 	public void paint(Graphics2D g) {
-		g.setColor(Color.MAGENTA);
-		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
+		g.drawImage(Main.resourceLoader.menuBackground, 0, 0, Main.GAME_WIDTH,
+				Main.GAME_HEIGHT, null);
 	}
 
 	public void update() {

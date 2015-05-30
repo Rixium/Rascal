@@ -19,15 +19,33 @@ public class ResourceLoader {
 	public BufferedImage splashImage;
 
 	// Create Fields here
-
-	public BufferedImage map;
+	
+	// Menu
+	
+	public BufferedImage menuBackground;
+	
+	// Entities
 	
 	public BufferedImage player;
 	
+	// Music
+	
+	public Clip menuMusic;
+	
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
-		map = getBufferedImage("res/map1.png");
-		player = getBufferedImage("res/entity/player.png");
+		
+		// Menu
+		
+		menuBackground = getBufferedImage("res/menu/menuImage.png");
+		
+		// Entities
+		
+		player = getBufferedImage("res/entity/player/player.png");
+		
+		// Music
+		
+		menuMusic = loadClip("/music/menuMusic.wav");
 	}
 
 	public Clip loadClip(String filename) {
