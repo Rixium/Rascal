@@ -2,8 +2,12 @@ package com.bourneless.roguelike.map;
 
 import java.awt.Graphics2D;
 
+import com.bourneless.engine.math.Vector2;
+
 public class Tile {
 
+	private Vector2 pos;
+	
 	public Tile() {
 
 	}
@@ -14,6 +18,10 @@ public class Tile {
 
 	public void paint(Graphics2D g) {
 
+	}
+	
+	public Vector2 getPos() {
+		return this.pos;
 	}
 
 }
