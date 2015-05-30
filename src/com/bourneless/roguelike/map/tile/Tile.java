@@ -11,10 +11,12 @@ public class Tile {
 
 	private Vector2 pos;
 	private int tileType;
+	private int tileClass;
 
-	public Tile(Vector2 pos, int tileType) {
+	public Tile(Vector2 pos, int tileType, int tileClass) {
 		this.pos = pos;
 		this.tileType = tileType;
+		this.tileClass = tileClass;
 	}
 
 	public void update() {
@@ -22,7 +24,13 @@ public class Tile {
 	}
 
 	public void paint(Graphics2D g) {
-		g.drawImage(Main.resourceLoader.tiles[tileType], pos.x, pos.y, null);
+		if (tileClass == TileClass.FLOOR) {
+			g.drawImage(Main.resourceLoader.tiles[tileType], pos.x, pos.y,
+					null);
+		} else if (tileClass == TileClass.WALL) {
+			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x, pos.y - Main.resourceLoader.wallTiles[tileType].getHeight() + size,
+					null);
+		}
 	}
 
 	public Vector2 getPos() {

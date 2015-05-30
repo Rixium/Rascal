@@ -36,6 +36,7 @@ public class ResourceLoader {
 	// Tiles
 
 	public BufferedImage[] tiles;
+	public BufferedImage[] wallTiles;
 
 	// Map
 
@@ -62,10 +63,24 @@ public class ResourceLoader {
 
 		// Tiles
 
-		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
-		int rows = tileSheet.getWidth() / 64;
-		int cols = tileSheet.getHeight() / 64;
+		BufferedImage wallTileSheet = getBufferedImage("res/tile/wallTiles.png");
+		int rows = 10;
+		int cols = 10;
 		int iteration = 0;
+		wallTiles = new BufferedImage[rows * cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				wallTiles[iteration] = wallTileSheet
+						.getSubimage(j * 64, i * 192, 64, 192);
+				iteration++;
+			}
+		}
+		
+		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
+		rows = tileSheet.getWidth() / 64;
+		cols = tileSheet.getHeight() / 64;
+		iteration = 0;
 		tiles = new BufferedImage[rows * cols];
 
 		for (int i = 0; i < rows; i++) {
