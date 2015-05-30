@@ -3,10 +3,7 @@ package com.bourneless.engine.main;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -32,14 +29,16 @@ public class ResourceLoader {
 
 	// Entities
 
-	public BufferedImage player;
+	// Player
+
+	public BufferedImage[] player;
 
 	// Tiles
 
 	public BufferedImage[] tiles;
-	
+
 	// Map
-	
+
 	public BufferedImage[] rooms;
 
 	// Music
@@ -61,8 +60,6 @@ public class ResourceLoader {
 
 		// Entities
 
-		player = getBufferedImage("res/entity/player/player.png");
-
 		// Tiles
 
 		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
@@ -73,16 +70,31 @@ public class ResourceLoader {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				tiles[iteration] = tileSheet.getSubimage(j * 64, i * 64, 64, 64);
+				tiles[iteration] = tileSheet
+						.getSubimage(j * 64, i * 64, 64, 64);
+				iteration++;
+			}
+		}
+
+		BufferedImage playerSheet = getBufferedImage("res/entity/player/playerSheet.png");
+		rows = 10;
+		cols = 10;
+		iteration = 0;
+		player = new BufferedImage[rows * cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				player[iteration] = playerSheet.getSubimage(j * 64, i * 128,
+						64, 128);
 				iteration++;
 			}
 		}
 
 		// Map
-		
+
 		rooms = new BufferedImage[10];
 		rooms[0] = getBufferedImage("res/rooms/room1.png");
-		
+
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
