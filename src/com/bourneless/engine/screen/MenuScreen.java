@@ -52,6 +52,7 @@ public class MenuScreen extends Screen {
 		for (Tile tile : tiles) {
 			tile.paint(g);
 		}
+		g.setColor(Color.MAGENTA);
 	}
 
 	public void update() {
