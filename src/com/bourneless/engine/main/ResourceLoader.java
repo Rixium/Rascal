@@ -37,6 +37,10 @@ public class ResourceLoader {
 	// Tiles
 
 	public BufferedImage[] tiles;
+	
+	// Map
+	
+	public BufferedImage[] rooms;
 
 	// Music
 
@@ -64,14 +68,21 @@ public class ResourceLoader {
 		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
 		int rows = tileSheet.getWidth() / 64;
 		int cols = tileSheet.getHeight() / 64;
+		int iteration = 0;
 		tiles = new BufferedImage[rows * cols];
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				tiles[i] = tileSheet.getSubimage(i * 64, 0, 64, 64);
+				tiles[iteration] = tileSheet.getSubimage(j * 64, i * 64, 64, 64);
+				iteration++;
 			}
 		}
 
+		// Map
+		
+		rooms = new BufferedImage[10];
+		rooms[0] = getBufferedImage("res/rooms/room1.png");
+		
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
