@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.engine.util.Button;
+import com.bourneless.roguelike.screen.GameScreen;
 
 public class MenuScreen extends Screen {
 
@@ -49,6 +50,10 @@ public class MenuScreen extends Screen {
 
 	public void mouseClicked(MouseEvent e) {
 		Rectangle mouseRect = new Rectangle(e.getX(), e.getY() - 20, 10, 10);
+		
+		if(mouseRect.intersects(menuButtons[0].getRect())) {
+			Main.game.setScreen(new GameScreen());
+		}
 
 	}
 
