@@ -16,6 +16,8 @@ public class Instance {
 	
 	private int xOffset = 0;
 	private int yOffset = 0;
+	
+	private int camSpeed = 4;
 
 	public Instance() {
 		map = new Map();
@@ -24,8 +26,16 @@ public class Instance {
 	}
 
 	public void update() {
-		xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
-		yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
+		if(Main.GAME_WIDTH / 2 - player.getPos().x < xOffset) {
+			xOffset -= camSpeed;
+		} else if(Main.GAME_WIDTH / 2 - player.getPos().x > xOffset) {
+			xOffset += camSpeed;
+		}
+		if(Main.GAME_HEIGHT / 2 - player.getPos().y < yOffset) {
+			yOffset -= camSpeed;
+		} else if (Main.GAME_HEIGHT / 2 - player.getPos().y > yOffset) {
+			yOffset += camSpeed;
+		}
 		
 		map.update(xOffset, yOffset);
 		player.update(xOffset, yOffset);
