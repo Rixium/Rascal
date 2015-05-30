@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import com.bourneless.engine.main.Main;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.map.Map;
@@ -30,11 +31,13 @@ public class Player extends Entity {
 			if (map.getTiles()[(pos.x / 64) - 1][(pos.y / 64)].isPassable()) {
 				this.pos.x -= 64;
 				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				this.image = Main.resourceLoader.player[1];
 			}
 		} else if (e.getKeyCode() == 68) {
 			if (map.getTiles()[(pos.x / 64) + 1][(pos.y / 64)].isPassable()) {
 				this.pos.x += 64;
 				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				this.image = Main.resourceLoader.player[2];
 			}
 		}
 
@@ -42,11 +45,13 @@ public class Player extends Entity {
 			if (map.getTiles()[(pos.x / 64)][(pos.y / 64) - 1].isPassable()) {
 				this.pos.y -= 64;
 				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				this.image = Main.resourceLoader.player[3];
 			}
 		} else if (e.getKeyCode() == 83) {
 			if (map.getTiles()[(pos.x / 64)][(pos.y / 64) + 1].isPassable()) {
 				this.pos.y += 64;
 				this.tile = map.getTiles()[pos.x / 64][pos.y / 64];
+				this.image = Main.resourceLoader.player[0];
 			}
 		}
 	}
