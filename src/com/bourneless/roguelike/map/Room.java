@@ -61,6 +61,21 @@ public class Room {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR, i, j);
 					startTile = tiles[i][j];
+				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_1)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR_DEC_1, TileClass.FLOOR, i, j);
+				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_TL)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_TL, TileClass.FLOOR, i, j);
+				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_TR)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_TR, TileClass.FLOOR, i, j);
+				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_BL)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_BL, TileClass.FLOOR, i, j);
+				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_BR)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_BR, TileClass.FLOOR, i, j);
 				}
 			}
 		}

@@ -26,7 +26,7 @@ public class Player extends Entity {
 	private BufferedImage[] moveUp = Main.resourceLoader.moveUp;
 	private BufferedImage[] moveDown = Main.resourceLoader.moveDown;
 
-	private int animationSpeed = 400;
+	private int animationSpeed = 100;
 	private Animation moveLeftAnimation = new Animation(moveLeft, animationSpeed);
 	private Animation moveRightAnimation = new Animation(moveRight, animationSpeed);
 	private Animation moveUpAnimation = new Animation(moveUp, animationSpeed);
@@ -118,7 +118,7 @@ public class Player extends Entity {
 		System.out.println(e.getKeyCode());
 		if (e.getKeyCode() == 65 && lastKey != 65) {
 			// A Key
-			if (this.image.equals(Main.resourceLoader.player[3])) {
+			if (this.image.equals(Main.resourceLoader.player[4])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
 						.isPassable()) {
 					travelLeft = true;
@@ -129,12 +129,12 @@ public class Player extends Entity {
 
 				}
 			} else {
-				this.image = Main.resourceLoader.player[3];
+				this.image = Main.resourceLoader.player[4];
 			}
 			lastKey = 65;
 		} else if (e.getKeyCode() == 68 && lastKey != 68) {
 			// D Key
-			if (this.image.equals(Main.resourceLoader.player[6])) {
+			if (this.image.equals(Main.resourceLoader.player[7])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
 						.isPassable()) {
 					travelRight = true;
@@ -145,7 +145,7 @@ public class Player extends Entity {
 
 				}
 			} else {
-				this.image = Main.resourceLoader.player[6];
+				this.image = Main.resourceLoader.player[7];
 			}
 			lastKey = 68;
 		}
