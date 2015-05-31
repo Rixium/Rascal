@@ -13,8 +13,6 @@ import com.bourneless.roguelike.screen.GameScreen;
 public class MenuScreen extends Screen {
 
 	private Button[] menuButtons = new Button[2];
-	private Button startGameButton;
-	private Button exitGameButton;
 
 	public MenuScreen() {
 		Main.resourceLoader.playClip(Main.resourceLoader.menuMusic, -10.0f,

@@ -28,6 +28,7 @@ public class Main {
 		frame.setTitle(title); // Set the title of JFrame.
 		frame.setFocusable(true);
 		frame.setResizable(false); // Stop the window getting resized.
+		frame.setUndecorated(true);
 		frame.addMouseListener(inputListener);
 		frame.addKeyListener(inputListener);
 		frame.addMouseMotionListener(inputListener);

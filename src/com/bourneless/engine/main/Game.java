@@ -1,7 +1,9 @@
 package com.bourneless.engine.main;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -26,19 +28,25 @@ public class Game extends JPanel implements Runnable {
 	public static int height;
 
 	private BufferedImage image;
+	private Image scaledImage;
 
 	private Screen currentScreen;
 
-	private float durationMS = 0;
+	private int resolution = 0;
 
+	private float durationMS = 0;
+	
 	@SuppressWarnings("static-access")
 	public Game(JFrame frame, int width, int height) {
-		
+
 		this.setDoubleBuffered(true);
 		this.width = width;
 		this.height = height;
 		this.frame = frame;
-		
+
+		this.setMaximumSize(new Dimension(Main.GAME_WIDTH, Main.GAME_HEIGHT));
+		this.setMinimumSize(new Dimension(640, 360));
+
 		initialize();
 	}
 
@@ -75,11 +83,10 @@ public class Game extends JPanel implements Runnable {
 		if (bs != null) {
 			Graphics g = bs.getDrawGraphics();
 			blit();
-			g.drawImage(image, 3, 26, null);
+			g.drawImage(image, 0, 0, null);
 			g.dispose();
 			bs.show();
 			super.paintComponent(g);
-			g.drawImage(image, 3, 26, null);
 		}
 
 	}
@@ -115,6 +122,11 @@ public class Game extends JPanel implements Runnable {
 				frames = 0;
 			}
 
+			try {
+				thread.sleep(8);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		}
 
@@ -127,6 +139,8 @@ public class Game extends JPanel implements Runnable {
 
 	public void setScreen(Screen screen) {
 		this.currentScreen = screen;
+		System.gc();
 	}
+
 
 }

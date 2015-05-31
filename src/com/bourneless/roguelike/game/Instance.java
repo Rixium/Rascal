@@ -38,7 +38,7 @@ public class Instance {
 		}
 		
 		map.update(xOffset, yOffset);
-		player.update(xOffset, yOffset);
+		player.update(xOffset, yOffset, map);
 	}
 
 	public void paint(Graphics2D g) {
