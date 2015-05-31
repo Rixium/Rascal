@@ -19,18 +19,24 @@ public class Animation implements Serializable {
 	private int speed;
 	private boolean playOnce;
 
+	private boolean hasStopped = true;
+
 	private Timer animationTimer = new Timer(100, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (activeImage < images.length - 1) {
 				activeImage++;
 			} else {
-				if(!playOnce) {
+				if (!playOnce) {
 					activeImage = 0;
 				}
 			}
 		}
 	});
+
+	public boolean isStopped() {
+		return hasStopped;
+	}
 
 	public Animation(BufferedImage[] images, int speed) {
 		this.images = images;
@@ -41,15 +47,17 @@ public class Animation implements Serializable {
 	public void paint(Graphics2D g, Vector2 pos) {
 		g.drawImage(images[activeImage], pos.x, pos.y, null);
 	}
-	
+
 	public void start(boolean playOnce) {
+		hasStopped = false;
 		this.playOnce = playOnce;
 		this.activeImage = 0;
 		this.animationTimer.start();
 	}
-	
+
 	public void stop() {
 		playOnce = false;
 		this.animationTimer.stop();
+		hasStopped = true;
 	}
 }
