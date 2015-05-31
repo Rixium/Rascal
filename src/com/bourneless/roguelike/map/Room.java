@@ -42,6 +42,13 @@ public class Room {
 				} else if (hex.matches(TileHex.STONE_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR);
+				} else if (hex.matches(TileHex.LOWER_RED_WALL)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), WallTileType.LOWER_RED_WALL,
+							TileClass.WALL);
+				} else if (hex.matches(TileHex.TOP_WALL)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), WallTileType.TOP_WALL, TileClass.WALL);
 				}
 			}
 		}
@@ -56,7 +63,8 @@ public class Room {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
-						&& tiles[i][j].getPos().y < Main.GAME_HEIGHT + -yOffset + (Tile.size * 3)
+						&& tiles[i][j].getPos().y < Main.GAME_HEIGHT + -yOffset
+								+ (Tile.size * 3)
 						&& tiles[i][j].getPos().x > -xOffset - Tile.size
 						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
 					tiles[i][j].paint(g, player, xOffset, yOffset);

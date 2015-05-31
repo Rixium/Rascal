@@ -175,5 +175,13 @@ public class Player extends Entity {
 	public void keyReleased(KeyEvent e) {
 		lastKey = 0;
 	}
+	
+	public int getYOff() {
+		return this.playerYOff;
+	}
+	
+	public int getXOff() {
+		return this.playerXOff;
+	}
 
 }

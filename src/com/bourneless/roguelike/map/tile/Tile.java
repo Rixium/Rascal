@@ -18,17 +18,10 @@ public class Tile {
 
 	private boolean passable; // If the tile can be used by Player and Entities.
 
-	private Rectangle rect;
-
 	public Tile(Vector2 pos, int tileType, int tileClass) {
 		this.pos = pos;
 		this.tileType = tileType;
 		this.tileClass = tileClass;
-		if (tileClass == TileClass.FLOOR) {
-			this.rect = new Rectangle(pos.x, pos.y, size, size);
-		} else {
-			this.rect = new Rectangle(pos.x, pos.y - Main.resourceLoader.wallTiles[tileType].getHeight() + size, size, size * 3);
-		}
 
 		if (tileClass == TileClass.WALL) {
 			setPassable(false);
@@ -43,20 +36,24 @@ public class Tile {
 
 	public void paint(Graphics2D g, Player player, int xOffset, int yOffset) {
 		if (tileClass == TileClass.FLOOR) {
-			g.drawImage(Main.resourceLoader.tiles[tileType], pos.x + xOffset, pos.y + yOffset,
-					null);
-			if(player.getTile().getPos() == this.pos) {
+			g.drawImage(Main.resourceLoader.tiles[tileType], pos.x + xOffset,
+					pos.y + yOffset, null);
+			if (player.getTile().getPos() == this.pos
+					|| player.getTile().getPos().x == this.pos.x - size
+					|| player.getTile().getPos().y == this.pos.y + size) {
 				player.paint(g);
 			}
-		} else if (tileClass == TileClass.WALL) {
-			if(player.getTile().getRect().intersects(this.rect)) {
-				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-			}
-			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x + xOffset, pos.y - Main.resourceLoader.wallTiles[tileType].getHeight() + size + yOffset,
-					null);
 		}
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		
+		if (tileClass == TileClass.WALL) {
+			if (player.getTile().getPos() == this.pos
+					|| player.getTile().getPos().x == this.pos.x - size
+					|| player.getTile().getPos().y == this.pos.y + size) {
+				player.paint(g);
+			}
+			System.out.println("Drawing Wall");
+			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x + xOffset, pos.y
+					+ yOffset, null);
+		}
 	}
 
 	public Vector2 getPos() {
@@ -73,10 +70,6 @@ public class Tile {
 
 	public int getTileClass() {
 		return this.tileClass;
-	}
-
-	public Rectangle getRect() {
-		return this.rect;
 	}
 
 }

@@ -79,7 +79,7 @@ public class ResourceLoader {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				wallTiles[iteration] = wallTileSheet
-						.getSubimage(j * 64, i * 192, 64, 192);
+						.getSubimage(j * 64, i * 64, 64, 64);
 				iteration++;
 			}
 		}
@@ -131,11 +131,8 @@ public class ResourceLoader {
 
 		// Map
 
-		rooms = new BufferedImage[4];
-		rooms[0] = getBufferedImage("res/rooms/room1.rm");
-		rooms[1] = getBufferedImage("res/rooms/room2.rm");
-		rooms[2] = getBufferedImage("res/rooms/room3.rm");
-		rooms[3] = getBufferedImage("res/rooms/room4.rm");
+		rooms = new BufferedImage[1];
+		rooms[0] = getBufferedImage("res/rooms/room1.png");
 
 		// Music
 

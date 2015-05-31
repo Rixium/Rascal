@@ -26,14 +26,14 @@ public class Instance {
 	}
 
 	public void update() {
-		if(Main.GAME_WIDTH / 2 - player.getPos().x < xOffset) {
+		if(Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() < xOffset) {
 			xOffset -= camSpeed;
-		} else if(Main.GAME_WIDTH / 2 - player.getPos().x > xOffset) {
+		} else if(Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() > xOffset) {
 			xOffset += camSpeed;
 		}
-		if(Main.GAME_HEIGHT / 2 - player.getPos().y < yOffset) {
+		if(Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() < yOffset) {
 			yOffset -= camSpeed;
-		} else if (Main.GAME_HEIGHT / 2 - player.getPos().y > yOffset) {
+		} else if (Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() > yOffset) {
 			yOffset += camSpeed;
 		}
 		
