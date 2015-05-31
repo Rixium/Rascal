@@ -24,8 +24,8 @@ public class Room {
 	private int startTileX;
 	private int startTileY;
 
-	private int xOffset;
-	private int yOffset;
+	private int xOffset = 0;
+	private int yOffset = 0;
 
 	public Room() {
 		this.image = Main.resourceLoader.rooms[random
