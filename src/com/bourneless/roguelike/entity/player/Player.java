@@ -18,14 +18,14 @@ public class Player extends Entity {
 	private boolean travelUp, travelDown, travelLeft, travelRight;
 	private int playerXOff, playerYOff;
 
-	private int walkSpeed = 2;
+	private int walkSpeed = 4;
 
 	private BufferedImage[] moveLeft = Main.resourceLoader.moveLeft;
 	private BufferedImage[] moveRight = Main.resourceLoader.moveRight;
 	private BufferedImage[] moveUp = Main.resourceLoader.moveUp;
 	private BufferedImage[] moveDown = Main.resourceLoader.moveDown;
 
-	private int animationSpeed = 200;
+	private int animationSpeed = 400;
 	private Animation moveLeftAnimation = new Animation(moveLeft, animationSpeed);
 	private Animation moveRightAnimation = new Animation(moveRight, animationSpeed);
 	private Animation moveUpAnimation = new Animation(moveUp, animationSpeed);
