@@ -21,8 +21,8 @@ public class Instance {
 
 	public Instance() {
 		map = new Map();
-		player = new Player(map.getRoom().getTiles()[6][6], Main.resourceLoader.player[0], 6,
-				6);
+		player = new Player(map.getRoom().getStartTile(), Main.resourceLoader.player[0], map.getRoom().getStartTileX(),
+				map.getRoom().getStartTileY());
 	}
 
 	public void update() {

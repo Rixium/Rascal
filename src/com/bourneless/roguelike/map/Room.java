@@ -19,6 +19,10 @@ public class Room {
 	private BufferedImage image;
 	private Tile[][] tiles;
 	private Random random = new Random();
+	
+	private Tile startTile;
+	private int startTileX;
+	private int startTileY;
 
 	private int xOffset;
 	private int yOffset;
@@ -49,6 +53,10 @@ public class Room {
 				} else if (hex.matches(TileHex.TOP_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.TOP_WALL, TileClass.WALL);
+				} else if (hex.matches(TileHex.START_TILE)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR);
+					startTile = tiles[i][j];
 				}
 			}
 		}
@@ -76,6 +84,18 @@ public class Room {
 	public Tile[][] getTiles() {
 		return this.tiles;
 
+	}
+	
+	public Tile getStartTile() {
+		return this.startTile;
+	}
+	
+	public int getStartTileX() {
+		return this.startTileX;
+	}
+	
+	public int getStartTileY() {
+		return this.startTileY;
 	}
 
 }
