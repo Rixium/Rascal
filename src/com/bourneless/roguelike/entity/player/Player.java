@@ -4,7 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
+import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.map.Map;
@@ -15,8 +17,19 @@ public class Player extends Entity {
 	private int lastKey;
 	private boolean travelUp, travelDown, travelLeft, travelRight;
 	private int playerXOff, playerYOff;
-	
+
 	private int walkSpeed = 5;
+
+	private BufferedImage[] moveLeft = Main.resourceLoader.moveLeft;
+	private BufferedImage[] moveRight = Main.resourceLoader.moveRight;
+	private BufferedImage[] moveUp = Main.resourceLoader.moveUp;
+	private BufferedImage[] moveDown = Main.resourceLoader.moveDown;
+
+	private int animationSpeed = 100;
+	private Animation moveLeftAnimation = new Animation(moveLeft, animationSpeed);
+	private Animation moveRightAnimation = new Animation(moveRight, animationSpeed);
+	private Animation moveUpAnimation = new Animation(moveUp, animationSpeed);
+	private Animation moveDownAnimation = new Animation(moveDown, animationSpeed);
 
 	public Player(Tile tile, BufferedImage image, int tileX, int tileY) {
 		super(tile, image, tileX, tileY);
@@ -24,8 +37,24 @@ public class Player extends Entity {
 	}
 
 	public void paint(Graphics2D g) {
-		g.drawImage(image, pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
-				+ yOffset + playerYOff, null);
+		g.drawImage(image, pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff, null);
+		
+		if(travelLeft)
+			moveLeftAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
+		if(travelRight)
+			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
+		if(travelUp)
+			moveUpAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
+		if(travelDown)
+			moveDownAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
 	}
 
 	public void update(int xOffset, int yOffset, Map map) {
@@ -38,6 +67,7 @@ public class Player extends Entity {
 				playerXOff -= walkSpeed;
 			} else {
 				travelLeft = false;
+				moveLeftAnimation.stop();
 				this.pos.x -= 64;
 				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
 				playerXOff = 0;
@@ -48,6 +78,7 @@ public class Player extends Entity {
 				playerXOff += walkSpeed;
 			} else {
 				travelRight = false;
+				moveRightAnimation.stop();
 				this.pos.x += 64;
 				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
 				playerXOff = 0;
@@ -58,6 +89,7 @@ public class Player extends Entity {
 				playerYOff -= walkSpeed;
 			} else {
 				travelUp = false;
+				moveUpAnimation.stop();
 				this.pos.y -= 64;
 				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
 				playerYOff = 0;
@@ -66,9 +98,10 @@ public class Player extends Entity {
 			if (pos.y + playerYOff < map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
 					.getPos().y) {
 				playerYOff += walkSpeed;
-				
+
 			} else {
 				travelDown = false;
+				moveDownAnimation.stop();
 				this.pos.y += 64;
 				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
 				playerYOff = 0;
@@ -80,39 +113,46 @@ public class Player extends Entity {
 		System.out.println(e.getKeyCode());
 		if (e.getKeyCode() == 65 && lastKey != 65) {
 			// A Key
-			if (this.image.equals(Main.resourceLoader.player[1])) {
+			if (this.image.equals(Main.resourceLoader.player[3])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
 						.isPassable()) {
 					travelLeft = true;
-					
-					
+
+					moveLeftAnimation.start(true);
+
 				}
 			} else {
-				this.image = Main.resourceLoader.player[1];
+				this.image = Main.resourceLoader.player[3];
 			}
 			lastKey = 65;
 		} else if (e.getKeyCode() == 68 && lastKey != 68) {
 			// D Key
-			if (this.image.equals(Main.resourceLoader.player[2])) {
+			if (this.image.equals(Main.resourceLoader.player[6])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
 						.isPassable()) {
 					travelRight = true;
+
+					moveRightAnimation.start(true);
+
 				}
 			} else {
-				this.image = Main.resourceLoader.player[2];
+				this.image = Main.resourceLoader.player[6];
 			}
 			lastKey = 68;
 		}
 
 		if (e.getKeyCode() == 87 && lastKey != 87) {
 			// W Key
-			if (this.image.equals(Main.resourceLoader.player[3])) {
+			if (this.image.equals(Main.resourceLoader.player[9])) {
 				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
 						.isPassable()) {
 					travelUp = true;
+					
+					moveUpAnimation.start(true);
+					
 				}
 			} else {
-				this.image = Main.resourceLoader.player[3];
+				this.image = Main.resourceLoader.player[9];
 			}
 			lastKey = 87;
 		} else if (e.getKeyCode() == 83 && lastKey != 83) {
@@ -121,6 +161,9 @@ public class Player extends Entity {
 				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
 						.isPassable()) {
 					travelDown = true;
+					
+					moveDownAnimation.start(true);
+					
 				}
 			} else {
 				this.image = Main.resourceLoader.player[0];

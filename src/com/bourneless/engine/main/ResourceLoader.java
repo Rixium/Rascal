@@ -41,6 +41,13 @@ public class ResourceLoader {
 	// Map
 
 	public BufferedImage[] rooms;
+	
+	// Animations
+	
+	public BufferedImage[] moveLeft = new BufferedImage[3];
+	public BufferedImage[] moveRight = new BufferedImage[3];
+	public BufferedImage[] moveUp = new BufferedImage[3];
+	public BufferedImage[] moveDown = new BufferedImage[3];
 
 	// Music
 
@@ -90,10 +97,11 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
-
+		
+		// Player Animations
 		BufferedImage playerSheet = getBufferedImage("res/entity/player/playerSheet.png");
-		rows = 10;
-		cols = 10;
+		rows = 4;
+		cols = 3;
 		iteration = 0;
 		player = new BufferedImage[rows * cols];
 
@@ -104,6 +112,22 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
+		
+		moveDown[0] = player[0];
+		moveDown[1] = player[1];
+		moveDown[2] = player[2];
+		
+		moveLeft[0] = player[3];
+		moveLeft[1] = player[4];
+		moveLeft[2] = player[5];
+		
+		moveRight[0] = player[6];
+		moveRight[1] = player[7];
+		moveRight[2] = player[8];
+		
+		moveUp[0] = player[9];
+		moveUp[1] = player[10];
+		moveUp[2] = player[11];
 
 		// Map
 
