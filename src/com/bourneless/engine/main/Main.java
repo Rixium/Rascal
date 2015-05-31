@@ -1,5 +1,6 @@
 package com.bourneless.engine.main;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -24,11 +25,11 @@ public class Main {
 
 		inputListener = new InputListener();
 		game.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+		frame.setLayout(new BorderLayout());
 		frame.add(game);
 		frame.setTitle(title); // Set the title of JFrame.
 		frame.setFocusable(true);
 		frame.setResizable(false); // Stop the window getting resized.
-		frame.setUndecorated(true);
 		frame.addMouseListener(inputListener);
 		frame.addKeyListener(inputListener);
 		frame.addMouseMotionListener(inputListener);
@@ -37,6 +38,7 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit application on JFrame close.
 		frame.setLocationRelativeTo(null); // Make window appear in centre of screen.
 		frame.setVisible(true); // Set the window to visible.
+		game.passInsets(frame.getInsets());
 		frame.createBufferStrategy(3);
 		frame.setIconImage(Main.resourceLoader.icon);
 	}

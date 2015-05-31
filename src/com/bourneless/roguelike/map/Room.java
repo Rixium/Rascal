@@ -29,6 +29,7 @@ public class Room {
 	private int yOffset = 0;
 	
 	private FieldOfView fieldOfView;
+	private boolean firstIteration = true;
 
 	public Room() {
 		this.image = Main.resourceLoader.rooms[random
@@ -80,8 +81,11 @@ public class Room {
 								+ (Tile.size * 3)
 						&& tiles[i][j].getPos().x > -xOffset - Tile.size
 						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
+					if (firstIteration) {
+						fieldOfView.setVisibility(player, xOffset, yOffset);
+						firstIteration = false;
+					}
 					tiles[i][j].paint(g, player, xOffset, yOffset);
-					fieldOfView.setVisibility(player);
 				}
 			}
 		}
@@ -102,6 +106,10 @@ public class Room {
 	
 	public int getStartTileY() {
 		return this.startTileY;
+	}
+	
+	public FieldOfView getFieldOfView() {
+		return this.fieldOfView;
 	}
 
 }

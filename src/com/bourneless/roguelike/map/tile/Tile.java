@@ -54,7 +54,6 @@ public class Tile {
 					|| entity.getTile().getPos().y == this.pos.y + size) {
 				entity.paint(g);
 			}
-			System.out.println("Drawing Wall");
 			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x
 					+ xOffset, pos.y + yOffset, null);
 		}

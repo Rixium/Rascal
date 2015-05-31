@@ -62,12 +62,12 @@ public class Player extends Entity {
 	public void update(int xOffset, int yOffset, Map map) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
-
 		if (travelLeft) {
 			if (pos.x + playerXOff > map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
 					.getPos().x) {
 				playerXOff -= walkSpeed;
 			} else {
+				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelLeft = false;
 				moveLeftAnimation.stop();
 				this.pos.x -= 64;
@@ -79,6 +79,7 @@ public class Player extends Entity {
 					.getPos().x) {
 				playerXOff += walkSpeed;
 			} else {
+				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelRight = false;
 				moveRightAnimation.stop();
 				this.pos.x += 64;
@@ -90,6 +91,7 @@ public class Player extends Entity {
 					.getPos().y) {
 				playerYOff -= walkSpeed;
 			} else {
+				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelUp = false;
 				moveUpAnimation.stop();
 				this.pos.y -= 64;
@@ -102,6 +104,7 @@ public class Player extends Entity {
 				playerYOff += walkSpeed;
 
 			} else {
+				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelDown = false;
 				moveDownAnimation.stop();
 				this.pos.y += 64;

@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -26,6 +28,10 @@ public class Game extends JPanel implements Runnable {
 	private int updates = 0;
 	public static int width;
 	public static int height;
+	
+	// Insets
+	
+	private int top, left, bottom, right;
 
 	private BufferedImage image;
 	private Image scaledImage;
@@ -43,7 +49,6 @@ public class Game extends JPanel implements Runnable {
 		this.width = width;
 		this.height = height;
 		this.frame = frame;
-
 		this.setMaximumSize(new Dimension(Main.GAME_WIDTH, Main.GAME_HEIGHT));
 		this.setMinimumSize(new Dimension(640, 360));
 
@@ -83,7 +88,7 @@ public class Game extends JPanel implements Runnable {
 		if (bs != null) {
 			Graphics g = bs.getDrawGraphics();
 			blit();
-			g.drawImage(image, 0, 0, null);
+			g.drawImage(image, left, top, null);
 			g.dispose();
 			bs.show();
 			super.paintComponent(g);
@@ -140,6 +145,13 @@ public class Game extends JPanel implements Runnable {
 	public void setScreen(Screen screen) {
 		this.currentScreen = screen;
 		System.gc();
+	}
+
+	public void passInsets(Insets insets) {
+		left = insets.left;
+		right = insets.right;
+		top = insets.top;
+		bottom = insets.bottom;
 	}
 
 
