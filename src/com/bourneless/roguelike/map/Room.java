@@ -19,12 +19,13 @@ public class Room {
 	private BufferedImage image;
 	private Tile[][] tiles;
 	private Random random = new Random();
-	
+
 	private int xOffset;
 	private int yOffset;
 
 	public Room() {
-		this.image = Main.resourceLoader.rooms[random.nextInt(Main.resourceLoader.rooms.length)];
+		this.image = Main.resourceLoader.rooms[random
+				.nextInt(Main.resourceLoader.rooms.length)];
 		this.tiles = new Tile[image.getWidth()][image.getHeight()];
 		for (int i = 0; i < image.getWidth(); i++) {
 			for (int j = 0; j < image.getHeight(); j++) {
@@ -54,11 +55,16 @@ public class Room {
 	public void paint(Graphics2D g, Player player) {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j].paint(g, player, xOffset, yOffset);
+				if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
+						&& tiles[i][j].getPos().y < Main.GAME_HEIGHT + -yOffset + (Tile.size * 3)
+						&& tiles[i][j].getPos().x > -xOffset - Tile.size
+						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
+					tiles[i][j].paint(g, player, xOffset, yOffset);
+				}
 			}
 		}
 	}
-	
+
 	public Tile[][] getTiles() {
 		return this.tiles;
 
