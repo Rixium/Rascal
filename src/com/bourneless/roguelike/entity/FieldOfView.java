@@ -20,13 +20,23 @@ public class FieldOfView {
 							for(int l = 0; l < room.getTiles()[j].length; l++) {
 								if(l < j - 2) {
 									room.getTiles()[k][l].setVisible(false);
-								} else {
+								} else if (l > j - 2 && j < l - 2) {
 									room.getTiles()[k][l].setVisible(true);
 								}
 							}
 						}
 					}
-				}
+				} else if (entity.getTile().getTileY() < room.getTiles()[i][j].getTileY() && entity.getTile().getTileX() == room.getTiles()[i][j].getTileX()) {
+						if(room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
+							for(int k = 0; k < room.getTiles().length; k++) {
+								for(int l = 0; l < room.getTiles()[j].length; l++) {
+									if(j < l - 2) {
+										room.getTiles()[k][l].setVisible(false);
+									}
+								}
+							}
+						}
+					}
 			}
 		}
 	}
