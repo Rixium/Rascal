@@ -9,6 +9,7 @@ import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
+import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
 
@@ -70,7 +71,7 @@ public class Player extends Entity {
 				travelLeft = false;
 				moveLeftAnimation.stop();
 				this.pos.x -= 64;
-				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
+				this.tile = map.getRoom().getTiles()[tile.getTileX() - 1][tile.getTileY()];
 				playerXOff = 0;
 			}
 		} else if (travelRight) {
@@ -81,7 +82,7 @@ public class Player extends Entity {
 				travelRight = false;
 				moveRightAnimation.stop();
 				this.pos.x += 64;
-				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
+				this.tile = map.getRoom().getTiles()[tile.getTileX() + 1][tile.getTileY()];
 				playerXOff = 0;
 			}
 		} else if (travelUp) {
@@ -92,11 +93,11 @@ public class Player extends Entity {
 				travelUp = false;
 				moveUpAnimation.stop();
 				this.pos.y -= 64;
-				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
+				this.tile = map.getRoom().getTiles()[tile.getTileX()][tile.getTileY() - 1];
 				playerYOff = 0;
 			}
 		} else if (travelDown) {
-			if (pos.y + playerYOff < map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+			if (pos.y + playerYOff < map.getRoom().getTiles()[tile.getTileX()][tile.getTileY() + 1]
 					.getPos().y) {
 				playerYOff += walkSpeed;
 

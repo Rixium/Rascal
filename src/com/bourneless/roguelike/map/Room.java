@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
@@ -26,6 +27,8 @@ public class Room {
 
 	private int xOffset = 0;
 	private int yOffset = 0;
+	
+	private FieldOfView fieldOfView;
 
 	public Room() {
 		this.image = Main.resourceLoader.rooms[random
@@ -39,27 +42,29 @@ public class Room {
 						+ Integer.toHexString(color.getRGB()).substring(2);
 				if (hex.matches(TileHex.RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), WallTileType.RED_WALL, TileClass.WALL);
+							* Tile.size), WallTileType.RED_WALL, TileClass.WALL, i, j);
 				} else if (hex.matches(TileHex.WOOD_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR);
+							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.STONE_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR);
+							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.LOWER_RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.LOWER_RED_WALL,
-							TileClass.WALL);
+							TileClass.WALL, i, j);
 				} else if (hex.matches(TileHex.TOP_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), WallTileType.TOP_WALL, TileClass.WALL);
+							* Tile.size), WallTileType.TOP_WALL, TileClass.WALL, i, j);
 				} else if (hex.matches(TileHex.START_TILE)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR);
+							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR, i, j);
 					startTile = tiles[i][j];
 				}
 			}
 		}
+		
+		fieldOfView = new FieldOfView(this);
 	}
 
 	public void update(int xOffset, int yOffset) {
@@ -76,6 +81,7 @@ public class Room {
 						&& tiles[i][j].getPos().x > -xOffset - Tile.size
 						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
 					tiles[i][j].paint(g, player, xOffset, yOffset);
+					fieldOfView.setVisibility(player);
 				}
 			}
 		}

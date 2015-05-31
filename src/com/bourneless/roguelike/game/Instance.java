@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.player.Player;
 import com.bourneless.roguelike.map.Map;
 
@@ -18,7 +19,6 @@ public class Instance {
 	private int yOffset = 0;
 	
 	private int camSpeed = 4;
-
 	public Instance() {
 		map = new Map();
 		player = new Player(map.getRoom().getStartTile(), Main.resourceLoader.player[0], map.getRoom().getStartTileX(),

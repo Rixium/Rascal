@@ -37,6 +37,7 @@ public class ResourceLoader {
 
 	public BufferedImage[] tiles;
 	public BufferedImage[] wallTiles;
+	public BufferedImage fog;
 
 	// Map
 
@@ -69,6 +70,8 @@ public class ResourceLoader {
 		// Entities
 
 		// Tiles
+		
+		fog = getBufferedImage("res/mechanics/fog.png");
 
 		BufferedImage wallTileSheet = getBufferedImage("res/tile/wallTiles.png");
 		int rows = 10;

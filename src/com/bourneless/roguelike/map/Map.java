@@ -2,6 +2,7 @@ package com.bourneless.roguelike.map;
 
 import java.awt.Graphics2D;
 
+import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 
