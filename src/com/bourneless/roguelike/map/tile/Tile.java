@@ -108,5 +108,9 @@ public class Tile {
 	public void setVisible(boolean bool) {
 		this.visible = bool;
 	}
+	
+	public boolean isVisible() {
+		return this.visible;
+	}
 
 }

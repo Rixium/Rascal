@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import com.bourneless.engine.main.Main;
-import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Map;
 

@@ -16,11 +16,14 @@ public class FieldOfView {
 	public void setVisibility(Entity entity, int xOffset, int yOffset) {
 		for (int i = 0; i < room.getTiles().length; i++) {
 			for (int j = 0; j < room.getTiles()[i].length; j++) {
-				if (room.getTiles()[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
-						&& room.getTiles()[i][j].getPos().y < Main.GAME_HEIGHT + -yOffset
-								+ (Tile.size * 3)
-						&& room.getTiles()[i][j].getPos().x > -xOffset - Tile.size
-						&& room.getTiles()[i][j].getPos().y > -yOffset - Tile.size) {
+				if (room.getTiles()[i][j].getPos().x < Main.GAME_WIDTH
+						+ -xOffset
+						&& room.getTiles()[i][j].getPos().y < Main.GAME_HEIGHT
+								+ -yOffset + (Tile.size * 3)
+						&& room.getTiles()[i][j].getPos().x > -xOffset
+								- Tile.size
+						&& room.getTiles()[i][j].getPos().y > -yOffset
+								- Tile.size) {
 					if (entity.getTile().getTileY() > room.getTiles()[i][j]
 							.getTileY()
 							&& entity.getTile().getTileX() == room.getTiles()[i][j]
@@ -30,9 +33,10 @@ public class FieldOfView {
 								for (int l = 0; l < room.getTiles()[j].length; l++) {
 									if (l < j - 2) {
 										room.getTiles()[k][l].setVisible(false);
-									} else if (l > j - 2 && j < l - 2) {
+									} else if (l > j) {
 										room.getTiles()[k][l].setVisible(true);
 									}
+
 								}
 							}
 						}
@@ -43,8 +47,40 @@ public class FieldOfView {
 						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
 							for (int k = 0; k < room.getTiles().length; k++) {
 								for (int l = 0; l < room.getTiles()[j].length; l++) {
-									if (j < l - 2) {
+									if (l > j) {
 										room.getTiles()[k][l].setVisible(false);
+									} else if (j > l) {
+										room.getTiles()[k][l].setVisible(true);
+									}
+								}
+							}
+						}
+					} else if (entity.getTile().getTileX() < room.getTiles()[i][j]
+							.getTileX()
+							&& entity.getTile().getTileY() == room.getTiles()[i][j]
+									.getTileY()) {
+						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
+							for (int k = 0; k < room.getTiles().length; k++) {
+								for (int l = 0; l < room.getTiles()[j].length; l++) {
+									if (k > i) {
+										room.getTiles()[k][l].setVisible(false);
+									} else if (k < i) {
+										room.getTiles()[k][l].setVisible(true);
+									}
+								}
+							}
+						}
+					} else if (entity.getTile().getTileX() > room.getTiles()[i][j]
+							.getTileX()
+							&& entity.getTile().getTileY() == room.getTiles()[i][j]
+									.getTileY()) {
+						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
+							for (int k = 0; k < room.getTiles().length; k++) {
+								for (int l = 0; l < room.getTiles()[j].length; l++) {
+									if (k < i) {
+										room.getTiles()[k][l].setVisible(false);
+									} else if (i > k) {
+										room.getTiles()[k][l].setVisible(true);
 									}
 								}
 							}
