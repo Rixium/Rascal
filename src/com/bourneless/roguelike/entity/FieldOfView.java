@@ -1,93 +1,50 @@
 package com.bourneless.roguelike.entity;
 
-import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Room;
-import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
+import com.bourneless.roguelike.map.tile.WallTileType;
 
 public class FieldOfView {
 
 	private Room room;
 
-	public FieldOfView(Room room) {
-		this.room = room;
-	}
+	public void CheckFieldOfView(Room room, Player player) {
+		float x, y;
 
-	public void setVisibility(Entity entity, int xOffset, int yOffset) {
 		for (int i = 0; i < room.getTiles().length; i++) {
 			for (int j = 0; j < room.getTiles()[i].length; j++) {
-				if (room.getTiles()[i][j].getPos().x < Main.GAME_WIDTH
-						+ -xOffset
-						&& room.getTiles()[i][j].getPos().y < Main.GAME_HEIGHT
-								+ -yOffset + (Tile.size * 3)
-						&& room.getTiles()[i][j].getPos().x > -xOffset
-								- Tile.size
-						&& room.getTiles()[i][j].getPos().y > -yOffset
-								- Tile.size) {
-					if (entity.getTile().getTileY() > room.getTiles()[i][j]
-							.getTileY()
-							&& entity.getTile().getTileX() == room.getTiles()[i][j]
-									.getTileX()) {
-						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
-							for (int k = 0; k < room.getTiles().length; k++) {
-								for (int l = 0; l < room.getTiles()[j].length; l++) {
-									if (l < j - 2) {
-										room.getTiles()[k][l].setVisible(false);
-									} else if (l > j) {
-										room.getTiles()[k][l].setVisible(true);
-									}
-
-								}
-							}
-						}
-					} else if (entity.getTile().getTileY() < room.getTiles()[i][j]
-							.getTileY()
-							&& entity.getTile().getTileX() == room.getTiles()[i][j]
-									.getTileX()) {
-						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
-							for (int k = 0; k < room.getTiles().length; k++) {
-								for (int l = 0; l < room.getTiles()[j].length; l++) {
-									if (l > j) {
-										room.getTiles()[k][l].setVisible(false);
-									} else if (j > l) {
-										room.getTiles()[k][l].setVisible(true);
-									}
-								}
-							}
-						}
-					} else if (entity.getTile().getTileX() < room.getTiles()[i][j]
-							.getTileX()
-							&& entity.getTile().getTileY() == room.getTiles()[i][j]
-									.getTileY()) {
-						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
-							for (int k = 0; k < room.getTiles().length; k++) {
-								for (int l = 0; l < room.getTiles()[j].length; l++) {
-									if (k > i) {
-										room.getTiles()[k][l].setVisible(false);
-									} else if (k < i) {
-										room.getTiles()[k][l].setVisible(true);
-									}
-								}
-							}
-						}
-					} else if (entity.getTile().getTileX() > room.getTiles()[i][j]
-							.getTileX()
-							&& entity.getTile().getTileY() == room.getTiles()[i][j]
-									.getTileY()) {
-						if (room.getTiles()[i][j].getTileClass() == TileClass.WALL) {
-							for (int k = 0; k < room.getTiles().length; k++) {
-								for (int l = 0; l < room.getTiles()[j].length; l++) {
-									if (k < i) {
-										room.getTiles()[k][l].setVisible(false);
-									} else if (i > k) {
-										room.getTiles()[k][l].setVisible(true);
-									}
-								}
-							}
-						}
-					}
-				}
+				room.getTiles()[i][j].setVisible(false);
 			}
+		}
+
+		for (int i = 0; i < 360; i += 2) {
+			x = (float) Math.cos(i * 0.01745f);
+			y = (float) Math.sin(i * 0.01745f);
+			DoFov(x, y, room, player);
+		}
+	}
+
+	private void DoFov(float x, float y, Room room, Player player) {
+		int i;
+		float ox, oy;
+
+		ox = (float) player.getTile().getTileX() + 0.5f;
+		oy = (float) player.getTile().getTileY() + 0.5f;
+
+		for (i = 0; i < player.getViewDistance(); i++) {
+			room.getTiles()[(int) ox][(int) oy].setVisible(true);
+			room.getTiles()[(int) ox][(int) oy].setSeen();
+
+			if (room.getTiles()[(int) ox][(int) oy].getTileClass() == TileClass.WALL) {
+				room.getTiles()[(int) ox][(int) oy - 1].setVisible(true);
+				room.getTiles()[(int) ox][(int) oy - 2].setVisible(true);
+				room.getTiles()[(int) ox][(int) oy - 1].setSeen();
+				room.getTiles()[(int) ox][(int) oy - 2].setSeen();
+				return;
+			}
+			ox += x;
+			oy += y;
 		}
 	}
 }

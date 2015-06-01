@@ -17,6 +17,7 @@ public class Tile {
 	private int tileX;
 	private int tileY;
 	private boolean visible;
+	private boolean beenSeen = false;
 
 	private boolean passable; // If the tile can be used by Player and Entities.
 
@@ -69,11 +70,20 @@ public class Tile {
 				} else {
 					g.setComposite(AlphaComposite.getInstance(
 							AlphaComposite.SRC_OVER, 1));
+					if (beenSeen) {
+						g.setComposite(AlphaComposite.getInstance(
+								AlphaComposite.SRC_OVER, 0.8f));
+					}
 				}
 			} else {
 				g.setComposite(AlphaComposite.getInstance(
 						AlphaComposite.SRC_OVER, 1));
+				if (beenSeen) {
+					g.setComposite(AlphaComposite.getInstance(
+							AlphaComposite.SRC_OVER, 0.8f));
+				}
 			}
+
 			g.drawImage(Main.resourceLoader.fog, pos.x + xOffset, pos.y
 					+ yOffset, null);
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
@@ -108,9 +118,16 @@ public class Tile {
 	public void setVisible(boolean bool) {
 		this.visible = bool;
 	}
-	
+
 	public boolean isVisible() {
 		return this.visible;
 	}
 
+	public void setSeen() {
+		this.beenSeen = true;
+	}
+
+	public int getTileType() {
+		return this.tileType;
+	}
 }

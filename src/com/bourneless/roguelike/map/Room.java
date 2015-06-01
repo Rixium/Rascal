@@ -20,16 +20,17 @@ public class Room {
 	private BufferedImage image;
 	private Tile[][] tiles;
 	private Random random = new Random();
-	
+
 	private Tile startTile;
 	private int startTileX;
 	private int startTileY;
 
 	private int xOffset = 0;
 	private int yOffset = 0;
-	
-	private FieldOfView fieldOfView;
+
 	private boolean firstIteration = true;
+
+	private FieldOfView fOV = new FieldOfView();
 
 	public Room() {
 		this.image = Main.resourceLoader.rooms[random
@@ -43,44 +44,52 @@ public class Room {
 						+ Integer.toHexString(color.getRGB()).substring(2);
 				if (hex.matches(TileHex.RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), WallTileType.RED_WALL, TileClass.WALL, i, j);
+							* Tile.size), WallTileType.RED_WALL,
+							TileClass.WALL, i, j);
 				} else if (hex.matches(TileHex.WOOD_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR,
+							i, j);
 				} else if (hex.matches(TileHex.STONE_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR,
+							TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.LOWER_RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.LOWER_RED_WALL,
 							TileClass.WALL, i, j);
 				} else if (hex.matches(TileHex.TOP_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), WallTileType.TOP_WALL, TileClass.WALL, i, j);
+							* Tile.size), WallTileType.TOP_WALL,
+							TileClass.WALL, i, j);
 				} else if (hex.matches(TileHex.START_TILE)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR,
+							TileClass.FLOOR, i, j);
 					startTile = tiles[i][j];
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_1)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR_DEC_1, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR_DEC_1,
+							TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_TL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR_DEC_2_TL, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_TL,
+							TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_TR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR_DEC_2_TR, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_TR,
+							TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_BL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR_DEC_2_BL, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_BL,
+							TileClass.FLOOR, i, j);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_BR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR_DEC_2_BR, TileClass.FLOOR, i, j);
+							* Tile.size), TileType.STONE_FLOOR_DEC_2_BR,
+							TileClass.FLOOR, i, j);
 				}
 			}
 		}
-		
-		fieldOfView = new FieldOfView(this);
 	}
 
 	public void update(int xOffset, int yOffset) {
@@ -96,10 +105,7 @@ public class Room {
 								+ (Tile.size * 3)
 						&& tiles[i][j].getPos().x > -xOffset - Tile.size
 						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
-					if (firstIteration) {
-						fieldOfView.setVisibility(player, xOffset, yOffset);
-						firstIteration = false;
-					}
+
 					tiles[i][j].paint(g, player, xOffset, yOffset);
 				}
 			}
@@ -110,21 +116,17 @@ public class Room {
 		return this.tiles;
 
 	}
-	
+
 	public Tile getStartTile() {
 		return this.startTile;
 	}
-	
+
 	public int getStartTileX() {
 		return this.startTileX;
 	}
-	
+
 	public int getStartTileY() {
 		return this.startTileY;
-	}
-	
-	public FieldOfView getFieldOfView() {
-		return this.fieldOfView;
 	}
 
 }

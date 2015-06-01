@@ -8,6 +8,7 @@ import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.EntityType;
+import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
@@ -19,6 +20,7 @@ public class Player extends LivingEntity {
 	private int playerXOff, playerYOff;
 
 	private int walkSpeed = 4;
+	private int viewDistance = 8;
 
 	private BufferedImage[] moveLeft = Main.resourceLoader.moveLeft;
 	private BufferedImage[] moveRight = Main.resourceLoader.moveRight;
@@ -30,6 +32,8 @@ public class Player extends LivingEntity {
 	private Animation moveRightAnimation = new Animation(moveRight, animationSpeed);
 	private Animation moveUpAnimation = new Animation(moveUp, animationSpeed);
 	private Animation moveDownAnimation = new Animation(moveDown, animationSpeed);
+	
+	private FieldOfView fOV = new FieldOfView();
 
 	public Player(Tile tile, BufferedImage image, int tileX, int tileY) {
 		super(tile, image, tileX, tileY);
@@ -61,12 +65,12 @@ public class Player extends LivingEntity {
 	public void update(int xOffset, int yOffset, Map map) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+		fOV.CheckFieldOfView(map.getRoom(), this);
 		if (travelLeft) {
 			if (pos.x + playerXOff > map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
 					.getPos().x) {
 				playerXOff -= walkSpeed;
 			} else {
-				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelLeft = false;
 				moveLeftAnimation.stop();
 				this.pos.x -= 64;
@@ -78,7 +82,6 @@ public class Player extends LivingEntity {
 					.getPos().x) {
 				playerXOff += walkSpeed;
 			} else {
-				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelRight = false;
 				moveRightAnimation.stop();
 				this.pos.x += 64;
@@ -90,7 +93,6 @@ public class Player extends LivingEntity {
 					.getPos().y) {
 				playerYOff -= walkSpeed;
 			} else {
-				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelUp = false;
 				moveUpAnimation.stop();
 				this.pos.y -= 64;
@@ -103,7 +105,6 @@ public class Player extends LivingEntity {
 				playerYOff += walkSpeed;
 
 			} else {
-				map.getRoom().getFieldOfView().setVisibility(this, xOffset, yOffset);
 				travelDown = false;
 				moveDownAnimation.stop();
 				this.pos.y += 64;
@@ -194,6 +195,10 @@ public class Player extends LivingEntity {
 	
 	public int getXOff() {
 		return this.playerXOff;
+	}
+	
+	public int getViewDistance() {
+		return this.viewDistance;
 	}
 
 }
