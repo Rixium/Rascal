@@ -29,45 +29,38 @@ public class Player extends LivingEntity {
 	private BufferedImage[] moveDown = Main.resourceLoader.moveDown;
 
 	private int animationSpeed = 100;
-	private Animation moveLeftAnimation = new Animation(moveLeft,
-			animationSpeed);
-	private Animation moveRightAnimation = new Animation(moveRight,
-			animationSpeed);
+	private Animation moveLeftAnimation = new Animation(moveLeft, animationSpeed);
+	private Animation moveRightAnimation = new Animation(moveRight, animationSpeed);
 	private Animation moveUpAnimation = new Animation(moveUp, animationSpeed);
-	private Animation moveDownAnimation = new Animation(moveDown,
-			animationSpeed);
-
+	private Animation moveDownAnimation = new Animation(moveDown, animationSpeed);
+	
 	private FieldOfView fOV = new FieldOfView();
-
+	
 	private Rectangle rect;
 
 	public Player(Tile tile, BufferedImage image, int tileX, int tileY) {
 		super(tile, image, tileX, tileY);
 		type = EntityType.PLAYER;
-		rect = new Rectangle(tile.getPos().x, tile.getPos().y,
-				image.getWidth(), image.getHeight());
+		rect = new Rectangle(tile.getPos().x, tile.getPos().y, image.getWidth(), image.getHeight());
 	}
 
-	public void paint(Graphics2D g) {
-		if (travelLeft)
-			moveLeftAnimation.paint(g, new Vector2(
-					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
-							+ yOffset + playerYOff));
-
-		else if (travelRight)
-			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset
-					+ playerXOff, pos.y - image.getHeight() / 2 + yOffset
-					+ playerYOff));
-
-		else if (travelUp)
+	public void paint(Graphics2D g) {		
+		if(travelLeft)
+			moveLeftAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
+		else if(travelRight)
+			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
+		else if(travelUp)
 			moveUpAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-					pos.y - image.getHeight() / 2 + yOffset + playerYOff));
-
-		else if (travelDown)
-			moveDownAnimation.paint(g, new Vector2(
-					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
-							+ yOffset + playerYOff));
-
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
+		else if(travelDown)
+			moveDownAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
+				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+		
 		else
 			g.drawImage(image, pos.x + xOffset + playerXOff,
 					pos.y - image.getHeight() / 2 + yOffset + playerYOff, null);
@@ -85,8 +78,7 @@ public class Player extends LivingEntity {
 				travelLeft = false;
 				moveLeftAnimation.stop();
 				this.pos.x -= 64;
-				this.tile = map.getRoom().getTiles()[tile.getTileX() - 1][tile
-						.getTileY()];
+				this.tile = map.getRoom().getTiles()[tile.getTileX() - 1][tile.getTileY()];
 				playerXOff = 0;
 			}
 		} else if (travelRight) {
@@ -97,8 +89,7 @@ public class Player extends LivingEntity {
 				travelRight = false;
 				moveRightAnimation.stop();
 				this.pos.x += 64;
-				this.tile = map.getRoom().getTiles()[tile.getTileX() + 1][tile
-						.getTileY()];
+				this.tile = map.getRoom().getTiles()[tile.getTileX() + 1][tile.getTileY()];
 				playerXOff = 0;
 			}
 		} else if (travelUp) {
@@ -109,13 +100,12 @@ public class Player extends LivingEntity {
 				travelUp = false;
 				moveUpAnimation.stop();
 				this.pos.y -= 64;
-				this.tile = map.getRoom().getTiles()[tile.getTileX()][tile
-						.getTileY() - 1];
+				this.tile = map.getRoom().getTiles()[tile.getTileX()][tile.getTileY() - 1];
 				playerYOff = 0;
 			}
 		} else if (travelDown) {
-			if (pos.y + playerYOff < map.getRoom().getTiles()[tile.getTileX()][tile
-					.getTileY() + 1].getPos().y) {
+			if (pos.y + playerYOff < map.getRoom().getTiles()[tile.getTileX()][tile.getTileY() + 1]
+					.getPos().y) {
 				playerYOff += walkSpeed;
 
 			} else {
@@ -134,7 +124,8 @@ public class Player extends LivingEntity {
 		if (e.getKeyCode() == 65 && lastKey != 65) {
 			// A Key
 			if (this.image.equals(Main.resourceLoader.player[4])) {
-				if (checkPassable(map) == true) {
+				if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
+						.isPassable()) {
 					travelLeft = true;
 					
 					if(moveLeftAnimation.isStopped()){
@@ -148,7 +139,8 @@ public class Player extends LivingEntity {
 		} else if (e.getKeyCode() == 68 && lastKey != 68) {
 			// D Key
 			if (this.image.equals(Main.resourceLoader.player[7])) {
-				if (checkPassable(map) == true) {
+				if (map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
+						.isPassable()) {
 					travelRight = true;
 					
 					if(moveRightAnimation.isStopped()){
@@ -164,7 +156,8 @@ public class Player extends LivingEntity {
 		if (e.getKeyCode() == 87 && lastKey != 87) {
 			// W Key
 			if (this.image.equals(Main.resourceLoader.player[9])) {
-				if (checkPassable(map) == true) {
+				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
+						.isPassable()) {
 					travelUp = true;
 					
 					if(moveUpAnimation.isStopped()){
@@ -178,7 +171,8 @@ public class Player extends LivingEntity {
 		} else if (e.getKeyCode() == 83 && lastKey != 83) {
 			// S Key
 			if (this.image.equals(Main.resourceLoader.player[0])) {
-				if (checkPassable(map) == true) {
+				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+						.isPassable()) {
 					travelDown = true;
 					
 					if(moveDownAnimation.isStopped()){
@@ -197,32 +191,22 @@ public class Player extends LivingEntity {
 		lastKey = e.getKeyCode();
 	}
 
-	private boolean checkPassable(Map map) {
-		if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
-				.isPassable()) {
-			return true;
-		}else{
-			return false;
-		}
-
-	}
-
 	public void keyReleased(KeyEvent e) {
 		lastKey = 0;
 	}
-
+	
 	public int getYOff() {
 		return this.playerYOff;
 	}
-
+	
 	public int getXOff() {
 		return this.playerXOff;
 	}
-
+	
 	public int getViewDistance() {
 		return this.viewDistance;
 	}
-
+	
 	public Rectangle getRect() {
 		return rect;
 	}
