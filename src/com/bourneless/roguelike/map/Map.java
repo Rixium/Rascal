@@ -1,6 +1,7 @@
 package com.bourneless.roguelike.map;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
@@ -21,6 +22,10 @@ public class Map {
 
 	public void paint(Graphics2D g, Player player) {
 		room.paint(g, player);
+	}
+	
+	public void keyPressed(KeyEvent e, Player p) {
+		room.keyPressed(e, p);
 	}
 
 	public Room getRoom() {

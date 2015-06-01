@@ -50,6 +50,7 @@ public class Instance {
 	}
 
 	public void keyPressed(KeyEvent e) {
+		map.keyPressed(e, player);
 		player.keyPressed(e, map);
 	}
 	

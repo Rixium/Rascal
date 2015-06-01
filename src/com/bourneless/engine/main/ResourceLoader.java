@@ -38,6 +38,10 @@ public class ResourceLoader {
 	public BufferedImage[] tiles;
 	public BufferedImage[] wallTiles;
 	public BufferedImage fog;
+	
+	// Door
+	
+	public BufferedImage[] door;
 
 	// Map
 
@@ -131,7 +135,22 @@ public class ResourceLoader {
 		moveUp[0] = player[9];
 		moveUp[1] = player[10];
 		moveUp[2] = player[11];
+		
+		// Door
+				BufferedImage doorSheet = getBufferedImage("res/entity/door/doorSheet.png");
+				rows = 1;
+				cols = 2;
+				iteration = 0;
+				door = new BufferedImage[rows * cols];
 
+				for (int i = 0; i < rows; i++) {
+					for (int j = 0; j < cols; j++) {
+						door[iteration] = doorSheet.getSubimage(j * 128, i * 128,
+								128, 128);
+						iteration++;
+					}
+				}
+		
 		// Map
 
 		rooms = new BufferedImage[1];
