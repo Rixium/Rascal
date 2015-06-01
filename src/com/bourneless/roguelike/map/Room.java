@@ -9,7 +9,6 @@ import java.util.Random;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.FieldOfView;
-import com.bourneless.roguelike.entity.door.Door;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
@@ -33,8 +32,6 @@ public class Room {
 	private boolean firstIteration = true;
 
 	private FieldOfView fOV = new FieldOfView();
-	
-	private Door door;
 
 	public Room() {
 		this.image = Main.resourceLoader.rooms[random
@@ -94,24 +91,17 @@ public class Room {
 				}
 			}
 		}
-		
-		door = new Door(startTile, Main.resourceLoader.door[0], startTile.getTileX(), startTile.getTileY());
 	}
-	
+
 	public void keyPressed(KeyEvent e, Player p) {
 		if (e.getKeyCode() == 69) {
-			if(door.getTile() == p.getTile()){
-				door.toggleState();
-				System.out.println("Toggle door");
-			}
+			// E Pressed
 		}
 	}
 
 	public void update(int xOffset, int yOffset) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
-		
-		//door.update(xOffset, yOffset);
 	}
 
 	public void paint(Graphics2D g, Player player) {
@@ -122,12 +112,11 @@ public class Room {
 								+ (Tile.size * 3)
 						&& tiles[i][j].getPos().x > -xOffset - Tile.size
 						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
-					
+
 					tiles[i][j].paint(g, player, xOffset, yOffset);
 				}
 			}
 		}
-		//door.paint(g);
 	}
 
 	public Tile[][] getTiles() {
