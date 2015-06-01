@@ -57,6 +57,13 @@ public class ResourceLoader {
 	// Music
 
 	public Clip menuMusic;
+	
+	// Sounds
+	
+	public Clip hitSound;
+	public Clip breakSound;
+	
+	public Clip walkSounds[] = new Clip[4];
 
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
@@ -160,6 +167,16 @@ public class ResourceLoader {
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
+		
+		// Sounds
+		
+		hitSound = loadClip("/audio/breakableentity/hit.wav");
+		breakSound = loadClip("/audio/breakableentity/break.wav");
+		
+		walkSounds[0] = loadClip("/audio/walk/w1.wav");
+		walkSounds[1] = loadClip("/audio/walk/w2.wav");
+		walkSounds[2] = loadClip("/audio/walk/w3.wav");
+		walkSounds[3] = loadClip("/audio/walk/w4.wav");
 	}
 
 	public Clip loadClip(String filename) {

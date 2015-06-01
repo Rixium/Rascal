@@ -97,7 +97,7 @@ public class Room {
 							TileClass.FLOOR, i, j, 0);
 					System.out.println("adding door");
 					Door door = new Door(tiles[i][j],
-							Main.resourceLoader.door[0], 3);
+							Main.resourceLoader.door[0]);
 					tiles[i][j].addEntity(door);
 					map.getEntityList().add(door);
 				}

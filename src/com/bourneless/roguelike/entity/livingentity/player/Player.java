@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
@@ -40,6 +41,7 @@ public class Player extends LivingEntity {
 			animationSpeed);
 
 	private FieldOfView fOV = new FieldOfView();
+	private Random random = new Random();
 
 	private Rectangle rect;
 
@@ -171,6 +173,7 @@ public class Player extends LivingEntity {
 						} else {
 							travelLeft = true;
 							if (moveLeftAnimation.isStopped()) {
+								Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 								moveLeftAnimation.start(false);
 							}
 						}
@@ -180,6 +183,7 @@ public class Player extends LivingEntity {
 					travelLeft = true;
 
 					if (moveLeftAnimation.isStopped()) {
+						Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 						moveLeftAnimation.start(false);
 					}
 
@@ -202,6 +206,7 @@ public class Player extends LivingEntity {
 						} else {
 							travelRight = true;
 							if (moveRightAnimation.isStopped()) {
+								Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 								moveRightAnimation.start(false);
 							}
 						}
@@ -212,6 +217,7 @@ public class Player extends LivingEntity {
 					travelRight = true;
 
 					if (moveRightAnimation.isStopped()) {
+						Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 						moveRightAnimation.start(false);
 					}
 
@@ -235,6 +241,7 @@ public class Player extends LivingEntity {
 						} else {
 							travelUp = true;
 							if (moveUpAnimation.isStopped()) {
+								Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 								moveUpAnimation.start(false);
 							}
 						}
@@ -244,6 +251,7 @@ public class Player extends LivingEntity {
 					travelUp = true;
 
 					if (moveUpAnimation.isStopped()) {
+						Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 						moveUpAnimation.start(false);
 					}
 
@@ -265,6 +273,7 @@ public class Player extends LivingEntity {
 						} else {
 							travelDown = true;
 							if (moveDownAnimation.isStopped()) {
+								Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 								moveDownAnimation.start(false);
 							}
 						}
@@ -273,6 +282,7 @@ public class Player extends LivingEntity {
 						.isPassable()) {
 					travelDown = true;
 					if (moveDownAnimation.isStopped()) {
+						Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 						moveDownAnimation.start(false);
 					}
 

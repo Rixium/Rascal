@@ -21,6 +21,8 @@ public class Entity {
 	protected int xOffset;
 	protected int yOffset;
 	
+	protected boolean solid;
+	
 	protected boolean passable;
 	
 	protected Rectangle rect;
@@ -63,6 +65,10 @@ public class Entity {
 	
 	public int getType() {
 		return this.type;
+	}
+	
+	public boolean getSolid() {
+		return this.solid;
 	}
 
 }

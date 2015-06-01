@@ -5,13 +5,15 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.map.tile.Tile;
 
 public class Door extends DestroyableEntity {
 
-	public Door(Tile tile, BufferedImage image, int type) {
-		super(tile, Main.resourceLoader.door[0], type);
+	public Door(Tile tile, BufferedImage image) {
+		super(tile, Main.resourceLoader.door[0], EntityType.BREAKABLE);
 		this.rect = new Rectangle(pos.x, pos.y, Main.resourceLoader.door[0].getWidth(), Main.resourceLoader.door[0].getHeight());
+		this.solid = true;
 	}
 	
 	public void paint(Graphics2D g) {
