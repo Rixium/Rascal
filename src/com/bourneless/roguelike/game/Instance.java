@@ -13,29 +13,33 @@ public class Instance {
 	private Map map;
 
 	private Player player;
-	
+
 	private int xOffset = 0;
 	private int yOffset = 0;
-	
+
 	private int camSpeed = 4;
+
 	public Instance() {
 		map = new Map();
-		player = new Player(map.getRoom().getStartTile(), Main.resourceLoader.player[0], map.getRoom().getStartTileX(),
-				map.getRoom().getStartTileY());
+		player = new Player(map.getRoom().getStartTile(),
+				Main.resourceLoader.player[0]);
+		map.getRoom().getStartTile().setLayer(2);
+		map.getRoom().getStartTile().addEntity(player);
+		map.getEntityList().add(player);
 	}
 
 	public void update() {
-		if(Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() < xOffset) {
+		if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() < xOffset) {
 			xOffset -= camSpeed;
-		} else if(Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() > xOffset) {
+		} else if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() > xOffset) {
 			xOffset += camSpeed;
 		}
-		if(Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() < yOffset) {
+		if (Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() < yOffset) {
 			yOffset -= camSpeed;
 		} else if (Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() > yOffset) {
 			yOffset += camSpeed;
 		}
-		
+
 		map.update(xOffset, yOffset);
 		player.update(xOffset, yOffset, map);
 	}
@@ -53,7 +57,7 @@ public class Instance {
 		map.keyPressed(e, player);
 		player.keyPressed(e, map);
 	}
-	
+
 	public void keyReleased(KeyEvent e) {
 		player.keyReleased(e);
 	}

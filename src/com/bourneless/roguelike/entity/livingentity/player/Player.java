@@ -8,8 +8,10 @@ import java.awt.image.BufferedImage;
 import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.FieldOfView;
+import com.bourneless.roguelike.entity.destroyableentity.DestroyableEntity;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
@@ -21,7 +23,7 @@ public class Player extends LivingEntity {
 	private int playerXOff, playerYOff;
 
 	private int walkSpeed = 4;
-	private int viewDistance = 8;
+	private int viewDistance = 5;
 
 	private BufferedImage[] moveLeft = Main.resourceLoader.moveLeft;
 	private BufferedImage[] moveRight = Main.resourceLoader.moveRight;
@@ -29,38 +31,48 @@ public class Player extends LivingEntity {
 	private BufferedImage[] moveDown = Main.resourceLoader.moveDown;
 
 	private int animationSpeed = 100;
-	private Animation moveLeftAnimation = new Animation(moveLeft, animationSpeed);
-	private Animation moveRightAnimation = new Animation(moveRight, animationSpeed);
+	private Animation moveLeftAnimation = new Animation(moveLeft,
+			animationSpeed);
+	private Animation moveRightAnimation = new Animation(moveRight,
+			animationSpeed);
 	private Animation moveUpAnimation = new Animation(moveUp, animationSpeed);
-	private Animation moveDownAnimation = new Animation(moveDown, animationSpeed);
-	
+	private Animation moveDownAnimation = new Animation(moveDown,
+			animationSpeed);
+
 	private FieldOfView fOV = new FieldOfView();
-	
+
 	private Rectangle rect;
 
-	public Player(Tile tile, BufferedImage image, int tileX, int tileY) {
-		super(tile, image, tileX, tileY);
+	private Stats stats;
+
+	public Player(Tile tile, BufferedImage image) {
+		super(tile, image, EntityType.PLAYER);
 		type = EntityType.PLAYER;
-		rect = new Rectangle(tile.getPos().x, tile.getPos().y, image.getWidth(), image.getHeight());
+		rect = new Rectangle(tile.getPos().x, tile.getPos().y,
+				image.getWidth(), image.getHeight());
+		stats = new Stats();
 	}
 
-	public void paint(Graphics2D g) {		
-		if(travelLeft)
-			moveLeftAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
-		
-		else if(travelRight)
-			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
-		
-		else if(travelUp)
+	public void paint(Graphics2D g) {
+		if (travelLeft)
+			moveLeftAnimation.paint(g, new Vector2(
+					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
+							+ yOffset + playerYOff));
+
+		else if (travelRight)
+			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset
+					+ playerXOff, pos.y - image.getHeight() / 2 + yOffset
+					+ playerYOff));
+
+		else if (travelUp)
 			moveUpAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
-		
-		else if(travelDown)
-			moveDownAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-				pos.y - image.getHeight() / 2 + yOffset + playerYOff));
-		
+					pos.y - image.getHeight() / 2 + yOffset + playerYOff));
+
+		else if (travelDown)
+			moveDownAnimation.paint(g, new Vector2(
+					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
+							+ yOffset + playerYOff));
+
 		else
 			g.drawImage(image, pos.x + xOffset + playerXOff,
 					pos.y - image.getHeight() / 2 + yOffset + playerYOff, null);
@@ -71,48 +83,71 @@ public class Player extends LivingEntity {
 		this.yOffset = yOffset;
 		fOV.CheckFieldOfView(map.getRoom(), this);
 		if (travelLeft) {
-			if (pos.x + playerXOff > map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
-					.getPos().x) {
+			if (pos.x + playerXOff > map.getRoom().getTiles()[tile.getTileX() - 1][tile
+					.getTileY()].getPos().x) {
 				playerXOff -= walkSpeed;
 			} else {
 				travelLeft = false;
 				moveLeftAnimation.stop();
 				this.pos.x -= 64;
-				this.tile = map.getRoom().getTiles()[tile.getTileX() - 1][tile.getTileY()];
+				Tile newTile = map.getRoom().getTiles()[tile.getTileX() - 1][tile
+						.getTileY()];
+				newTile.addEntity(this);
+				tile.removeEntity(this);
+				tile = newTile;
+
 				playerXOff = 0;
 			}
 		} else if (travelRight) {
-			if (pos.x + playerXOff < map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
-					.getPos().x) {
+			if (pos.x + playerXOff < map.getRoom().getTiles()[tile.getTileX() + 1][tile
+					.getTileY()].getPos().x) {
 				playerXOff += walkSpeed;
 			} else {
 				travelRight = false;
 				moveRightAnimation.stop();
 				this.pos.x += 64;
-				this.tile = map.getRoom().getTiles()[tile.getTileX() + 1][tile.getTileY()];
+
+				Tile newTile = map.getRoom().getTiles()[tile.getTileX() + 1][tile
+						.getTileY()];
+				newTile.addEntity(this);
+				tile.removeEntity(this);
+				tile = newTile;
+
 				playerXOff = 0;
 			}
 		} else if (travelUp) {
-			if (pos.y + playerYOff > map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
-					.getPos().y) {
+			if (pos.y + playerYOff > map.getRoom().getTiles()[tile.getTileX()][tile
+					.getTileY() - 1].getPos().y) {
 				playerYOff -= walkSpeed;
 			} else {
 				travelUp = false;
 				moveUpAnimation.stop();
 				this.pos.y -= 64;
-				this.tile = map.getRoom().getTiles()[tile.getTileX()][tile.getTileY() - 1];
+				Tile newTile = map.getRoom().getTiles()[tile.getTileX()][tile
+						.getTileY() - 1];
+				newTile.addEntity(this);
+				tile.removeEntity(this);
+				tile = newTile;
+
 				playerYOff = 0;
 			}
 		} else if (travelDown) {
-			if (pos.y + playerYOff < map.getRoom().getTiles()[tile.getTileX()][tile.getTileY() + 1]
-					.getPos().y) {
+
+			if (pos.y + playerYOff < map.getRoom().getTiles()[tile.getTileX()][tile
+					.getTileY() + 1].getPos().y) {
 				playerYOff += walkSpeed;
 
 			} else {
 				travelDown = false;
 				moveDownAnimation.stop();
 				this.pos.y += 64;
-				this.tile = map.getRoom().getTiles()[pos.x / 64][pos.y / 64];
+
+				Tile newTile = map.getRoom().getTiles()[tile.getTileX()][tile
+						.getTileY() + 1];
+				newTile.addEntity(this);
+				tile.removeEntity(this);
+				tile = newTile;
+
 				playerYOff = 0;
 			}
 		}
@@ -120,15 +155,31 @@ public class Player extends LivingEntity {
 
 	public void keyPressed(KeyEvent e, Map map) {
 		System.out.println(e.getKeyCode());
-		
+
 		if (e.getKeyCode() == 65 && lastKey != 65) {
 			// A Key
 			if (this.image.equals(Main.resourceLoader.player[4])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
+						.hasEntity()) {
+					for (int i = 0; i < map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)].getEntities().size(); i++) {
+						Entity entity = map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
+								.getEntities().get(i);
+						if (entity.getType() == EntityType.BREAKABLE
+								&& !entity.getPassable()) {
+							DestroyableEntity dEnt = (DestroyableEntity) entity;
+							dEnt.hit(stats.strength);
+						} else {
+							travelLeft = true;
+							if (moveLeftAnimation.isStopped()) {
+								moveLeftAnimation.start(false);
+							}
+						}
+					}
+				} else if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
 						.isPassable()) {
 					travelLeft = true;
-					
-					if(moveLeftAnimation.isStopped()){
+
+					if (moveLeftAnimation.isStopped()) {
 						moveLeftAnimation.start(false);
 					}
 
@@ -140,10 +191,27 @@ public class Player extends LivingEntity {
 			// D Key
 			if (this.image.equals(Main.resourceLoader.player[7])) {
 				if (map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
+						.hasEntity()) {
+					for (int i = 0; i < map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)].getEntities().size(); i++) {
+						Entity entity = map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
+								.getEntities().get(i);
+						if (entity.getType() == EntityType.BREAKABLE
+								&& !entity.getPassable()) {
+							DestroyableEntity dEnt = (DestroyableEntity) entity;
+							dEnt.hit(stats.strength);
+						} else {
+							travelRight = true;
+							if (moveRightAnimation.isStopped()) {
+								moveRightAnimation.start(false);
+							}
+						}
+					}
+
+				} else if (map.getRoom().getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
 						.isPassable()) {
 					travelRight = true;
-					
-					if(moveRightAnimation.isStopped()){
+
+					if (moveRightAnimation.isStopped()) {
 						moveRightAnimation.start(false);
 					}
 
@@ -156,14 +224,29 @@ public class Player extends LivingEntity {
 		if (e.getKeyCode() == 87 && lastKey != 87) {
 			// W Key
 			if (this.image.equals(Main.resourceLoader.player[9])) {
-				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
+				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64 - 1)]
+						.hasEntity()) {
+					for (int i = 0; i < map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1].getEntities().size(); i++) {
+						Entity entity = map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
+								.getEntities().get(i);
+						if (entity.getType() == EntityType.BREAKABLE && !entity.getPassable()) {
+							DestroyableEntity dEnt = (DestroyableEntity) entity;
+							dEnt.hit(stats.strength);
+						} else {
+							travelUp = true;
+							if (moveUpAnimation.isStopped()) {
+								moveUpAnimation.start(false);
+							}
+						}
+					}
+				} else if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
 						.isPassable()) {
 					travelUp = true;
-					
-					if(moveUpAnimation.isStopped()){
+
+					if (moveUpAnimation.isStopped()) {
 						moveUpAnimation.start(false);
 					}
-					
+
 				}
 			} else {
 				this.image = Main.resourceLoader.player[9];
@@ -172,41 +255,55 @@ public class Player extends LivingEntity {
 			// S Key
 			if (this.image.equals(Main.resourceLoader.player[0])) {
 				if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+						.hasEntity()) {
+					for (int i = 0; i < map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1].getEntities().size(); i++) {
+						Entity entity = map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+								.getEntities().get(i);
+						if (entity.getType() == EntityType.BREAKABLE && !entity.getPassable()) {
+							DestroyableEntity dEnt = (DestroyableEntity) entity;
+							dEnt.hit(stats.strength);
+						} else {
+							travelDown = true;
+							if (moveDownAnimation.isStopped()) {
+								moveDownAnimation.start(false);
+							}
+						}
+					}
+				} else if (map.getRoom().getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
 						.isPassable()) {
 					travelDown = true;
-					
-					if(moveDownAnimation.isStopped()){
+					if (moveDownAnimation.isStopped()) {
 						moveDownAnimation.start(false);
 					}
-					
+
 				}
 			} else {
 				this.image = Main.resourceLoader.player[0];
 			}
 		} else if (e.getKeyCode() == 69) {
-			
+
 			// E Key
 		}
-		
+
 		lastKey = e.getKeyCode();
 	}
 
 	public void keyReleased(KeyEvent e) {
 		lastKey = 0;
 	}
-	
+
 	public int getYOff() {
 		return this.playerYOff;
 	}
-	
+
 	public int getXOff() {
 		return this.playerXOff;
 	}
-	
+
 	public int getViewDistance() {
 		return this.viewDistance;
 	}
-	
+
 	public Rectangle getRect() {
 		return rect;
 	}

@@ -2,6 +2,7 @@ package com.bourneless.roguelike.map.tile;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
@@ -18,15 +19,21 @@ public class Tile {
 	private int tileY;
 	private boolean visible;
 	private boolean beenSeen = false;
+	private int layer = 0;
+
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private boolean hasEntity = false;
 
 	private boolean passable; // If the tile can be used by Player and Entities.
 
-	public Tile(Vector2 pos, int tileType, int tileClass, int tileX, int tileY) {
+	public Tile(Vector2 pos, int tileType, int tileClass, int tileX, int tileY,
+			int layer) {
 		this.pos = pos;
 		this.tileType = tileType;
 		this.tileClass = tileClass;
 		this.tileX = tileX;
 		this.tileY = tileY;
+		this.layer = layer;
 
 		if (tileClass == TileClass.WALL) {
 			setPassable(false);
@@ -39,55 +46,37 @@ public class Tile {
 
 	}
 
-	public void paint(Graphics2D g, Entity entity, int xOffset, int yOffset) {
+	public void paint(Graphics2D g, int xOffset, int yOffset) {
 		if (tileClass == TileClass.FLOOR) {
 			g.drawImage(Main.resourceLoader.tiles[tileType], pos.x + xOffset,
 					pos.y + yOffset, null);
-			if (entity.getTile().getPos() == this.pos
-					|| entity.getTile().getPos().x == this.pos.x - size
-					|| entity.getTile().getPos().y == this.pos.y + size) {
-				entity.paint(g);
-			}
 		}
 		if (tileClass == TileClass.WALL) {
-			if (entity.getTile().getPos() == this.pos
-					|| entity.getTile().getPos().x == this.pos.x - size
-					|| entity.getTile().getPos().y == this.pos.y + size) {
-				entity.paint(g);
-			}
 			g.drawImage(Main.resourceLoader.wallTiles[tileType], pos.x
 					+ xOffset, pos.y + yOffset, null);
 		}
 
-		int dx = entity.getTile().getTileX() - tileX;
-		int dy = entity.getTile().getTileY() - tileY;
-		int dist = (int) Math.sqrt(dx * dx + dy * dy);
-		if (dist > 5 || dist < -5 || !visible) {
-			if (dist == 6 || dist == -6) {
-				if (visible) {
-					g.setComposite(AlphaComposite.getInstance(
-							AlphaComposite.SRC_OVER, 0.5f));
-				} else {
-					g.setComposite(AlphaComposite.getInstance(
-							AlphaComposite.SRC_OVER, 1));
-					if (beenSeen) {
-						g.setComposite(AlphaComposite.getInstance(
-								AlphaComposite.SRC_OVER, 0.8f));
-					}
-				}
-			} else {
-				g.setComposite(AlphaComposite.getInstance(
-						AlphaComposite.SRC_OVER, 1));
-				if (beenSeen) {
-					g.setComposite(AlphaComposite.getInstance(
-							AlphaComposite.SRC_OVER, 0.8f));
-				}
-			}
-
-			g.drawImage(Main.resourceLoader.fog, pos.x + xOffset, pos.y
-					+ yOffset, null);
+		if (visible) {
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					0.0f));
+		} else {
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 					1));
+			if (beenSeen) {
+				g.setComposite(AlphaComposite.getInstance(
+						AlphaComposite.SRC_OVER, 0.9f));
+			}
+		}
+
+		g.drawImage(Main.resourceLoader.fog, pos.x + xOffset, pos.y + yOffset,
+				null);
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+
+	}
+
+	public void paintEntity(Graphics2D g) {
+		for(Entity entity : entities) {
+			entity.paint(g);
 		}
 	}
 
@@ -130,4 +119,37 @@ public class Tile {
 	public int getTileType() {
 		return this.tileType;
 	}
+
+	public void addEntity(Entity entity) {
+		this.hasEntity = true;
+		this.layer = 1;
+		entities.add(entity);
+	}
+
+	public void removeEntity(Entity entity) {
+		entities.remove(entity);
+		if(entities.size() == 0) {
+			hasEntity = false;
+			passable = true;
+			this.layer = 0;
+		}
+		
+	}
+
+	public int getLayer() {
+		return this.layer;
+	}
+
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+	
+	public boolean hasEntity() {
+		return this.hasEntity;
+	}
+	
+	public ArrayList<Entity> getEntities() {
+		return this.entities;
+	}
+
 }

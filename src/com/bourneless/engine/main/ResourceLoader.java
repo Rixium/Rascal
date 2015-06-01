@@ -38,17 +38,17 @@ public class ResourceLoader {
 	public BufferedImage[] tiles;
 	public BufferedImage[] wallTiles;
 	public BufferedImage fog;
-	
+
 	// Door
-	
+
 	public BufferedImage[] door;
 
 	// Map
 
 	public BufferedImage[] rooms;
-	
+
 	// Animations
-	
+
 	public BufferedImage[] moveLeft = new BufferedImage[3];
 	public BufferedImage[] moveRight = new BufferedImage[3];
 	public BufferedImage[] moveUp = new BufferedImage[3];
@@ -74,7 +74,7 @@ public class ResourceLoader {
 		// Entities
 
 		// Tiles
-		
+
 		fog = getBufferedImage("res/mechanics/fog.png");
 
 		BufferedImage wallTileSheet = getBufferedImage("res/tile/wallTiles.png");
@@ -85,12 +85,12 @@ public class ResourceLoader {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				wallTiles[iteration] = wallTileSheet
-						.getSubimage(j * 64, i * 64, 64, 64);
+				wallTiles[iteration] = wallTileSheet.getSubimage(j * 64,
+						i * 64, 64, 64);
 				iteration++;
 			}
 		}
-		
+
 		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
 		rows = tileSheet.getWidth() / 64;
 		cols = tileSheet.getHeight() / 64;
@@ -104,7 +104,7 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
-		
+
 		// Player Animations
 		BufferedImage playerSheet = getBufferedImage("res/entity/player/playerSheet.png");
 		rows = 4;
@@ -119,38 +119,39 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
-		
+
 		moveDown[0] = player[0];
 		moveDown[1] = player[1];
 		moveDown[2] = player[2];
-		
+
 		moveLeft[0] = player[3];
 		moveLeft[1] = player[4];
 		moveLeft[2] = player[5];
-		
+
 		moveRight[0] = player[6];
 		moveRight[1] = player[7];
 		moveRight[2] = player[8];
-		
+
 		moveUp[0] = player[9];
 		moveUp[1] = player[10];
 		moveUp[2] = player[11];
-		
-		// Door
-				BufferedImage doorSheet = getBufferedImage("res/entity/door/doorSheet.png");
-				rows = 1;
-				cols = 2;
-				iteration = 0;
-				door = new BufferedImage[rows * cols];
 
-				for (int i = 0; i < rows; i++) {
-					for (int j = 0; j < cols; j++) {
-						door[iteration] = doorSheet.getSubimage(j * 128, i * 128,
-								128, 128);
-						iteration++;
-					}
-				}
+		// Door
 		
+		BufferedImage doorSheet = getBufferedImage("res/entity/door/doorSheet.png");
+		rows = 1;
+		cols = 2;
+		iteration = 0;
+		door = new BufferedImage[rows * cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				door[iteration] = doorSheet.getSubimage(j * 64, i * 128, 64,
+						128);
+				iteration++;
+			}
+		}
+
 		// Map
 
 		rooms = new BufferedImage[1];

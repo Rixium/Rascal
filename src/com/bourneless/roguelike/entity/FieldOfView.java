@@ -33,6 +33,12 @@ public class FieldOfView {
 		oy = (float) player.getTile().getTileY() + 0.5f;
 
 		for (i = 0; i < player.getViewDistance(); i++) {
+			if(oy < 2) {
+				oy = 2;
+			} else if (oy > room.getTiles()[0].length) {
+				oy = room.getTiles()[0].length;
+			}
+			
 			room.getTiles()[(int) ox][(int) oy].setVisible(true);
 			room.getTiles()[(int) ox][(int) oy].setSeen();
 

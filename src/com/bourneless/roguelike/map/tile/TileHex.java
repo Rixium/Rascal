@@ -18,4 +18,6 @@ public class TileHex {
 	public static final String LOWER_RED_WALL = "#ff4f6c";
 	public static final String START_TILE = "#20ff02";
 	
+	public static final String DOOR_TILE = "#020d0a";
+	
 }

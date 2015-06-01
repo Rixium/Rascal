@@ -8,7 +8,10 @@ import java.util.Random;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.roguelike.entity.Entity;
+import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.FieldOfView;
+import com.bourneless.roguelike.entity.destroyableentity.Door;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
@@ -33,7 +36,7 @@ public class Room {
 
 	private FieldOfView fOV = new FieldOfView();
 
-	public Room() {
+	public Room(Map map) {
 		this.image = Main.resourceLoader.rooms[random
 				.nextInt(Main.resourceLoader.rooms.length)];
 		this.tiles = new Tile[image.getWidth()][image.getHeight()];
@@ -46,48 +49,56 @@ public class Room {
 				if (hex.matches(TileHex.RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.RED_WALL,
-							TileClass.WALL, i, j);
+							TileClass.WALL, i, j, 0);
 				} else if (hex.matches(TileHex.WOOD_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.WOOD_FLOOR, TileClass.FLOOR,
-							i, j);
+							i, j, 0);
 				} else if (hex.matches(TileHex.STONE_FLOOR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
 				} else if (hex.matches(TileHex.LOWER_RED_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.LOWER_RED_WALL,
-							TileClass.WALL, i, j);
+							TileClass.WALL, i, j, 0);
 				} else if (hex.matches(TileHex.TOP_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.TOP_WALL,
-							TileClass.WALL, i, j);
+							TileClass.WALL, i, j, 2);
 				} else if (hex.matches(TileHex.START_TILE)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
 					startTile = tiles[i][j];
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_1)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_1,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_TL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_2_TL,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_TR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_2_TR,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_BL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_2_BL,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_2_BR)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_2_BR,
-							TileClass.FLOOR, i, j);
+							TileClass.FLOOR, i, j, 0);
+				} else if (hex.matches(TileHex.DOOR_TILE)) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), TileType.STONE_FLOOR,
+							TileClass.FLOOR, i, j, 0);
+					System.out.println("adding door");
+					Door door = new Door(tiles[i][j], Main.resourceLoader.door[0], 3);
+					tiles[i][j].addEntity(door);
+					map.getEntityList().add(door);
 				}
 			}
 		}
@@ -104,18 +115,29 @@ public class Room {
 		this.yOffset = yOffset;
 	}
 
-	public void paint(Graphics2D g, Player player) {
-		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[i].length; j++) {
-				if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
-						&& tiles[i][j].getPos().y < Main.GAME_HEIGHT + -yOffset
-								+ (Tile.size * 3)
-						&& tiles[i][j].getPos().x > -xOffset - Tile.size
-						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
-
-					tiles[i][j].paint(g, player, xOffset, yOffset);
+	public void paint(Graphics2D g, Player player, Map map) {
+		int iteration = 0;
+		while (iteration < 3) {
+			for (int i = 0; i < tiles.length; i++) {
+				for (int j = 0; j < tiles[i].length; j++) {
+					if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
+							&& tiles[i][j].getPos().y < Main.GAME_HEIGHT
+									+ -yOffset + (Tile.size * 3)
+							&& tiles[i][j].getPos().x > -xOffset - Tile.size
+							&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
+						if (tiles[i][j].getLayer() == 0 && iteration == 0) {
+							tiles[i][j].paint(g, xOffset, yOffset);
+						} else if (tiles[i][j].getLayer() == 1 && iteration == 1) {
+							tiles[i][j].paint(g, xOffset, yOffset);
+							tiles[i][j].paintEntity(g);
+						} else if (tiles[i][j].getLayer() == 2 && iteration == 2){
+							tiles[i][j].paint(g, xOffset, yOffset);
+						}
+					}
 				}
+				
 			}
+			iteration++;
 		}
 	}
 
