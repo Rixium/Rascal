@@ -65,7 +65,7 @@ public class Room {
 				} else if (hex.matches(TileHex.TOP_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.TOP_WALL,
-							TileClass.WALL, i, j, 2);
+							TileClass.WALL, i, j, 3);
 				} else if (hex.matches(TileHex.START_TILE)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR,
@@ -96,7 +96,8 @@ public class Room {
 							* Tile.size), TileType.STONE_FLOOR,
 							TileClass.FLOOR, i, j, 0);
 					System.out.println("adding door");
-					Door door = new Door(tiles[i][j], Main.resourceLoader.door[0], 3);
+					Door door = new Door(tiles[i][j],
+							Main.resourceLoader.door[0], 3);
 					tiles[i][j].addEntity(door);
 					map.getEntityList().add(door);
 				}
@@ -117,7 +118,7 @@ public class Room {
 
 	public void paint(Graphics2D g, Player player, Map map) {
 		int iteration = 0;
-		while (iteration < 3) {
+		while (iteration < 4) {
 			for (int i = 0; i < tiles.length; i++) {
 				for (int j = 0; j < tiles[i].length; j++) {
 					if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
@@ -127,15 +128,19 @@ public class Room {
 							&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
 						if (tiles[i][j].getLayer() == 0 && iteration == 0) {
 							tiles[i][j].paint(g, xOffset, yOffset);
-						} else if (tiles[i][j].getLayer() == 1 && iteration == 1) {
+						} else if (tiles[i][j].getLayer() == 1
+								&& iteration == 1) {
 							tiles[i][j].paint(g, xOffset, yOffset);
+						} else if (tiles[i][j].getEntityLayer() == 3
+								&& iteration == 3) {
 							tiles[i][j].paintEntity(g);
-						} else if (tiles[i][j].getLayer() == 2 && iteration == 2){
+						} else if (tiles[i][j].getLayer() == 4
+								&& iteration == 4) {
 							tiles[i][j].paint(g, xOffset, yOffset);
 						}
 					}
 				}
-				
+
 			}
 			iteration++;
 		}

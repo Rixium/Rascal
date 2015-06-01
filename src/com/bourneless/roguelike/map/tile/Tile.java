@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
+import com.bourneless.roguelike.entity.EntityType;
 
 public class Tile {
 
@@ -20,6 +21,7 @@ public class Tile {
 	private boolean visible;
 	private boolean beenSeen = false;
 	private int layer = 0;
+	private int entityLayer = 0;
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private boolean hasEntity = false;
@@ -75,8 +77,10 @@ public class Tile {
 	}
 
 	public void paintEntity(Graphics2D g) {
-		for(Entity entity : entities) {
-			entity.paint(g);
+		if (visible) {
+			for (Entity entity : entities) {
+				entity.paint(g);
+			}
 		}
 	}
 
@@ -122,18 +126,27 @@ public class Tile {
 
 	public void addEntity(Entity entity) {
 		this.hasEntity = true;
-		this.layer = 1;
+		if (entity.getType() == EntityType.PLAYER) {
+			this.layer = 1;
+			entityLayer = 3;
+		} else {
+			entityLayer = 3;
+			this.layer = 1;
+		}
 		entities.add(entity);
 	}
 
 	public void removeEntity(Entity entity) {
 		entities.remove(entity);
-		if(entities.size() == 0) {
+		if (entity.getType() == EntityType.PLAYER && entities.size() > 0) {
+			this.layer = 1;
+		} else if (entities.size() == 0) {
 			hasEntity = false;
 			passable = true;
+			entityLayer = 0;
 			this.layer = 0;
 		}
-		
+
 	}
 
 	public int getLayer() {
@@ -143,13 +156,17 @@ public class Tile {
 	public void setLayer(int layer) {
 		this.layer = layer;
 	}
-	
+
 	public boolean hasEntity() {
 		return this.hasEntity;
 	}
-	
+
 	public ArrayList<Entity> getEntities() {
 		return this.entities;
+	}
+	
+	public int getEntityLayer() {
+		return this.entityLayer;
 	}
 
 }
