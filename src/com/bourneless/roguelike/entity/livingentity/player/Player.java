@@ -1,4 +1,4 @@
-package com.bourneless.roguelike.entity.player;
+package com.bourneless.roguelike.entity.livingentity.player;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -7,13 +7,12 @@ import java.awt.image.BufferedImage;
 import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
-import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
-import com.bourneless.roguelike.entity.FieldOfView;
+import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
 
-public class Player extends Entity {
+public class Player extends LivingEntity {
 
 	private int lastKey;
 	private boolean travelUp, travelDown, travelLeft, travelRight;

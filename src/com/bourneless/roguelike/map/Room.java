@@ -8,7 +8,7 @@ import java.util.Random;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.FieldOfView;
-import com.bourneless.roguelike.entity.player.Player;
+import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 import com.bourneless.roguelike.map.tile.TileHex;
