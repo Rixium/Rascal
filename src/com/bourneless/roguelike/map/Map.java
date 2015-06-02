@@ -12,6 +12,7 @@ import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 import com.bourneless.roguelike.map.tile.TileType;
+import com.bourneless.roguelike.map.tile.WallTileType;
 
 public class Map {
 
@@ -24,40 +25,41 @@ public class Map {
 	private int yOffset;
 
 	public Map() {
-		createMap();
+		room = new Room(this);
 	}
 
 	public void createMap() {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				tiles[i][j] = new Tile(new Vector2((i * Tile.size),
-						(j * Tile.size)), TileType.WOOD_FLOOR, TileClass.FLOOR,
-						i, j, 0);
+						(j * Tile.size)), WallTileType.TOP_WALL,
+						TileClass.WALL, i, j, 0);
 			}
 		}
 
-		room = new Room(this);
-		int randomPos = random.nextInt(tiles.length * tiles.length);
-		while (randomPos > tiles.length - room.getTiles().length) {
-			randomPos = random.nextInt(tiles.length * tiles.length);
+		
+		int randomX = random.nextInt(tiles.length);
+		int randomY = random.nextInt(tiles[randomX].length);
+		while (randomX > tiles.length - room.getTiles().length
+				|| randomY > tiles[randomX].length - room.getTiles()[0].length) {
+			randomX = random.nextInt(tiles.length);
+			randomY = random.nextInt(tiles.length);
 		}
-		if (randomPos < tiles.length - room.getTiles().length) {
-			for (int i = 0; i < room.getTiles().length; i++) {
-				for (int j = 0; j < room.getTiles()[i].length; j++) {
-					System.out.println("adding tile");
-					tiles[i + randomPos][j] = room.getTiles()[i][j];
-					tiles[i + randomPos][j].setTileX(i + randomPos);
-					tiles[i + randomPos][j].setTileY(j);
-					tiles[i + randomPos][j].setVisible(true);
+		for (int i = 0; i < room.getTiles().length; i++) {
+			for (int j = 0; j < room.getTiles()[i].length; j++) {
+				Tile tile = new Tile(new Vector2((randomX + i) * Tile.size,
+						(randomY + j) * Tile.size),
+						room.getTiles()[i][j].getTileType(),
+						room.getTiles()[i][j].getTileClass(), randomX + i,
+						randomY + j, room.getTiles()[i][j].getLayer());
+				tiles[randomX + i][randomY + j] = tile;
+				if (room.getTiles()[i][j].hasEntity()) {
+					ArrayList<Entity> entities = room.getTiles()[i][j].getEntities();
 					for (Entity entity : entities) {
-						if (entity.getTile().getTileX() == room.getTiles()[i][j]
-								.getTileX()
-								&& entity.getTile().getTileY() == room
-										.getTiles()[i][j].getTileY()) {
-							entity.setTile(tiles[i + randomPos][j]);
-						}
+						entity.setTile(tile);
 					}
 				}
+
 			}
 		}
 	}

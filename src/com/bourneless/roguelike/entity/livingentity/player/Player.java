@@ -156,15 +156,13 @@ public class Player extends LivingEntity {
 	}
 
 	public void keyPressed(KeyEvent e, Map map) {
-		System.out.println(e.getKeyCode());
-
 		if (e.getKeyCode() == 65 && lastKey != 65) {
 			// A Key
 			if (this.image.equals(Main.resourceLoader.player[4])) {
-				if (map.getRoom().getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
+				if (map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
 						.hasEntity()) {
-					for (int i = 0; i < map.getTiles()[(pos.x / 64) - 1][(pos.y / 64)].getEntities().size(); i++) {
-						Entity entity = map.getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
+					for (int i = 0; i < map.getTiles()[tile.getTileX() - 1][tile.getTileY()].getEntities().size(); i++) {
+						Entity entity = map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
 								.getEntities().get(i);
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
@@ -178,7 +176,7 @@ public class Player extends LivingEntity {
 							}
 						}
 					}
-				} else if (map.getTiles()[(pos.x / 64) - 1][(pos.y / 64)]
+				} else if (map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
 						.isPassable()) {
 					travelLeft = true;
 
@@ -194,10 +192,11 @@ public class Player extends LivingEntity {
 		} else if (e.getKeyCode() == 68 && lastKey != 68) {
 			// D Key
 			if (this.image.equals(Main.resourceLoader.player[7])) {
-				if (map.getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
+				
+				if (map.getTiles()[tile.getTileX() + 1][tile.getTileY()]
 						.hasEntity()) {
-					for (int i = 0; i < map.getTiles()[(pos.x / 64) + 1][(pos.y / 64)].getEntities().size(); i++) {
-						Entity entity = map.getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
+					for (int i = 0; i < map.getTiles()[tile.getTileX() + 1][tile.getTileY()].getEntities().size(); i++) {
+						Entity entity = map.getTiles()[tile.getTileX() + 1][tile.getTileY()]
 								.getEntities().get(i);
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
@@ -211,11 +210,9 @@ public class Player extends LivingEntity {
 							}
 						}
 					}
-
-				} else if (map.getTiles()[(pos.x / 64) + 1][(pos.y / 64)]
+				} else if (map.getTiles()[tile.getTileX() + 1][tile.getTileY()]
 						.isPassable()) {
 					travelRight = true;
-
 					if (moveRightAnimation.isStopped()) {
 						Main.resourceLoader.playClip(Main.resourceLoader.walkSounds[random.nextInt(Main.resourceLoader.walkSounds.length)], .5f, false);
 						moveRightAnimation.start(false);
@@ -230,10 +227,10 @@ public class Player extends LivingEntity {
 		if (e.getKeyCode() == 87 && lastKey != 87) {
 			// W Key
 			if (this.image.equals(Main.resourceLoader.player[9])) {
-				if (map.getTiles()[(pos.x / 64)][(pos.y / 64 - 1)]
+				if (map.getTiles()[tile.getTileX()][tile.getTileY() - 1]
 						.hasEntity()) {
-					for (int i = 0; i < map.getTiles()[(pos.x / 64)][(pos.y / 64) - 1].getEntities().size(); i++) {
-						Entity entity = map.getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
+					for (int i = 0; i < map.getTiles()[tile.getTileX()][tile.getTileY()  - 1].getEntities().size(); i++) {
+						Entity entity = map.getTiles()[tile.getTileX()][tile.getTileY()  - 1]
 								.getEntities().get(i);
 						if (entity.getType() == EntityType.BREAKABLE && !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
@@ -246,7 +243,7 @@ public class Player extends LivingEntity {
 							}
 						}
 					}
-				} else if (map.getTiles()[(pos.x / 64)][(pos.y / 64) - 1]
+				} else if (map.getTiles()[tile.getTileX()][tile.getTileY() - 1]
 						.isPassable()) {
 					travelUp = true;
 
@@ -262,10 +259,10 @@ public class Player extends LivingEntity {
 		} else if (e.getKeyCode() == 83 && lastKey != 83) {
 			// S Key
 			if (this.image.equals(Main.resourceLoader.player[0])) {
-				if (map.getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+				if (map.getTiles()[tile.getTileX()][tile.getTileY() + 1]
 						.hasEntity()) {
-					for (int i = 0; i < map.getTiles()[(pos.x / 64)][(pos.y / 64) + 1].getEntities().size(); i++) {
-						Entity entity = map.getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+					for (int i = 0; i < map.getTiles()[tile.getTileX()][tile.getTileY() + 1].getEntities().size(); i++) {
+						Entity entity = map.getTiles()[tile.getTileX()][tile.getTileY() + 1]
 								.getEntities().get(i);
 						if (entity.getType() == EntityType.BREAKABLE && !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
@@ -278,7 +275,7 @@ public class Player extends LivingEntity {
 							}
 						}
 					}
-				} else if (map.getTiles()[(pos.x / 64)][(pos.y / 64) + 1]
+				} else if (map.getTiles()[tile.getTileX()][tile.getTileY() + 1]
 						.isPassable()) {
 					travelDown = true;
 					if (moveDownAnimation.isStopped()) {

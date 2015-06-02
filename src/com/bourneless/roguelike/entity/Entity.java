@@ -76,9 +76,18 @@ public class Entity {
 	}
 
 	public void setTile(Tile tile) {
+		this.pos = new Vector2(tile.getPos().x, tile.getPos().y);
 		this.tile = tile;
 		this.tileX = tile.getTileX();
 		this.tileY = tile.getTileY();
+	}
+	
+	public void setX(int x) {
+		this.pos.x = x;
+	}
+	
+	public void setY(int y) {
+		this.pos.y = y;
 	}
 
 }

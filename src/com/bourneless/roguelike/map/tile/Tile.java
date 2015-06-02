@@ -1,6 +1,7 @@
 package com.bourneless.roguelike.map.tile;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -66,13 +67,20 @@ public class Tile {
 					1));
 			if (beenSeen) {
 				g.setComposite(AlphaComposite.getInstance(
-						AlphaComposite.SRC_OVER, 0.9f));
+						AlphaComposite.SRC_OVER, 0.8f));
 			}
 		}
 
 		g.drawImage(Main.resourceLoader.fog, pos.x + xOffset, pos.y + yOffset,
 				null);
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+
+		if (passable) {
+			g.setColor(Color.GREEN);
+		} else {
+			g.setColor(Color.RED);
+		}
+		g.drawRect(pos.x + xOffset, pos.y + yOffset, size, size);
 
 	}
 
@@ -164,17 +172,31 @@ public class Tile {
 	public ArrayList<Entity> getEntities() {
 		return this.entities;
 	}
-	
+
 	public int getEntityLayer() {
 		return this.entityLayer;
 	}
-	
+
 	public void setTileX(int x) {
 		this.tileX = x;
+		for (Entity entity : entities) {
+			entity.setX(this.pos.x);
+		}
 	}
-	
+
 	public void setTileY(int y) {
 		this.tileY = y;
+		for (Entity entity : entities) {
+			entity.setY(this.pos.y);
+		}
+	}
+
+	public void setTileType(int type) {
+		this.tileType = type;
+	}
+
+	public void setTileClass(int tileclass) {
+		this.tileClass = tileclass;
 	}
 
 }

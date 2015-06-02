@@ -32,6 +32,8 @@ public class Room {
 	private int xOffset = 0;
 	private int yOffset = 0;
 
+	private Player player;
+	
 	private boolean firstIteration = true;
 
 	private FieldOfView fOV = new FieldOfView();
@@ -70,7 +72,9 @@ public class Room {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR,
 							TileClass.FLOOR, i, j, 0);
-					startTile = tiles[i][j];
+					player = new Player(tiles[i][j], Main.resourceLoader.player[0]);
+					tiles[i][j].setLayer(2);
+					tiles[i][j].addEntity(player);
 				} else if (hex.matches(TileHex.STONE_FLOOR_DEC_1)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_1,
@@ -163,4 +167,7 @@ public class Room {
 		return this.startTileY;
 	}
 
+	public Player getPlayer() {
+		return this.player;
+	}
 }
