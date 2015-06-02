@@ -25,7 +25,6 @@ public class Instance {
 				Main.resourceLoader.player[0]);
 		map.getRoom().getStartTile().setLayer(2);
 		map.getRoom().getStartTile().addEntity(player);
-		map.getEntityList().add(player);
 	}
 
 	public void update() {
@@ -50,7 +49,7 @@ public class Instance {
 		g.setColor(Color.WHITE);
 		g.drawString("Game Screen", 10, 10);
 
-		map.paint(g, player);
+		map.paint(g);
 	}
 
 	public void keyPressed(KeyEvent e) {

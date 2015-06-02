@@ -168,5 +168,13 @@ public class Tile {
 	public int getEntityLayer() {
 		return this.entityLayer;
 	}
+	
+	public void setTileX(int x) {
+		this.tileX = x;
+	}
+	
+	public void setTileY(int y) {
+		this.tileY = y;
+	}
 
 }
