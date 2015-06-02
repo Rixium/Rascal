@@ -38,9 +38,8 @@ public class Room {
 
 	private FieldOfView fOV = new FieldOfView();
 
-	public Room(Map map) {
-		this.image = Main.resourceLoader.rooms[random
-				.nextInt(Main.resourceLoader.rooms.length)];
+	public Room(Map map, int room) {
+		this.image = Main.resourceLoader.rooms[room];
 		this.tiles = new Tile[image.getWidth()][image.getHeight()];
 		for (int i = 0; i < image.getWidth(); i++) {
 			for (int j = 0; j < image.getHeight(); j++) {
@@ -67,10 +66,10 @@ public class Room {
 				} else if (hex.matches(TileHex.TOP_WALL)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), WallTileType.TOP_WALL,
-							TileClass.WALL, i, j, 3);
+							TileClass.WALL, i, j, 0);
 				} else if (hex.matches(TileHex.START_TILE)) {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR,
+							* Tile.size), tiles[i][j - 1].getTileType(),
 							TileClass.FLOOR, i, j, 0);
 					player = new Player(tiles[i][j], Main.resourceLoader.player[0]);
 					tiles[i][j].setLayer(2);
@@ -95,16 +94,7 @@ public class Room {
 					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
 							* Tile.size), TileType.STONE_FLOOR_DEC_2_BR,
 							TileClass.FLOOR, i, j, 0);
-				} else if (hex.matches(TileHex.DOOR_TILE)) {
-					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
-							* Tile.size), TileType.STONE_FLOOR,
-							TileClass.FLOOR, i, j, 0);
-					System.out.println("adding door");
-					Door door = new Door(tiles[i][j],
-							Main.resourceLoader.door[0]);
-					tiles[i][j].addEntity(door);
-					map.getEntityList().add(door);
-				}
+				} 
 			}
 		}
 	}
@@ -170,4 +160,5 @@ public class Room {
 	public Player getPlayer() {
 		return this.player;
 	}
+
 }

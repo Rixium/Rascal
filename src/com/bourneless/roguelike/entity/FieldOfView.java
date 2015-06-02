@@ -42,11 +42,16 @@ public class FieldOfView {
 			map.getTiles()[(int) ox][(int) oy].setSeen();
 
 			if (map.getTiles()[(int) ox][(int) oy].getTileClass() == TileClass.WALL) {
-				map.getTiles()[(int) ox][(int) oy - 1].setVisible(true);
-				map.getTiles()[(int) ox][(int) oy - 2].setVisible(true);
-				map.getTiles()[(int) ox][(int) oy - 1].setSeen();
-				map.getTiles()[(int) ox][(int) oy - 2].setSeen();
 				return;
+			}
+			
+			if(map.getTiles()[(int) ox][(int) oy].hasEntity()) {
+				for(i = 0; i < map.getTiles()[(int) ox][(int) oy].getEntities().size(); i++) {
+					if(map.getTiles()[(int) ox][(int) oy].getEntities().get(i).getSolid() &&
+							!map.getTiles()[(int) ox][(int) oy].getEntities().get(i).getPassable()) {
+						return;
+					}
+				}
 			}
 			ox += x;
 			oy += y;

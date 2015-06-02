@@ -44,9 +44,6 @@ public class Instance {
 	public void paint(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
-		g.setColor(Color.WHITE);
-		g.drawString("Game Screen", 10, 10);
-
 		map.paint(g);
 	}
 

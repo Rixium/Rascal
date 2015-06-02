@@ -161,8 +161,9 @@ public class ResourceLoader {
 
 		// Map
 
-		rooms = new BufferedImage[1];
+		rooms = new BufferedImage[2];
 		rooms[0] = getBufferedImage("res/rooms/room1.png");
+		rooms[1] = getBufferedImage("res/rooms/room2.png");
 
 		// Music
 

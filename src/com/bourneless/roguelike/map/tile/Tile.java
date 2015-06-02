@@ -74,14 +74,6 @@ public class Tile {
 		g.drawImage(Main.resourceLoader.fog, pos.x + xOffset, pos.y + yOffset,
 				null);
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-
-		if (passable) {
-			g.setColor(Color.GREEN);
-		} else {
-			g.setColor(Color.RED);
-		}
-		g.drawRect(pos.x + xOffset, pos.y + yOffset, size, size);
-
 	}
 
 	public void paintEntity(Graphics2D g) {
@@ -135,10 +127,9 @@ public class Tile {
 	public void addEntity(Entity entity) {
 		this.hasEntity = true;
 		if (entity.getType() == EntityType.PLAYER) {
-			this.layer = 1;
+			this.layer = 2;
 			entityLayer = 3;
 		} else {
-			entityLayer = 3;
 			this.layer = 1;
 		}
 		entities.add(entity);
