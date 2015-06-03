@@ -200,12 +200,16 @@ public class Tile {
 	public boolean getUsed() {
 		return this.used;
 	}
-	
+
 	public boolean getRoom() {
 		return this.room;
 	}
-	
+
 	public void setRoom(boolean bool) {
 		this.room = bool;
+	}
+
+	public boolean getSeen() {
+		return this.beenSeen;
 	}
 }

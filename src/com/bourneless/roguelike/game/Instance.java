@@ -7,11 +7,13 @@ import java.awt.event.KeyEvent;
 import com.bourneless.engine.main.Main;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Map;
+import com.bourneless.roguelike.map.Minimap;
 
 public class Instance {
 
 	private Map map;
-
+	private Minimap miniMap;
+	
 	private Player player;
 
 	private int xOffset = 0;
@@ -23,6 +25,7 @@ public class Instance {
 		map = new Map();
 		player = map.getRoom().getPlayer();
 		map.createMap();
+		miniMap = new Minimap(map);
 	}
 
 	public void update() {
@@ -39,12 +42,14 @@ public class Instance {
 
 		map.update(xOffset, yOffset);
 		player.update(xOffset, yOffset, map);
+		miniMap.update(xOffset, yOffset);
 	}
 
 	public void paint(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
 		map.paint(g);
+		miniMap.paint(g);
 	}
 
 	public void keyPressed(KeyEvent e) {
