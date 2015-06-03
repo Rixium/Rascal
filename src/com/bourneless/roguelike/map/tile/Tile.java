@@ -23,9 +23,12 @@ public class Tile {
 	private boolean beenSeen = false;
 	private int layer = 0;
 	private int entityLayer = 0;
+	private boolean room = false;
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private boolean hasEntity = false;
+
+	private boolean used = false;
 
 	private boolean passable; // If the tile can be used by Player and Entities.
 
@@ -190,4 +193,19 @@ public class Tile {
 		this.tileClass = tileclass;
 	}
 
+	public void setUsed(boolean bool) {
+		this.used = bool;
+	}
+
+	public boolean getUsed() {
+		return this.used;
+	}
+	
+	public boolean getRoom() {
+		return this.room;
+	}
+	
+	public void setRoom(boolean bool) {
+		this.room = bool;
+	}
 }

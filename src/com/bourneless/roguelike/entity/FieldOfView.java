@@ -8,7 +8,7 @@ import com.bourneless.roguelike.map.tile.TileClass;
 public class FieldOfView {
 
 	private Map map;
-	
+
 	public void CheckFieldOfView(Map map, Player player) {
 		float x, y;
 		for (int i = 0; i < map.getTiles().length; i++) {
@@ -32,12 +32,7 @@ public class FieldOfView {
 		oy = (float) player.getTile().getTileY() + 0.5f;
 
 		for (i = 0; i < player.getViewDistance(); i++) {
-			if(oy < 2) {
-				oy = 2;
-			} else if (oy > map.getTiles()[0].length) {
-				oy = map.getTiles()[0].length;
-			}
-			
+			 try {
 			map.getTiles()[(int) ox][(int) oy].setVisible(true);
 			map.getTiles()[(int) ox][(int) oy].setSeen();
 
@@ -55,6 +50,9 @@ public class FieldOfView {
 			}
 			ox += x;
 			oy += y;
+			 } catch (Exception e) {
+				 e.printStackTrace();
+			 }
 		}
 	}
 }

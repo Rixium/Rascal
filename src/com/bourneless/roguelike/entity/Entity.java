@@ -43,8 +43,7 @@ public class Entity {
 	}
 
 	public void paint(Graphics2D g) {
-		g.drawImage(image, pos.x + xOffset, pos.y + yOffset - image.getHeight()
-				/ 2, null);
+		g.drawImage(image, pos.x + xOffset, pos.y + yOffset, null);
 	}
 
 	public Tile getTile() {

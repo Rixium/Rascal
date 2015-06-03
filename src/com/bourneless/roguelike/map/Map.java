@@ -12,6 +12,7 @@ import com.bourneless.roguelike.entity.destroyableentity.Door;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
+import com.bourneless.roguelike.map.tile.TileType;
 import com.bourneless.roguelike.map.tile.WallTileType;
 
 public class Map {
@@ -55,6 +56,8 @@ public class Map {
 						room.getTiles()[i][j].getTileClass(), randomX + i,
 						randomY + j, room.getTiles()[i][j].getLayer());
 				tiles[randomX + i][randomY + j] = tile;
+				tiles[randomX + i][randomY + j].setRoom(true);
+				tiles[randomX + i][randomY + j].setUsed(true);
 				if (room.getTiles()[i][j].hasEntity()) {
 					ArrayList<Entity> entities = room.getTiles()[i][j]
 							.getEntities();
@@ -63,36 +66,6 @@ public class Map {
 					}
 				}
 
-			}
-		}
-		boolean wallHasDoor = false;
-		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[i].length; j++) {
-				if (tiles[i][j].getTileClass() == TileClass.WALL) {
-					if (j < tiles[i].length - 1) {
-						if (tiles[i][j + 1].getTileClass() == TileClass.FLOOR) {
-							int spawnDoor = random.nextInt(20);
-							if (spawnDoor == 1 && !wallHasDoor) {
-								wallHasDoor = true;
-								Door door = new Door(tiles[i][j],
-										Main.resourceLoader.door[0]);
-								tiles[i][j].addEntity(door);
-								entities.add(door);
-								tiles[i][j].setTileClass(TileClass.FLOOR);
-								tiles[i][j - 1].setTileClass(TileClass.FLOOR);
-								tiles[i][j - 1].setTileType(tiles[i][j + 1]
-										.getTileType());
-								tiles[i][j - 2].setTileClass(TileClass.FLOOR);
-								tiles[i][j - 2].setTileType(tiles[i][j + 1]
-										.getTileType());
-								tiles[i][j - 1].setPassable(true);
-								tiles[i][j - 2].setPassable(true);
-								tiles[i][j].setTileType(tiles[i][j + 1]
-										.getTileType());
-							}
-						}
-					}
-				}
 			}
 		}
 
@@ -107,6 +80,8 @@ public class Map {
 			createRoom(i);
 		}
 
+		createTunnels();
+		createDoors();
 	}
 
 	public void createRoom(int rm) {
@@ -127,39 +102,9 @@ public class Map {
 					if (randomX + i + 1 < tiles.length
 							&& randomY + j + 1 < tiles[0].length
 							&& randomY - 1 > 0 && randomX - 1 > 0) {
-						if (tiles[randomX + i][randomY + j].getTileClass() != TileClass.WALL) {
-							System.out.println("setting randomX Y");
+						if (tiles[randomX + i][randomY + j].getUsed()) {
 							randomX = 0;
 							randomY = 0;
-						}
-						if (randomX + i - 1 > 0) {
-							if (tiles[randomX + i - 1][randomY + j]
-									.getTileClass() != TileClass.WALL) {
-								randomX = 0;
-								randomY = 0;
-							}
-						}
-						if (randomX + i + 1 < tiles.length) {
-							if (tiles[randomX + i + 1][randomY + j]
-									.getTileClass() != TileClass.WALL) {
-								randomX = 0;
-								randomY = 0;
-							}
-						}
-
-						if (randomY + j + 1 > tiles.length) {
-							if (tiles[randomX + i][randomY + j + 1]
-									.getTileClass() != TileClass.WALL) {
-								randomX = 0;
-								randomY = 0;
-							}
-						}
-						if (randomY + j - 1 > 0) {
-							if (tiles[randomX + i][randomY + j - 1]
-									.getTileClass() != TileClass.WALL) {
-								randomX = 0;
-								randomY = 0;
-							}
 						}
 					}
 				}
@@ -175,6 +120,8 @@ public class Map {
 								+ i, randomY + j,
 						room.getTiles()[i][j].getLayer());
 				tiles[randomX + i][randomY + j] = tile;
+				tiles[randomX + i][randomY + j].setRoom(true);
+				tiles[randomX + i][randomY + j].setUsed(true);
 				if (extraRooms[rm].getTiles()[i][j].hasEntity()) {
 					ArrayList<Entity> entities = extraRooms[rm].getTiles()[i][j]
 							.getEntities();
@@ -185,37 +132,41 @@ public class Map {
 
 			}
 		}
-		boolean wallHasDoor = false;
+	}
+
+	public void createTunnels() {
 		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[i].length; j++) {
-				if (tiles[i][j].getTileClass() == TileClass.WALL) {
-					if (j < tiles[i].length - 1) {
-						if (tiles[i][j + 1].getTileClass() == TileClass.FLOOR) {
-							int spawnDoor = random.nextInt(20);
-							if (spawnDoor == 1 && !wallHasDoor) {
-								wallHasDoor = true;
-								Door door = new Door(tiles[i][j],
-										Main.resourceLoader.door[0]);
-								tiles[i][j].addEntity(door);
-								entities.add(door);
-								tiles[i][j].setTileClass(TileClass.FLOOR);
-								tiles[i][j - 1].setTileClass(TileClass.FLOOR);
-								tiles[i][j - 1].setTileType(tiles[i][j + 1]
-										.getTileType());
-								tiles[i][j - 2].setTileClass(TileClass.FLOOR);
-								tiles[i][j - 2].setTileType(tiles[i][j + 1]
-										.getTileType());
-								tiles[i][j - 1].setPassable(true);
-								tiles[i][j - 2].setPassable(true);
-								tiles[i][j].setTileType(tiles[i][j + 1]
-										.getTileType());
-							}
+			for (int j = 0; j < tiles.length; j++) {
+				if (i > 2 && j > 2 && i < tiles.length - 2
+						&& j < tiles[i].length - 2) {
+					if (tiles[i][j].getTileClass() == TileClass.WALL) {
+						if (!tiles[i][j].getRoom()) {
+							tiles[i][j].setTileClass(TileClass.FLOOR);
+							tiles[i][j].setTileType(TileType.WOOD_FLOOR);
+							tiles[i][j].setPassable(true);
 						}
 					}
 				}
 			}
 		}
+	}
 
+	public void createDoors() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				if (tiles[i][j].getTileClass() == TileClass.WALL) {
+					int spawnDoor = random.nextInt(10);
+					if (spawnDoor == 1) {
+						Door door = new Door(tiles[i][j],
+								Main.resourceLoader.door[0]);
+						tiles[i][j].addEntity(door);
+						entities.add(door);
+						tiles[i][j].setTileClass(TileClass.FLOOR);
+						tiles[i][j].setTileType(TileType.WOOD_FLOOR);
+					}
+				}
+			}
+		}
 	}
 
 	public void update(int xOffset, int yOffset) {

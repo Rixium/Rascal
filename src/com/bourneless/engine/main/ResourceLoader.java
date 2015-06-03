@@ -121,8 +121,8 @@ public class ResourceLoader {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				player[iteration] = playerSheet.getSubimage(j * 64, i * 128,
-						64, 128);
+				player[iteration] = playerSheet.getSubimage(j * 64, i * 64,
+						64, 64);
 				iteration++;
 			}
 		}
@@ -153,8 +153,8 @@ public class ResourceLoader {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				door[iteration] = doorSheet.getSubimage(j * 64, i * 128, 64,
-						128);
+				door[iteration] = doorSheet.getSubimage(j * 64, i * 64, 64,
+						64);
 				iteration++;
 			}
 		}

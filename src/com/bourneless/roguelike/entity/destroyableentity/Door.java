@@ -18,9 +18,9 @@ public class Door extends DestroyableEntity {
 	
 	public void paint(Graphics2D g) {
 		if(broken) {
-			g.drawImage(Main.resourceLoader.door[1], pos.x + xOffset, pos.y + yOffset - image.getHeight() / 2, null);
+			g.drawImage(Main.resourceLoader.door[1], pos.x + xOffset, pos.y + yOffset, null);
 		} else {
-			g.drawImage(Main.resourceLoader.door[0], pos.x + xOffset, pos.y + yOffset - image.getHeight() / 2, null);
+			g.drawImage(Main.resourceLoader.door[0], pos.x + xOffset, pos.y + yOffset, null);
 		}
 	}
 
