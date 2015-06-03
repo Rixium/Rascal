@@ -25,6 +25,8 @@ public class Tile {
 	private int entityLayer = 0;
 	private boolean room = false;
 
+	private boolean starting = false;
+
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private boolean hasEntity = false;
 
@@ -130,7 +132,7 @@ public class Tile {
 	public void addEntity(Entity entity) {
 		this.hasEntity = true;
 		if (entity.getType() == EntityType.PLAYER) {
-			this.layer = 2;
+			this.layer = 1;
 			entityLayer = 3;
 		} else {
 			this.layer = 1;
@@ -211,5 +213,13 @@ public class Tile {
 
 	public boolean getSeen() {
 		return this.beenSeen;
+	}
+
+	public boolean getStarting() {
+		return this.starting;
+	}
+
+	public void setStarting() {
+		this.starting = true;
 	}
 }

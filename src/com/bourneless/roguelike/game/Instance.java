@@ -13,7 +13,7 @@ public class Instance {
 
 	private Map map;
 	private Minimap miniMap;
-	
+
 	private Player player;
 
 	private int xOffset = 0;
@@ -25,7 +25,10 @@ public class Instance {
 		map = new Map();
 		player = map.getRoom().getPlayer();
 		map.createMap();
+		map.getEntityList().add(player);
 		miniMap = new Minimap(map);
+		xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
+		yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
 	}
 
 	public void update() {
@@ -53,8 +56,14 @@ public class Instance {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		map.keyPressed(e, player);
-		player.keyPressed(e, map);
+		if (e.getKeyCode() == 77) {
+			miniMap.showMap(!miniMap.getShowing());
+		} else {
+			miniMap.setDrawn(false);
+			miniMap.showMap(false);
+			map.keyPressed(e, player);
+			player.keyPressed(e, map);
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {

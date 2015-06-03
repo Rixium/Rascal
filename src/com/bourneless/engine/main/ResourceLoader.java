@@ -42,6 +42,7 @@ public class ResourceLoader {
 	// Door
 
 	public BufferedImage[] door;
+	public BufferedImage[] sideDoor = new BufferedImage[2];
 
 	// Map
 
@@ -57,12 +58,12 @@ public class ResourceLoader {
 	// Music
 
 	public Clip menuMusic;
-	
+
 	// Sounds
-	
+
 	public Clip hitSound;
 	public Clip breakSound;
-	
+
 	public Clip walkSounds[] = new Clip[4];
 
 	public ResourceLoader() {
@@ -144,7 +145,7 @@ public class ResourceLoader {
 		moveUp[2] = player[11];
 
 		// Door
-		
+
 		BufferedImage doorSheet = getBufferedImage("res/entity/door/doorSheet.png");
 		rows = 1;
 		cols = 2;
@@ -158,7 +159,9 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
-
+		
+		sideDoor[0] = getBufferedImage("res/entity/door/sideDoor1.png");
+		sideDoor[1] = getBufferedImage("res/entity/door/sideDoor2.png");
 		// Map
 
 		rooms = new BufferedImage[2];
@@ -168,12 +171,12 @@ public class ResourceLoader {
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
-		
+
 		// Sounds
-		
+
 		hitSound = loadClip("/audio/breakableentity/hit.wav");
 		breakSound = loadClip("/audio/breakableentity/break.wav");
-		
+
 		walkSounds[0] = loadClip("/audio/walk/w1.wav");
 		walkSounds[1] = loadClip("/audio/walk/w2.wav");
 		walkSounds[2] = loadClip("/audio/walk/w3.wav");

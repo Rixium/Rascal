@@ -26,6 +26,7 @@ public class Entity {
 
 	protected boolean passable;
 	protected Map map;
+	protected int layer;
 
 	protected Rectangle rect;
 
@@ -37,6 +38,7 @@ public class Entity {
 	}
 
 	public void update(int xOffset, int yOffset, Map map) {
+		this.layer = tile.getTileY();
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		this.map = map;
@@ -80,13 +82,21 @@ public class Entity {
 		this.tileX = tile.getTileX();
 		this.tileY = tile.getTileY();
 	}
-	
+
 	public void setX(int x) {
 		this.pos.x = x;
 	}
-	
+
 	public void setY(int y) {
 		this.pos.y = y;
+	}
+
+	public int getLayer() {
+		return this.layer;
+	}
+
+	public void setLayer(int layer) {
+		this.layer = layer;
 	}
 
 }

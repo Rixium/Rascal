@@ -21,7 +21,7 @@ public class Map {
 	private Room room;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Random random = new Random();
-	private Room[] extraRooms = new Room[5];
+	private Room[] extraRooms = new Room[20];
 
 	private int xOffset;
 	private int yOffset;
@@ -63,6 +63,7 @@ public class Map {
 							.getEntities();
 					for (Entity entity : entities) {
 						entity.setTile(tile);
+						entity.setLayer(entity.getTile().getTileY());
 					}
 				}
 
@@ -157,8 +158,18 @@ public class Map {
 				if (tiles[i][j].getTileClass() == TileClass.WALL) {
 					int spawnDoor = random.nextInt(10);
 					if (spawnDoor == 1) {
-						Door door = new Door(tiles[i][j],
-								Main.resourceLoader.door[0]);
+						Door door = null;
+						if (i - 1 > 0 && i + 1 < tiles.length) {
+							if (tiles[i - 1][j].getTileClass() == TileClass.FLOOR
+									|| tiles[i + 1][j].getTileClass() == TileClass.FLOOR) {
+								door = new Door(tiles[i][j],
+										Main.resourceLoader.sideDoor, true);
+							}
+						}
+						if (door == null) {
+							door = new Door(tiles[i][j],
+									Main.resourceLoader.door, false);
+						}
 						tiles[i][j].addEntity(door);
 						entities.add(door);
 						tiles[i][j].setTileClass(TileClass.FLOOR);
@@ -178,34 +189,34 @@ public class Map {
 	}
 
 	public void paint(Graphics2D g) {
-		int iteration = 0;
-		while (iteration < 4) {
-			for (int i = 0; i < tiles.length; i++) {
-				for (int j = 0; j < tiles[i].length; j++) {
-					if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
-							&& tiles[i][j].getPos().y < Main.GAME_HEIGHT
-									+ -yOffset + (Tile.size * 3)
-							&& tiles[i][j].getPos().x > -xOffset - Tile.size
-							&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
-						if (tiles[i][j].getLayer() == 0 && iteration == 0) {
-							tiles[i][j].paint(g, xOffset, yOffset);
-						} else if (tiles[i][j].getLayer() == 1
-								&& iteration == 1) {
-							tiles[i][j].paint(g, xOffset, yOffset);
-							tiles[i][j].paintEntity(g);
-						} else if (tiles[i][j].getLayer() == 2
-								&& iteration == 3) {
-							tiles[i][j].paint(g, xOffset, yOffset);
-							tiles[i][j].paintEntity(g);
-						} else if (tiles[i][j].getLayer() == 3
-								&& iteration == 3) {
-							tiles[i][j].paint(g, xOffset, yOffset);
-						}
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				if (tiles[i][j].getPos().x < Main.GAME_WIDTH + -xOffset
+						&& tiles[i][j].getPos().y < Main.GAME_HEIGHT + -yOffset
+								+ (Tile.size * 3)
+						&& tiles[i][j].getPos().x > -xOffset - Tile.size
+						&& tiles[i][j].getPos().y > -yOffset - Tile.size) {
+					if (tiles[i][j].getLayer() == 0) {
+						tiles[i][j].paint(g, xOffset, yOffset);
+					} else if (tiles[i][j].getLayer() == 1) {
+						tiles[i][j].paint(g, xOffset, yOffset);
+					} else if (tiles[i][j].getLayer() == 3) {
+						tiles[i][j].paint(g, xOffset, yOffset);
 					}
 				}
 			}
-			iteration++;
 		}
+
+		for (int layer = 0; layer < tiles.length; layer++) {
+			for (int i = 0; i < entities.size(); i++) {
+				if (entities.get(i).getLayer() == layer - 1) {
+					if (entities.get(i).getTile().isVisible()) {
+						entities.get(i).paint(g);
+					}
+				}
+			}
+		}
+
 	}
 
 	public void keyPressed(KeyEvent e, Player p) {
