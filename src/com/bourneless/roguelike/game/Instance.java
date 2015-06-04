@@ -19,6 +19,8 @@ public class Instance {
 	private int xOffset = 0;
 	private int yOffset = 0;
 
+	private boolean ready = false;
+
 	private int camSpeed = 4;
 
 	public Instance() {
@@ -30,6 +32,8 @@ public class Instance {
 		xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
 		yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
 		player.setTile(player.getTile());
+
+		ready = true;
 	}
 
 	public void update() {
@@ -68,6 +72,10 @@ public class Instance {
 
 	public void keyReleased(KeyEvent e) {
 		player.keyReleased(e);
+	}
+
+	public boolean isReady() {
+		return this.ready;
 	}
 
 }

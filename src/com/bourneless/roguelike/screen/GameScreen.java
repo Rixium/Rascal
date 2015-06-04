@@ -1,5 +1,6 @@
 package com.bourneless.roguelike.screen;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
@@ -11,9 +12,11 @@ import com.bourneless.roguelike.game.Instance;
 public class GameScreen extends Screen {
 
 	private Instance instance;
+	private boolean isReady = false;
 
 	public GameScreen() {
 		instance = new Instance();
+		isReady = true;
 	}
 
 	public void update() {
@@ -26,13 +29,17 @@ public class GameScreen extends Screen {
 
 	public void keyPressed(KeyEvent e) {
 		instance.keyPressed(e);
-		
-		if(e.getKeyCode() == 27) {
+
+		if (e.getKeyCode() == 27) {
 			Main.game.setScreen(new MenuScreen());
 		}
 	}
-	
+
 	public void keyReleased(KeyEvent e) {
 		instance.keyReleased(e);
+	}
+
+	public boolean getIsReady() {
+		return this.isReady;
 	}
 }

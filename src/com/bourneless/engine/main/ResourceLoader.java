@@ -1,9 +1,15 @@
 package com.bourneless.engine.main;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -65,6 +71,14 @@ public class ResourceLoader {
 	public Clip breakSound;
 
 	public Clip walkSounds[] = new Clip[4];
+
+	// Fonts
+
+	public Font gameFont;
+
+	// Text
+
+	public ArrayList<String> loadingText = new ArrayList<String>();
 
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
@@ -159,7 +173,7 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
-		
+
 		sideDoor[0] = getBufferedImage("res/entity/door/sideDoor1.png");
 		sideDoor[1] = getBufferedImage("res/entity/door/sideDoor2.png");
 		// Map
@@ -181,6 +195,33 @@ public class ResourceLoader {
 		walkSounds[1] = loadClip("/audio/walk/w2.wav");
 		walkSounds[2] = loadClip("/audio/walk/w3.wav");
 		walkSounds[3] = loadClip("/audio/walk/w4.wav");
+
+		// Fonts
+
+		try {
+			GraphicsEnvironment ge = GraphicsEnvironment
+					.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(
+					"res/fonts/font.ttf")));
+		} catch (IOException | FontFormatException e) {
+			// Handle exception
+		}
+
+		// Text
+
+		Scanner s = null;
+
+		try {
+			s = new Scanner(new File("res/text/wittyLines.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		while (s.hasNextLine()) {
+			loadingText.add(s.nextLine());
+		}
+		s.close();
+
 	}
 
 	public Clip loadClip(String filename) {

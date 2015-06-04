@@ -11,6 +11,7 @@ import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 import com.bourneless.roguelike.map.tile.WallTileType;
+import com.bourneless.roguelike.screen.LoadScreen;
 
 public class Map {
 
@@ -40,11 +41,11 @@ public class Map {
 			}
 		}
 
-		int roomCount = 1000;
+		int roomCount = 500;
 
 		for (int i = 0; i < roomCount; i++) {
 
-			int roomTry = 100000;
+			int roomTry = 50000;
 			Room room = null;
 			int size = 0;
 			int x = 0;
@@ -94,6 +95,10 @@ public class Map {
 					rooms.add(newRoom);
 					newRoom = null;
 				}
+			}
+			if (i % 100 == 0) {
+				LoadScreen screen = (LoadScreen) Main.game.getScreen();
+				screen.changeString();
 			}
 		}
 
