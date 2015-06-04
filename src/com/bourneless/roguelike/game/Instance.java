@@ -23,12 +23,13 @@ public class Instance {
 
 	public Instance() {
 		map = new Map();
-		player = map.getRoom().getPlayer();
-		map.createMap();
-		map.getEntityList().add(player);
+
+		map.generate();
+		player = map.getPlayer();
 		miniMap = new Minimap(map);
 		xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
 		yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
+		player.setTile(player.getTile());
 	}
 
 	public void update() {
@@ -61,7 +62,6 @@ public class Instance {
 		} else {
 			miniMap.setDrawn(false);
 			miniMap.showMap(false);
-			map.keyPressed(e, player);
 			player.keyPressed(e, map);
 		}
 	}

@@ -148,7 +148,7 @@ public class Player extends LivingEntity {
 	}
 
 	public void keyPressed(KeyEvent e, Map map) {
-		if (e.getKeyCode() == 65 && lastKey != 65) {
+		if (e.getKeyCode() == 65 && lastKey != 65 || e.getKeyCode() == 37 && lastKey != 37) {
 			// A Key
 			if (this.image.equals(Main.resourceLoader.player[4])) {
 				if (map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
@@ -190,7 +190,7 @@ public class Player extends LivingEntity {
 			} else {
 				this.image = Main.resourceLoader.player[4];
 			}
-		} else if (e.getKeyCode() == 68 && lastKey != 68) {
+		} else if (e.getKeyCode() == 68 && lastKey != 68 || e.getKeyCode() == 39 && lastKey != 39) {
 			// D Key
 			if (this.image.equals(Main.resourceLoader.player[7])) {
 
@@ -234,7 +234,7 @@ public class Player extends LivingEntity {
 			}
 		}
 
-		if (e.getKeyCode() == 87 && lastKey != 87) {
+		if (e.getKeyCode() == 87 && lastKey != 87 || e.getKeyCode() == 38 && lastKey != 38) {
 			// W Key
 			if (this.image.equals(Main.resourceLoader.player[9])) {
 				if (map.getTiles()[tile.getTileX()][tile.getTileY() - 1]
@@ -276,7 +276,7 @@ public class Player extends LivingEntity {
 			} else {
 				this.image = Main.resourceLoader.player[9];
 			}
-		} else if (e.getKeyCode() == 83 && lastKey != 83) {
+		} else if (e.getKeyCode() == 83 && lastKey != 83 || e.getKeyCode() == 40 && lastKey != 40) {
 			// S Key
 			if (this.image.equals(Main.resourceLoader.player[0])) {
 				if (map.getTiles()[tile.getTileX()][tile.getTileY() + 1]

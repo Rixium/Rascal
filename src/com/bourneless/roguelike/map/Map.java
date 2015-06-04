@@ -1,36 +1,37 @@
 package com.bourneless.roguelike.map;
 
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
-import com.bourneless.roguelike.entity.destroyableentity.Door;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
-import com.bourneless.roguelike.map.tile.TileType;
 import com.bourneless.roguelike.map.tile.WallTileType;
 
 public class Map {
 
-	private Tile[][] tiles = new Tile[60][60];
+	private Tile[][] tiles = new Tile[100][100];
 	private Room room;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Random random = new Random();
-	private Room[] extraRooms = new Room[20];
 
 	private int xOffset;
 	private int yOffset;
 
+	private ArrayList<Room> rooms = new ArrayList<Room>();
+
+	private Player player;
+
 	public Map() {
-		room = new Room(this, 0);
+
 	}
 
-	public void createMap() {
+	public void generate() {
+
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				tiles[i][j] = new Tile(new Vector2((i * Tile.size),
@@ -39,141 +40,128 @@ public class Map {
 			}
 		}
 
-		int randomX = random.nextInt(tiles.length);
-		int randomY = random.nextInt(tiles[randomX].length);
+		int roomCount = 1000;
 
-		while (randomX > tiles.length - room.getTiles().length
-				|| randomY > tiles[randomX].length - room.getTiles()[0].length) {
-			randomX = random.nextInt(tiles.length);
-			randomY = random.nextInt(tiles.length);
-		}
+		for (int i = 0; i < roomCount; i++) {
 
-		for (int i = 0; i < room.getTiles().length; i++) {
-			for (int j = 0; j < room.getTiles()[i].length; j++) {
-				Tile tile = new Tile(new Vector2((randomX + i) * Tile.size,
-						(randomY + j) * Tile.size),
-						room.getTiles()[i][j].getTileType(),
-						room.getTiles()[i][j].getTileClass(), randomX + i,
-						randomY + j, room.getTiles()[i][j].getLayer());
-				tiles[randomX + i][randomY + j] = tile;
-				tiles[randomX + i][randomY + j].setRoom(true);
-				tiles[randomX + i][randomY + j].setUsed(true);
-				if (room.getTiles()[i][j].hasEntity()) {
-					ArrayList<Entity> entities = room.getTiles()[i][j]
-							.getEntities();
-					for (Entity entity : entities) {
-						entity.setTile(tile);
-						entity.setLayer(entity.getTile().getTileY());
-					}
-				}
+			int roomTry = 100000;
+			Room room = null;
+			int size = 0;
+			int x = 0;
+			int y = 0;
+			boolean canSpawn = true;
 
+			if (rooms.size() == 0) {
+				size = 5 + random.nextInt(10 - 5 + 1);
+				size *= Tile.size;
+
+				x = random.nextInt(tiles.length * 64 - size);
+				y = random.nextInt(tiles.length * 64 - size);
+
+				room = new Room(x, y, size, size);
+
+				rooms.add(new Room(room.getRect().x, room.getRect().y, room
+						.getRect().width, room.getRect().height));
 			}
-		}
 
-		for (int i = 0; i < extraRooms.length; i++) {
-			int randomNum = 0;
-			while (randomNum == 0) {
-				randomNum = random.nextInt(Main.resourceLoader.rooms.length);
-			}
-			extraRooms[i] = new Room(this, 1);
-		}
-		for (int i = 0; i < extraRooms.length; i++) {
-			createRoom(i);
-		}
+			looper: for (int j = 0; j < roomTry; j++) {
+				size = 5 + random.nextInt(10 - 5 + 1);
+				size *= Tile.size;
 
-		createTunnels();
-		createDoors();
-	}
+				x = random.nextInt(tiles.length * 64 - size);
+				y = random.nextInt(tiles.length * 64 - size);
 
-	public void createRoom(int rm) {
+				room = new Room(x, y, size, size);
 
-		int randomX = random.nextInt(tiles.length);
-		int randomY = random.nextInt(tiles[0].length);
+				boolean checkRooms = true;
 
-		while (randomX > tiles.length - extraRooms[rm].getTiles().length
-				|| randomY > tiles[randomX].length
-						- extraRooms[rm].getTiles()[0].length || randomX == 0
-				|| randomY == 0) {
-			randomX = random.nextInt(tiles.length);
-			randomY = random.nextInt(tiles.length);
-
-			// Check if the room intersects another floor tile already placed.
-			for (int i = 0; i < extraRooms[rm].getTiles().length; i++) {
-				for (int j = 0; j < extraRooms[rm].getTiles()[i].length; j++) {
-					if (randomX + i + 1 < tiles.length
-							&& randomY + j + 1 < tiles[0].length
-							&& randomY - 1 > 0 && randomX - 1 > 0) {
-						if (tiles[randomX + i][randomY + j].getUsed()) {
-							randomX = 0;
-							randomY = 0;
+				tryingRoom: if (checkRooms) {
+					for (Room r : rooms) {
+						if (r.getRect().intersects(room.getRect())
+								|| r.getRect().contains(room.getRect())
+								|| room.getRect().contains(r.getRect())
+								|| room.getRect().intersects(r.getRect())) {
+							canSpawn = false;
+							checkRooms = false;
+							break tryingRoom;
 						}
 					}
 				}
-			}
-		}
 
-		for (int i = 0; i < extraRooms[rm].getTiles().length; i++) {
-			for (int j = 0; j < extraRooms[rm].getTiles()[i].length; j++) {
-				Tile tile = new Tile(new Vector2((randomX + i) * Tile.size,
-						(randomY + j) * Tile.size),
-						extraRooms[rm].getTiles()[i][j].getTileType(),
-						extraRooms[rm].getTiles()[i][j].getTileClass(), randomX
-								+ i, randomY + j,
-						room.getTiles()[i][j].getLayer());
-				tiles[randomX + i][randomY + j] = tile;
-				tiles[randomX + i][randomY + j].setRoom(true);
-				tiles[randomX + i][randomY + j].setUsed(true);
-				if (extraRooms[rm].getTiles()[i][j].hasEntity()) {
-					ArrayList<Entity> entities = extraRooms[rm].getTiles()[i][j]
-							.getEntities();
-					for (Entity entity : entities) {
-						entity.setTile(tile);
-					}
+				if (canSpawn) {
+					Room newRoom = new Room(room.getRect().x, room.getRect().y,
+							room.getRect().width, room.getRect().height);
+					rooms.add(newRoom);
+					newRoom = null;
 				}
-
 			}
 		}
+
+		fillRects();
+
 	}
 
-	public void createTunnels() {
+	public void fillRects() {
+		for (Room r : rooms) {
+			for (int i = (int) r.getRect().getX() / 64; i < r.getRect().getX()
+					/ 64 + r.getRect().width / 64; i++) {
+				for (int j = (int) r.getRect().getY() / 64; j < r.getRect()
+						.getY() / 64 + r.getRect().height / 64; j++) {
+					tiles[i][j] = new Tile(new Vector2(i * 64, j * 64),
+							r.getTileStyle(), TileClass.FLOOR, i, j, 0);
+				}
+			}
+		}
+
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles.length; j++) {
-				if (i > 2 && j > 2 && i < tiles.length - 2
-						&& j < tiles[i].length - 2) {
-					if (tiles[i][j].getTileClass() == TileClass.WALL) {
-						if (!tiles[i][j].getRoom()) {
-							tiles[i][j].setTileClass(TileClass.FLOOR);
-							tiles[i][j].setTileType(TileType.WOOD_FLOOR);
-							tiles[i][j].setPassable(true);
-						}
+				if (j == 0 || i == 0 || j == tiles.length - 1
+						|| i == tiles.length - 1) {
+					tiles[i][j].setTileClass(TileClass.WALL);
+					tiles[i][j].setTileType(WallTileType.TOP_WALL);
+					tiles[i][j].setPassable(false);
+				}
+			}
+		}
+
+		for (Room r : rooms) {
+			for (int i = (int) r.getRect().getX() / 64; i < r.getRect().getX()
+					/ 64 + r.getRect().width / 64; i++) {
+				for (int j = (int) r.getRect().getY() / 64; j < r.getRect()
+						.getY() / 64 + r.getRect().height / 64; j++) {
+					if (i == (int) r.getRect().getX() / 64
+							|| j == (int) r.getRect().getY() / 64
+							|| i == (int) r.getRect().getX() / 64
+									+ r.getRect().width / 64
+							|| j == (int) r.getRect().getY() / 64
+									+ r.getRect().height / 64) {
+						tiles[i][j] = new Tile(new Vector2(i * 64, j * 64),
+								WallTileType.TOP_WALL, TileClass.WALL, i, j, 0);
 					}
 				}
 			}
 		}
-	}
 
-	public void createDoors() {
-		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[i].length; j++) {
-				if (tiles[i][j].getTileClass() == TileClass.WALL) {
-					int spawnDoor = random.nextInt(10);
-					if (spawnDoor == 1) {
-						Door door = null;
-						if (i - 1 > 0 && i + 1 < tiles.length) {
-							if (tiles[i - 1][j].getTileClass() == TileClass.FLOOR
-									|| tiles[i + 1][j].getTileClass() == TileClass.FLOOR) {
-								door = new Door(tiles[i][j],
-										Main.resourceLoader.sideDoor, true);
+		boolean hasPlayer = false;
+
+		int spawnPlayer = 0;
+
+		while (!hasPlayer) {
+			System.out.println("spawnin");
+			for (int i = 0; i < tiles.length; i++) {
+				for (int j = 0; j < tiles[i].length; j++) {
+					if (tiles[i][j] != null) {
+						if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
+							spawnPlayer = random.nextInt(1000);
+							if (spawnPlayer == 1 && !hasPlayer) {
+								player = new Player(tiles[i][j],
+										Main.resourceLoader.player[0]);
+								tiles[i][j].setLayer(0);
+								tiles[i][j].addEntity(player);
+								entities.add(player);
+								hasPlayer = true;
 							}
 						}
-						if (door == null) {
-							door = new Door(tiles[i][j],
-									Main.resourceLoader.door, false);
-						}
-						tiles[i][j].addEntity(door);
-						entities.add(door);
-						tiles[i][j].setTileClass(TileClass.FLOOR);
-						tiles[i][j].setTileType(TileType.WOOD_FLOOR);
 					}
 				}
 			}
@@ -219,10 +207,6 @@ public class Map {
 
 	}
 
-	public void keyPressed(KeyEvent e, Player p) {
-		room.keyPressed(e, p);
-	}
-
 	public Room getRoom() {
 		return this.room;
 	}
@@ -235,4 +219,7 @@ public class Map {
 		return this.tiles;
 	}
 
+	public Player getPlayer() {
+		return this.player;
+	}
 }

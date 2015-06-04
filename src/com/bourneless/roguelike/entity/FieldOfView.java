@@ -13,7 +13,9 @@ public class FieldOfView {
 		float x, y;
 		for (int i = 0; i < map.getTiles().length; i++) {
 			for (int j = 0; j < map.getTiles()[i].length; j++) {
-				map.getTiles()[i][j].setVisible(false);
+				if (map.getTiles()[i][j] != null) {
+					map.getTiles()[i][j].setVisible(false);
+				}
 			}
 		}
 
@@ -32,27 +34,30 @@ public class FieldOfView {
 		oy = (float) player.getTile().getTileY() + 0.5f;
 
 		for (i = 0; i < player.getViewDistance(); i++) {
-			 try {
-			map.getTiles()[(int) ox][(int) oy].setVisible(true);
-			map.getTiles()[(int) ox][(int) oy].setSeen();
+			if ((int) ox < map.getTiles().length
+					&& (int) oy < map.getTiles().length && (int) ox > 0
+					&& (int) oy > 0) {
+				map.getTiles()[(int) ox][(int) oy].setVisible(true);
+				map.getTiles()[(int) ox][(int) oy].setSeen();
 
-			if (map.getTiles()[(int) ox][(int) oy].getTileClass() == TileClass.WALL) {
-				return;
-			}
-			
-			if(map.getTiles()[(int) ox][(int) oy].hasEntity()) {
-				for(i = 0; i < map.getTiles()[(int) ox][(int) oy].getEntities().size(); i++) {
-					if(map.getTiles()[(int) ox][(int) oy].getEntities().get(i).getSolid() &&
-							!map.getTiles()[(int) ox][(int) oy].getEntities().get(i).getPassable()) {
-						return;
+				if (map.getTiles()[(int) ox][(int) oy].getTileClass() == TileClass.WALL) {
+					return;
+				}
+
+				if (map.getTiles()[(int) ox][(int) oy].hasEntity()) {
+					for (i = 0; i < map.getTiles()[(int) ox][(int) oy]
+							.getEntities().size(); i++) {
+						if (map.getTiles()[(int) ox][(int) oy].getEntities()
+								.get(i).getSolid()
+								&& !map.getTiles()[(int) ox][(int) oy]
+										.getEntities().get(i).getPassable()) {
+							return;
+						}
 					}
 				}
+				ox += x;
+				oy += y;
 			}
-			ox += x;
-			oy += y;
-			 } catch (Exception e) {
-				 e.printStackTrace();
-			 }
 		}
 	}
 }

@@ -100,10 +100,10 @@ public class ResourceLoader {
 		}
 
 		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
-		rows = tileSheet.getWidth() / 64;
-		cols = tileSheet.getHeight() / 64;
+		rows = 1;
+		cols = 2;
 		iteration = 0;
-		tiles = new BufferedImage[rows * cols];
+		tiles = new BufferedImage[2];
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
