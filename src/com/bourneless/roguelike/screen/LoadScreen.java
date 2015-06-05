@@ -20,10 +20,11 @@ public class LoadScreen extends Screen {
 
 	private Random random = new Random();
 	private Font font;
-	private String loadingText = "Loading Friends..";
+	private String loadingText = "";
 
 	public LoadScreen() {
 		font = new Font("A Font With Serifs", Font.PLAIN, 50);
+		System.out.println("Creating World..");
 	}
 
 	public void update() {
@@ -54,7 +55,6 @@ public class LoadScreen extends Screen {
 	}
 	
 	public void changeString() {
-		System.out.println("changing text");
 		loadingText = Main.resourceLoader.loadingText.get(random
 				.nextInt(Main.resourceLoader.loadingText.size()));
 		paint((Graphics2D) Main.game.getGraphics());

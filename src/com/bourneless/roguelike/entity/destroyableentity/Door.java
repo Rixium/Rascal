@@ -16,7 +16,6 @@ public class Door extends DestroyableEntity {
 		super(tile, Main.resourceLoader.door[0], EntityType.BREAKABLE);
 		this.solid = true;
 		this.side = side;
-
 	}
 
 	public void paint(Graphics2D g) {

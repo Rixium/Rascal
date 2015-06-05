@@ -115,9 +115,9 @@ public class ResourceLoader {
 
 		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
 		rows = 1;
-		cols = 2;
+		cols = 5;
 		iteration = 0;
-		tiles = new BufferedImage[2];
+		tiles = new BufferedImage[5];
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -176,6 +176,7 @@ public class ResourceLoader {
 
 		sideDoor[0] = getBufferedImage("res/entity/door/sideDoor1.png");
 		sideDoor[1] = getBufferedImage("res/entity/door/sideDoor2.png");
+
 		// Map
 
 		rooms = new BufferedImage[2];

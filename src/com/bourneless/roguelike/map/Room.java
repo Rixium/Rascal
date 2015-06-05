@@ -25,12 +25,17 @@ public class Room {
 	private int xOffset = 0;
 	private int yOffset = 0;
 
+	private boolean hasEastDoor = false;
+	private boolean hasSouthDoor = false;
+
+	private boolean hasCorridor = false;
+
 	private Player player;
 
 	private Rectangle rect;
 
 	public Room(int x, int y, int size, int size2) {
-		rect = new Rectangle(x, y, size, size);
+		rect = new Rectangle(x, y, size, size2);
 
 		this.tileType = random.nextInt(Main.resourceLoader.tiles.length);
 	}
@@ -62,6 +67,30 @@ public class Room {
 
 	public int getTileStyle() {
 		return this.tileType;
+	}
+
+	public boolean getCorridor() {
+		return this.hasCorridor;
+	}
+
+	public void setHasCorridor(boolean bool) {
+		this.hasCorridor = bool;
+	}
+
+	public boolean isHasEastDoor() {
+		return hasEastDoor;
+	}
+
+	public void setHasEastDoor(boolean hasEastDoor) {
+		this.hasEastDoor = hasEastDoor;
+	}
+
+	public boolean isHasSouthDoor() {
+		return hasSouthDoor;
+	}
+
+	public void setHasSouthDoor(boolean hasSouthDoor) {
+		this.hasSouthDoor = hasSouthDoor;
 	}
 
 }
