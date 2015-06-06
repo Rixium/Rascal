@@ -66,15 +66,15 @@ public class Map {
 				size *= Tile.size;
 				size2 *= Tile.size;
 
-				x *= 64;
-				y *= 64;
+				x *= Tile.size;
+				y *= Tile.size;
 
 				room = new Room(x, y, size, size2);
 
 				rooms.add(new Room(room.getRect().x, room.getRect().y, room
 						.getRect().width, room.getRect().height));
 
-				if (x / 64 + size / 64 < tiles.length) {
+				if (x / Tile.size + size / Tile.size < tiles.length) {
 					x += size;
 				}
 			}
@@ -86,8 +86,8 @@ public class Map {
 				size *= Tile.size;
 				size2 *= Tile.size;
 
-				if (x / 64 + size / 64 < tiles.length
-						&& y / 64 + size2 / 64 < tiles.length) {
+				if (x / Tile.size + size / Tile.size < tiles.length
+						&& y / Tile.size + size2 / Tile.size < tiles.length) {
 					room = new Room(x, y, size, size2);
 
 					boolean checkRooms = true;
@@ -106,15 +106,15 @@ public class Map {
 					}
 
 					if (canSpawn) {
-						if (x / 64 + size / 64 < tiles.length
-								&& y / 64 + size2 / 64 < tiles.length) {
+						if (x / Tile.size + size / Tile.size < tiles.length
+								&& y / Tile.size + size2 / Tile.size < tiles.length) {
 							Room newRoom = new Room(room.getRect().x,
 									room.getRect().y, room.getRect().width,
 									room.getRect().height);
 							rooms.add(newRoom);
 							newRoom = null;
 
-							if (x / 64 + size / 64 < tiles.length - 1) {
+							if (x / Tile.size + size / Tile.size < tiles.length - 1) {
 								x += size;
 							}
 						}
@@ -129,7 +129,7 @@ public class Map {
 				screen.changeString();
 			}
 
-			if (x / 64 + size / 64 > tiles.length - 1) {
+			if (x / Tile.size + size / Tile.size > tiles.length - 1) {
 				rowLength = rooms.size();
 				x = 1 * Tile.size;
 				y += rooms.get(rooms.size() - rowLength).getRect().getHeight();
@@ -143,66 +143,79 @@ public class Map {
 
 	public void fillRects() {
 		for (Room r : rooms) {
-			for (int i = (int) r.getRect().getX() / 64; i < r.getRect().getX()
-					/ 64 + r.getRect().width / 64; i++) {
-				for (int j = (int) r.getRect().getY() / 64; j < r.getRect()
-						.getY() / 64 + r.getRect().height / 64; j++) {
-					tiles[i][j] = new Tile(new Vector2(i * 64, j * 64),
-							r.getTileStyle(), TileClass.FLOOR, i, j, 0);
+			for (int i = (int) r.getRect().getX() / Tile.size; i < r.getRect()
+					.getX() / Tile.size + r.getRect().width / Tile.size; i++) {
+				for (int j = (int) r.getRect().getY() / Tile.size; j < r
+						.getRect().getY()
+						/ Tile.size
+						+ r.getRect().height
+						/ Tile.size; j++) {
+					tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+							* Tile.size), r.getTileStyle(), TileClass.FLOOR, i,
+							j, 0);
 				}
 			}
 
 		}
 
 		for (Room r : rooms) {
-			for (int i = (int) r.getRect().getX() / 64; i < r.getRect().getX()
-					/ 64 + r.getRect().width / 64; i++) {
-				for (int j = (int) r.getRect().getY() / 64; j < r.getRect()
-						.getY() / 64 + r.getRect().height / 64; j++) {
-					if (i == (int) r.getRect().getX() / 64
-							|| j == (int) r.getRect().getY() / 64
-							|| i == (int) r.getRect().getX() / 64
-									+ r.getRect().width / 64
-							|| j == (int) r.getRect().getY() / 64
-									+ r.getRect().height / 64) {
-						tiles[i][j] = new Tile(new Vector2(i * 64, j * 64),
-								WallTileType.TOP_WALL, TileClass.WALL, i, j, 0);
+			for (int i = (int) r.getRect().getX() / Tile.size; i < r.getRect()
+					.getX() / Tile.size + r.getRect().width / Tile.size; i++) {
+				for (int j = (int) r.getRect().getY() / Tile.size; j < r
+						.getRect().getY()
+						/ Tile.size
+						+ r.getRect().height
+						/ Tile.size; j++) {
+					if (i == (int) r.getRect().getX() / Tile.size
+							|| j == (int) r.getRect().getY() / Tile.size
+							|| i == (int) r.getRect().getX() / Tile.size
+									+ r.getRect().width / Tile.size
+							|| j == (int) r.getRect().getY() / Tile.size
+									+ r.getRect().height / Tile.size) {
+						tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+								* Tile.size), WallTileType.TOP_WALL,
+								TileClass.WALL, i, j, 0);
 					}
 				}
 			}
 		}
 
 		for (Room r : rooms) {
-			for (int i = (int) r.getRect().getX() / 64; i < r.getRect().getX()
-					/ 64 + r.getRect().width / 64; i++) {
-				for (int j = (int) r.getRect().getY() / 64; j < r.getRect()
-						.getY() / 64 + r.getRect().height / 64; j++) {
-					if (i == (int) r.getRect().getX() / 64
-							|| j == (int) r.getRect().getY() / 64
-							|| i == (int) r.getRect().getX() / 64
-									+ r.getRect().width / 64
-							|| j == (int) r.getRect().getY() / 64
-									+ r.getRect().height / 64) {
-						tiles[i][j] = new Tile(new Vector2(i * 64, j * 64),
-								WallTileType.TOP_WALL, TileClass.WALL, i, j, 0);
+			for (int i = (int) r.getRect().getX() / Tile.size; i < r.getRect()
+					.getX() / Tile.size + r.getRect().width / Tile.size; i++) {
+				for (int j = (int) r.getRect().getY() / Tile.size; j < r
+						.getRect().getY() / 64 + r.getRect().height / Tile.size; j++) {
+					if (i == (int) r.getRect().getX() / Tile.size
+							|| j == (int) r.getRect().getY() / Tile.size
+							|| i == (int) r.getRect().getX() / Tile.size
+									+ r.getRect().width / Tile.size
+							|| j == (int) r.getRect().getY() / Tile.size
+									+ r.getRect().height / Tile.size) {
+						tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+								* Tile.size), WallTileType.TOP_WALL,
+								TileClass.WALL, i, j, 0);
 					}
 				}
 			}
 		}
 
 		for (Room r : rooms) {
-			for (int i = (int) r.getRect().getX() / 64; i < r.getRect().getX()
-					/ 64 + r.getRect().width / 64; i++) {
-				for (int j = (int) r.getRect().getY() / 64; j < r.getRect()
-						.getY() / 64 + r.getRect().height / 64; j++) {
-					if (i == (int) r.getRect().getX() / 64
-							|| j == (int) r.getRect().getY() / 64
-							|| i == (int) r.getRect().getX() / 64
-									+ r.getRect().width / 64
-							|| j == (int) r.getRect().getY() / 64
-									+ r.getRect().height / 64) {
-						tiles[i][j] = new Tile(new Vector2(i * 64, j * 64),
-								WallTileType.TOP_WALL, TileClass.WALL, i, j, 0);
+			for (int i = (int) r.getRect().getX() / Tile.size; i < r.getRect()
+					.getX() / Tile.size + r.getRect().width / Tile.size; i++) {
+				for (int j = (int) r.getRect().getY() / Tile.size; j < r
+						.getRect().getY()
+						/ Tile.size
+						+ r.getRect().height
+						/ Tile.size; j++) {
+					if (i == (int) r.getRect().getX() / Tile.size
+							|| j == (int) r.getRect().getY() / Tile.size
+							|| i == (int) r.getRect().getX() / Tile.size
+									+ r.getRect().width / Tile.size
+							|| j == (int) r.getRect().getY() / Tile.size
+									+ r.getRect().height / Tile.size) {
+						tiles[i][j] = new Tile(new Vector2(i * Tile.size, j
+								* Tile.size), WallTileType.TOP_WALL,
+								TileClass.WALL, i, j, 0);
 					}
 				}
 			}
@@ -221,16 +234,19 @@ public class Map {
 
 		for (Room r : rooms) {
 			while (!r.isHasEastDoor()) {
-				if (r.getRect().getX() / 64 < 90) {
-					for (int i = r.getRect().x / 64; i <= r.getRect().x / 64
-							+ r.getRect().width / 64; i++) {
-						for (int j = r.getRect().y / 64; j <= r.getRect().y
-								/ 64 + r.getRect().height / 64; j++) {
-							if (i == r.getRect().x / 64 + r.getRect().width
-									/ 64
-									&& j > r.getRect().y / 64
-									&& j < r.getRect().y / 64
-											+ r.getRect().height / 64) {
+				if (r.getRect().getX() / Tile.size < 90) {
+					for (int i = r.getRect().x / Tile.size; i <= r.getRect().x
+							/ Tile.size + r.getRect().width / Tile.size; i++) {
+						for (int j = r.getRect().y / Tile.size; j <= r
+								.getRect().y
+								/ Tile.size
+								+ r.getRect().height
+								/ Tile.size; j++) {
+							if (i == r.getRect().x / Tile.size
+									+ r.getRect().width / 64
+									&& j > r.getRect().y / Tile.size
+									&& j < r.getRect().y / Tile.size
+											+ r.getRect().height / Tile.size) {
 								if (random.nextInt(100) == 1
 										&& !r.isHasEastDoor()) {
 									Door door = new Door(tiles[i][j],
@@ -251,16 +267,19 @@ public class Map {
 			}
 
 			while (!r.isHasSouthDoor()) {
-				if (r.getRect().getY() / 64 < 90) {
-					for (int i = r.getRect().x / 64; i <= r.getRect().x / 64
-							+ r.getRect().width / 64; i++) {
-						for (int j = r.getRect().y / 64; j <= r.getRect().y
-								/ 64 + r.getRect().height / 64; j++) {
-							if (j == r.getRect().y / 64 + r.getRect().height
-									/ 64
-									&& i > r.getRect().x / 64
-									&& i < r.getRect().x / 64
-											+ r.getRect().width / 64) {
+				if (r.getRect().getY() / Tile.size < 90) {
+					for (int i = r.getRect().x / Tile.size; i <= r.getRect().x
+							/ Tile.size + r.getRect().width / Tile.size; i++) {
+						for (int j = r.getRect().y / Tile.size; j <= r
+								.getRect().y
+								/ Tile.size
+								+ r.getRect().height
+								/ Tile.size; j++) {
+							if (j == r.getRect().y / Tile.size
+									+ r.getRect().height / Tile.size
+									&& i > r.getRect().x / Tile.size
+									&& i < r.getRect().x / Tile.size
+											+ r.getRect().width / Tile.size) {
 								if (random.nextInt(100) == 1
 										&& !r.isHasSouthDoor()) {
 									Door door = new Door(tiles[i][j],
@@ -318,11 +337,13 @@ public class Map {
 				if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
 					int spawnMonster = random.nextInt(10);
 					if (spawnMonster == 1) {
-						Mob monster = new Mob(tiles[i][j],
-								Main.resourceLoader.monster);
-						tiles[i][j].setLayer(0);
-						tiles[i][j].addEntity(monster);
-						entities.add(monster);
+						if (tiles[i][j].getEntities().isEmpty()) {
+							Mob monster = new Mob(tiles[i][j],
+									Main.resourceLoader.monster);
+							tiles[i][j].setLayer(0);
+							tiles[i][j].addEntity(monster);
+							entities.add(monster);
+						}
 					}
 				}
 			}
@@ -339,7 +360,8 @@ public class Map {
 				Mob mob = (Mob) entity;
 				if (mob.getDead()) {
 					player.getStats().addExperience(mob.getExperience());
-					entities.remove(entity);
+					entities.remove(mob);
+					mob.getTile().removeEntity(mob);
 					break;
 				}
 			}

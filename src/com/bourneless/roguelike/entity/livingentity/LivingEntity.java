@@ -17,23 +17,6 @@ public class LivingEntity extends Entity {
 		super(tile, image, type);
 	}
 
-	public void hit(int health) {
-		if (!dead) {
-			if (this.health - health > 0) {
-				this.health -= health;
-			} else {
-				Main.resourceLoader
-						.playClip(
-								Main.resourceLoader.monsterDeath[random
-										.nextInt(Main.resourceLoader.monsterDeath.length)],
-								1f, false);
-				this.health = 0;
-				this.dead = true;
-				this.passable = true;
-			}
-		}
-	}
-
 	public int getHealth() {
 		return this.health;
 	}

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.roguelike.entity.EntityType;
+import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.map.tile.TileClass;
 
 public class Minimap {
@@ -52,7 +53,11 @@ public class Minimap {
 										g2d.setColor(Color.GREEN);
 									} else if (map.getTiles()[i][j]
 											.getEntities().get(k).getType() == EntityType.ENEMY) {
-										g2d.setColor(Color.RED);
+										Mob enemy = (Mob) map.getTiles()[i][j]
+												.getEntities().get(k);
+										if (!enemy.getDead()) {
+											g2d.setColor(Color.RED);
+										}
 									} else if (map.getTiles()[i][j]
 											.getEntities().get(k).getType() == EntityType.BREAKABLE) {
 										g2d.setColor(Color.GRAY);

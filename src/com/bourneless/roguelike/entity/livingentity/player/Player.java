@@ -55,23 +55,23 @@ public class Player extends LivingEntity {
 	public void paint(Graphics2D g) {
 		if (travelLeft) {
 			moveLeftAnimation.paint(g, new Vector2(
-					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
-							- Tile.size / 2 + yOffset + playerYOff));
+					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 4
+							- Tile.size + yOffset + playerYOff));
 		} else if (travelRight) {
 			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset
-					+ playerXOff, pos.y - image.getHeight() / 2 - Tile.size / 2
+					+ playerXOff, pos.y - image.getHeight() / 4 - Tile.size
 					+ yOffset + playerYOff));
 		} else if (travelUp) {
 			moveUpAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-					pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset
+					pos.y - image.getHeight() / 4 - Tile.size + yOffset
 							+ playerYOff));
 		} else if (travelDown) {
 			moveDownAnimation.paint(g, new Vector2(
-					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
-							- Tile.size / 2 + yOffset + playerYOff));
+					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 4
+							- Tile.size + yOffset + playerYOff));
 		} else {
 			g.drawImage(image, pos.x + xOffset + playerXOff,
-					pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset
+					pos.y - image.getHeight() / 4 - Tile.size + yOffset
 							+ playerYOff, null);
 		}
 	}
@@ -138,7 +138,7 @@ public class Player extends LivingEntity {
 			} else {
 				travelDown = false;
 				moveDownAnimation.stop();
-				this.pos.y += 64;
+				this.pos.y += Tile.size;
 				this.layer = tile.getTileY();
 				Tile newTile = map.getTiles()[tile.getTileX()][tile.getTileY() + 1];
 				newTile.addEntity(this);
@@ -168,6 +168,7 @@ public class Player extends LivingEntity {
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
 							Mob mob = (Mob) entity;
+							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
 							mob.hit(stats.getStrength());
 						} else {
 							travelLeft = true;
@@ -216,6 +217,7 @@ public class Player extends LivingEntity {
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
 							Mob mob = (Mob) entity;
+							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
 							mob.hit(stats.getStrength());
 						} else {
 							travelRight = true;
@@ -263,6 +265,7 @@ public class Player extends LivingEntity {
 							dEnt.hit(stats.getStrength());
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
+							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
 							Mob mob = (Mob) entity;
 							mob.hit(stats.getStrength());
 						} else {
@@ -311,6 +314,7 @@ public class Player extends LivingEntity {
 							dEnt.hit(stats.getStrength());
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
+							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
 							Mob mob = (Mob) entity;
 							mob.hit(stats.getStrength());
 						} else {

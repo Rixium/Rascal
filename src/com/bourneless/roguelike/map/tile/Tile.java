@@ -78,6 +78,7 @@ public class Tile {
 
 		g.drawImage(Main.resourceLoader.fog, pos.x + xOffset, pos.y + yOffset,
 				null);
+
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 	}
 

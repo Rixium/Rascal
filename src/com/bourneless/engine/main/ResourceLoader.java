@@ -82,7 +82,10 @@ public class ResourceLoader {
 
 	public Clip walkSounds[] = new Clip[4];
 
-	public Clip monsterDeath[] = new Clip[4];
+	public Clip monsterDeath[] = new Clip[3];
+
+	public Clip hitSounds[] = new Clip[4];
+	public Clip buttonHover;
 
 	// Fonts
 
@@ -219,7 +222,13 @@ public class ResourceLoader {
 		monsterDeath[0] = loadClip("/audio/mob/death/1.wav");
 		monsterDeath[1] = loadClip("/audio/mob/death/2.wav");
 		monsterDeath[2] = loadClip("/audio/mob/death/3.wav");
-		monsterDeath[3] = loadClip("/audio/mob/death/4.wav");
+
+		hitSounds[0] = loadClip("/audio/hit/1.wav");
+		hitSounds[1] = loadClip("/audio/hit/2.wav");
+		hitSounds[2] = loadClip("/audio/hit/3.wav");
+		hitSounds[3] = loadClip("/audio/hit/4.wav");
+
+		buttonHover = loadClip("/audio/menu/buttonHover.wav");
 
 		// UI
 
