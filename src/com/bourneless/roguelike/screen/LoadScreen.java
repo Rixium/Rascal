@@ -53,7 +53,7 @@ public class LoadScreen extends Screen {
 		g.drawString(loadingText, start, xPos);
 		hasPainted = true;
 	}
-	
+
 	public void changeString() {
 		loadingText = Main.resourceLoader.loadingText.get(random
 				.nextInt(Main.resourceLoader.loadingText.size()));

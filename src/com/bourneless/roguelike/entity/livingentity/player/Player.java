@@ -14,6 +14,7 @@ import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.destroyableentity.DestroyableEntity;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
+import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
 
@@ -54,22 +55,24 @@ public class Player extends LivingEntity {
 	public void paint(Graphics2D g) {
 		if (travelLeft) {
 			moveLeftAnimation.paint(g, new Vector2(
-					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2 - Tile.size / 2
-							+ yOffset + playerYOff));
+					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
+							- Tile.size / 2 + yOffset + playerYOff));
 		} else if (travelRight) {
 			moveRightAnimation.paint(g, new Vector2(pos.x + xOffset
-					+ playerXOff, pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset
-					+ playerYOff));
+					+ playerXOff, pos.y - image.getHeight() / 2 - Tile.size / 2
+					+ yOffset + playerYOff));
 		} else if (travelUp) {
 			moveUpAnimation.paint(g, new Vector2(pos.x + xOffset + playerXOff,
-					pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset + playerYOff));
+					pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset
+							+ playerYOff));
 		} else if (travelDown) {
 			moveDownAnimation.paint(g, new Vector2(
 					pos.x + xOffset + playerXOff, pos.y - image.getHeight() / 2
-					- Tile.size / 2 + yOffset + playerYOff));
+							- Tile.size / 2 + yOffset + playerYOff));
 		} else {
 			g.drawImage(image, pos.x + xOffset + playerXOff,
-					pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset + playerYOff, null);
+					pos.y - image.getHeight() / 2 - Tile.size / 2 + yOffset
+							+ playerYOff, null);
 		}
 	}
 
@@ -148,7 +151,8 @@ public class Player extends LivingEntity {
 	}
 
 	public void keyPressed(KeyEvent e, Map map) {
-		if (e.getKeyCode() == 65 && lastKey != 65 || e.getKeyCode() == 37 && lastKey != 37) {
+		if (e.getKeyCode() == 65 && lastKey != 65 || e.getKeyCode() == 37
+				&& lastKey != 37) {
 			// A Key
 			if (this.image.equals(Main.resourceLoader.player[4])) {
 				if (map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
@@ -160,7 +164,11 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
-							dEnt.hit(stats.strength);
+							dEnt.hit(stats.getStrength());
+						} else if (entity.getType() == EntityType.ENEMY
+								&& !entity.getPassable()) {
+							Mob mob = (Mob) entity;
+							mob.hit(stats.getStrength());
 						} else {
 							travelLeft = true;
 							if (moveLeftAnimation.isStopped()) {
@@ -190,7 +198,8 @@ public class Player extends LivingEntity {
 			} else {
 				this.image = Main.resourceLoader.player[4];
 			}
-		} else if (e.getKeyCode() == 68 && lastKey != 68 || e.getKeyCode() == 39 && lastKey != 39) {
+		} else if (e.getKeyCode() == 68 && lastKey != 68
+				|| e.getKeyCode() == 39 && lastKey != 39) {
 			// D Key
 			if (this.image.equals(Main.resourceLoader.player[7])) {
 
@@ -203,7 +212,11 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
-							dEnt.hit(stats.strength);
+							dEnt.hit(stats.getStrength());
+						} else if (entity.getType() == EntityType.ENEMY
+								&& !entity.getPassable()) {
+							Mob mob = (Mob) entity;
+							mob.hit(stats.getStrength());
 						} else {
 							travelRight = true;
 							if (moveRightAnimation.isStopped()) {
@@ -234,7 +247,8 @@ public class Player extends LivingEntity {
 			}
 		}
 
-		if (e.getKeyCode() == 87 && lastKey != 87 || e.getKeyCode() == 38 && lastKey != 38) {
+		if (e.getKeyCode() == 87 && lastKey != 87 || e.getKeyCode() == 38
+				&& lastKey != 38) {
 			// W Key
 			if (this.image.equals(Main.resourceLoader.player[9])) {
 				if (map.getTiles()[tile.getTileX()][tile.getTileY() - 1]
@@ -246,8 +260,13 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
-							dEnt.hit(stats.strength);
+							dEnt.hit(stats.getStrength());
+						} else if (entity.getType() == EntityType.ENEMY
+								&& !entity.getPassable()) {
+							Mob mob = (Mob) entity;
+							mob.hit(stats.getStrength());
 						} else {
+
 							travelUp = true;
 							if (moveUpAnimation.isStopped()) {
 								Main.resourceLoader
@@ -276,7 +295,8 @@ public class Player extends LivingEntity {
 			} else {
 				this.image = Main.resourceLoader.player[9];
 			}
-		} else if (e.getKeyCode() == 83 && lastKey != 83 || e.getKeyCode() == 40 && lastKey != 40) {
+		} else if (e.getKeyCode() == 83 && lastKey != 83
+				|| e.getKeyCode() == 40 && lastKey != 40) {
 			// S Key
 			if (this.image.equals(Main.resourceLoader.player[0])) {
 				if (map.getTiles()[tile.getTileX()][tile.getTileY() + 1]
@@ -288,7 +308,11 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
-							dEnt.hit(stats.strength);
+							dEnt.hit(stats.getStrength());
+						} else if (entity.getType() == EntityType.ENEMY
+								&& !entity.getPassable()) {
+							Mob mob = (Mob) entity;
+							mob.hit(stats.getStrength());
 						} else {
 							travelDown = true;
 							if (moveDownAnimation.isStopped()) {
@@ -345,4 +369,7 @@ public class Player extends LivingEntity {
 		return rect;
 	}
 
+	public Stats getStats() {
+		return this.stats;
+	}
 }

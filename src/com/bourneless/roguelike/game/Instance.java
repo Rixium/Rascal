@@ -13,6 +13,7 @@ public class Instance {
 
 	private Map map;
 	private Minimap miniMap;
+	private UI ui;
 
 	private Player player;
 
@@ -32,6 +33,7 @@ public class Instance {
 		xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
 		yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
 		player.setTile(player.getTile());
+		ui = new UI(player);
 
 		ready = true;
 	}
@@ -50,6 +52,7 @@ public class Instance {
 
 		map.update(xOffset, yOffset);
 		player.update(xOffset, yOffset, map);
+		ui.update();
 		miniMap.update(xOffset, yOffset);
 	}
 
@@ -57,6 +60,7 @@ public class Instance {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
 		map.paint(g);
+		ui.paint(g);
 		miniMap.paint(g);
 	}
 

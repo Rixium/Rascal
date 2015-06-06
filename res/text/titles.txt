@@ -1,0 +1,14 @@
+Fairy
+Knight
+King
+Queen
+Peasant
+Freak
+Lord
+Monarch
+Emperor
+Duke
+Prince
+Earl
+Admiral
+Elder

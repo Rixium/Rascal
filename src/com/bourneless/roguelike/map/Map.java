@@ -7,7 +7,9 @@ import java.util.Random;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
+import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.destroyableentity.Door;
+import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
@@ -280,6 +282,8 @@ public class Map {
 
 		}
 
+		populateMap();
+
 		boolean hasPlayer = false;
 
 		int spawnPlayer = 0;
@@ -308,11 +312,37 @@ public class Map {
 
 	}
 
+	public void populateMap() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
+					int spawnMonster = random.nextInt(10);
+					if (spawnMonster == 1) {
+						Mob monster = new Mob(tiles[i][j],
+								Main.resourceLoader.monster);
+						tiles[i][j].setLayer(0);
+						tiles[i][j].addEntity(monster);
+						entities.add(monster);
+					}
+				}
+			}
+		}
+	}
+
 	public void update(int xOffset, int yOffset) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		for (Entity entity : entities) {
 			entity.update(xOffset, yOffset, this);
+
+			if (entity.getType() == EntityType.ENEMY) {
+				Mob mob = (Mob) entity;
+				if (mob.getDead()) {
+					player.getStats().addExperience(mob.getExperience());
+					entities.remove(entity);
+					break;
+				}
+			}
 		}
 	}
 

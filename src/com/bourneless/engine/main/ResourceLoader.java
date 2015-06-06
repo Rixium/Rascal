@@ -35,6 +35,8 @@ public class ResourceLoader {
 
 	// Entities
 
+	public BufferedImage monster;
+
 	// Player
 
 	public BufferedImage[] player;
@@ -61,6 +63,14 @@ public class ResourceLoader {
 	public BufferedImage[] moveUp = new BufferedImage[3];
 	public BufferedImage[] moveDown = new BufferedImage[3];
 
+	// UI
+
+	public BufferedImage healthBar;
+
+	// Portraits
+
+	public BufferedImage[] playerPortraits = new BufferedImage[1];
+
 	// Music
 
 	public Clip menuMusic;
@@ -72,6 +82,8 @@ public class ResourceLoader {
 
 	public Clip walkSounds[] = new Clip[4];
 
+	public Clip monsterDeath[] = new Clip[4];
+
 	// Fonts
 
 	public Font gameFont;
@@ -79,6 +91,9 @@ public class ResourceLoader {
 	// Text
 
 	public ArrayList<String> loadingText = new ArrayList<String>();
+	public ArrayList<String> names = new ArrayList<String>();
+	public ArrayList<String> specialities = new ArrayList<String>();
+	public ArrayList<String> titles = new ArrayList<String>();
 
 	public ResourceLoader() {
 		splashImage = getBufferedImage("res/engine/splash.png");
@@ -94,6 +109,10 @@ public class ResourceLoader {
 		exitGameButtonImage = getBufferedImage("res/menu/buttons/exitGameButton.png");
 
 		// Entities
+
+		// Monsters
+
+		monster = getBufferedImage("res/entity/mob/monster.png");
 
 		// Tiles
 
@@ -197,6 +216,19 @@ public class ResourceLoader {
 		walkSounds[2] = loadClip("/audio/walk/w3.wav");
 		walkSounds[3] = loadClip("/audio/walk/w4.wav");
 
+		monsterDeath[0] = loadClip("/audio/mob/death/1.wav");
+		monsterDeath[1] = loadClip("/audio/mob/death/2.wav");
+		monsterDeath[2] = loadClip("/audio/mob/death/3.wav");
+		monsterDeath[3] = loadClip("/audio/mob/death/4.wav");
+
+		// UI
+
+		healthBar = getBufferedImage("res/ui/healthBar.png");
+
+		// Portraits
+
+		playerPortraits[0] = getBufferedImage("res/ui/portraits/1.png");
+
 		// Fonts
 
 		try {
@@ -220,6 +252,45 @@ public class ResourceLoader {
 
 		while (s.hasNextLine()) {
 			loadingText.add(s.nextLine());
+		}
+		s.close();
+
+		// Names
+
+		try {
+			s = new Scanner(new File("res/text/names.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		while (s.hasNextLine()) {
+			names.add(s.nextLine());
+		}
+		s.close();
+
+		// Specialities
+
+		try {
+			s = new Scanner(new File("res/text/specialities.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		while (s.hasNextLine()) {
+			specialities.add(s.nextLine());
+		}
+		s.close();
+
+		// Titles
+
+		try {
+			s = new Scanner(new File("res/text/titles.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		while (s.hasNextLine()) {
+			titles.add(s.nextLine());
 		}
 		s.close();
 

@@ -45,12 +45,10 @@ public class FieldOfView {
 				}
 
 				if (map.getTiles()[(int) ox][(int) oy].hasEntity()) {
-					for (i = 0; i < map.getTiles()[(int) ox][(int) oy]
-							.getEntities().size(); i++) {
-						if (map.getTiles()[(int) ox][(int) oy].getEntities()
-								.get(i).getSolid()
-								&& !map.getTiles()[(int) ox][(int) oy]
-										.getEntities().get(i).getPassable()) {
+					for (Entity entity : map.getTiles()[(int) ox][(int) oy]
+							.getEntities()) {
+						if (entity.getType() == EntityType.BREAKABLE
+								&& !entity.getPassable()) {
 							return;
 						}
 					}
