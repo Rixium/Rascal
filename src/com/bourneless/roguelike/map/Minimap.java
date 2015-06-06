@@ -34,12 +34,12 @@ public class Minimap {
 
 	public void paint(Graphics2D g) {
 		if (showMap) {
-
 			if (!hasDrawn) {
 				Graphics2D g2d = imageMap.createGraphics();
 				for (int i = 0; i < map.getTiles().length; i++) {
 					for (int j = 0; j < map.getTiles()[i].length; j++) {
-						if (map.getTiles()[i][j].getTileClass() == TileClass.FLOOR) {
+						if (map.getTiles()[i][j].getTileClass() == TileClass.FLOOR
+								&& map.getTiles()[i][j].getSeen()) {
 							g2d.drawImage(Main.resourceLoader.tiles[map
 									.getTiles()[i][j].getTileType()], map
 									.getTiles()[i][j].getTileX(), map
