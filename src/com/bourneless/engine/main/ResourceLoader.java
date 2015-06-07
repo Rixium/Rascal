@@ -5,8 +5,10 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,6 +17,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class ResourceLoader {
 
@@ -34,7 +40,7 @@ public class ResourceLoader {
 
 	// Entities
 
-	public BufferedImage monster;
+	public BufferedImage[] monsterImages = new BufferedImage[100];
 
 	// Player
 
@@ -100,6 +106,11 @@ public class ResourceLoader {
 
 	private ClassLoader cl = this.getClass().getClassLoader();
 
+	// Date Files
+
+	public JSONParser parser = new JSONParser();
+	public JSONArray monsters;
+
 	public ResourceLoader() {
 		splashImage = getBufferedImage("/engine/splash.png");
 		icon = getBufferedImage("/client/icon.png");
@@ -116,8 +127,6 @@ public class ResourceLoader {
 		// Entities
 
 		// Monsters
-
-		monster = getBufferedImage("/entity/mob/monster.png");
 
 		// Tiles
 
@@ -200,6 +209,20 @@ public class ResourceLoader {
 
 		sideDoor[0] = getBufferedImage("/entity/door/sideDoor1.png");
 		sideDoor[1] = getBufferedImage("/entity/door/sideDoor2.png");
+
+		BufferedImage monsterSheet = getBufferedImage("/entity/mob/monsters.png");
+
+		rows = 10;
+		cols = 10;
+		iteration = 0;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				monsterImages[iteration] = monsterSheet.getSubimage(j * 64,
+						i * 64, 64, 64);
+				iteration++;
+			}
+		}
 
 		// Music
 
@@ -302,6 +325,19 @@ public class ResourceLoader {
 
 		}
 		s.close();
+
+		// JSON
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				ResourceLoader.class.getResourceAsStream("/data/monsters.txt")));
+
+		try {
+			monsters = (JSONArray) parser.parse(reader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 	}
 

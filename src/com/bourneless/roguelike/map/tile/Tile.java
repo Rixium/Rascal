@@ -134,6 +134,11 @@ public class Tile {
 		this.hasEntity = true;
 		if (entity.getType() == EntityType.PLAYER) {
 			this.layer = 1;
+			this.passable = false;
+			entityLayer = 3;
+		} else if (entity.getType() == EntityType.ENEMY) {
+			this.layer = 1;
+			this.passable = false;
 			entityLayer = 3;
 		} else {
 			this.layer = 1;
@@ -145,6 +150,9 @@ public class Tile {
 		entities.remove(entity);
 		if (entity.getType() == EntityType.PLAYER && entities.size() > 0) {
 			this.layer = 1;
+			this.passable = true;
+		} else if (entity.getType() == EntityType.ENEMY && entities.size() > 0) {
+			this.passable = true;
 		} else if (entities.size() == 0) {
 			hasEntity = false;
 			passable = true;

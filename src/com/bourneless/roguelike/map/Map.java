@@ -11,6 +11,7 @@ import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.destroyableentity.Door;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
+import com.bourneless.roguelike.game.Instance;
 import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 import com.bourneless.roguelike.map.tile.TileType;
@@ -339,7 +340,7 @@ public class Map {
 					if (spawnMonster == 1) {
 						if (tiles[i][j].getEntities().isEmpty()) {
 							Mob monster = new Mob(tiles[i][j],
-									Main.resourceLoader.monster);
+									Main.resourceLoader.monsterImages[0]);
 							tiles[i][j].setLayer(0);
 							tiles[i][j].addEntity(monster);
 							entities.add(monster);
@@ -350,22 +351,25 @@ public class Map {
 		}
 	}
 
-	public void update(int xOffset, int yOffset) {
+	public void update(int xOffset, int yOffset, Instance instance) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		for (Entity entity : entities) {
-			entity.update(xOffset, yOffset, this);
-
-			if (entity.getType() == EntityType.ENEMY) {
-				Mob mob = (Mob) entity;
-				if (mob.getDead()) {
-					player.getStats().addExperience(mob.getExperience());
-					entities.remove(mob);
-					mob.getTile().removeEntity(mob);
-					break;
+			if (entity.getType() != EntityType.PLAYER) {
+				entity.update(xOffset, yOffset, this, instance);
+				if (entity.getType() == EntityType.ENEMY) {
+					Mob mob = (Mob) entity;
+					if (mob.getDead()) {
+						player.getStats().addExperience(
+								mob.getExperienceWorth());
+						entities.remove(mob);
+						mob.getTile().removeEntity(mob);
+						break;
+					}
 				}
 			}
 		}
+		instance.setPlayerTurn(true);
 	}
 
 	public void paint(Graphics2D g) {

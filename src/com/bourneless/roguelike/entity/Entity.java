@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.roguelike.game.Instance;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
 
@@ -37,7 +38,7 @@ public class Entity {
 		this.type = type;
 	}
 
-	public void update(int xOffset, int yOffset, Map map) {
+	public void update(int xOffset, int yOffset, Map map, Instance instance) {
 		this.layer = tile.getTileY();
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;

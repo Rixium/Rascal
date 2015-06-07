@@ -14,6 +14,7 @@ public class Instance {
 	private Map map;
 	private Minimap miniMap;
 	private UI ui;
+	private boolean playerTurn = true;
 
 	private Player player;
 
@@ -50,9 +51,12 @@ public class Instance {
 			yOffset += camSpeed;
 		}
 
-		map.update(xOffset, yOffset);
-		player.update(xOffset, yOffset, map);
-		ui.update();
+		map.update(xOffset, yOffset, this);
+
+		if (playerTurn) {
+			player.update(xOffset, yOffset, map, this);
+		}
+
 		miniMap.update(xOffset, yOffset);
 	}
 
@@ -87,6 +91,14 @@ public class Instance {
 
 	public boolean isReady() {
 		return this.ready;
+	}
+
+	public boolean getPlayerTurn() {
+		return this.playerTurn;
+	}
+
+	public void setPlayerTurn(boolean bool) {
+		this.playerTurn = bool;
 	}
 
 }

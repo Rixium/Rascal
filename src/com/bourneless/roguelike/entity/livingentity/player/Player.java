@@ -15,6 +15,7 @@ import com.bourneless.roguelike.entity.FieldOfView;
 import com.bourneless.roguelike.entity.destroyableentity.DestroyableEntity;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
+import com.bourneless.roguelike.game.Instance;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
 
@@ -24,8 +25,8 @@ public class Player extends LivingEntity {
 	private boolean travelUp, travelDown, travelLeft, travelRight;
 	private int playerXOff, playerYOff;
 
-	private int walkSpeed = 2;
-	private int viewDistance = 5;
+	private int walkSpeed = 4;
+	private int viewDistance = 6;
 
 	private BufferedImage[] moveLeft = Main.resourceLoader.moveLeft;
 	private BufferedImage[] moveRight = Main.resourceLoader.moveRight;
@@ -43,6 +44,7 @@ public class Player extends LivingEntity {
 
 	private FieldOfView fOV = new FieldOfView();
 	private Random random = new Random();
+	private Instance instance;
 
 	private Stats stats;
 
@@ -76,7 +78,8 @@ public class Player extends LivingEntity {
 		}
 	}
 
-	public void update(int xOffset, int yOffset, Map map) {
+	public void update(int xOffset, int yOffset, Map map, Instance instance) {
+		this.instance = instance;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		fOV.CheckFieldOfView(map, this);
@@ -95,6 +98,7 @@ public class Player extends LivingEntity {
 				tile = newTile;
 				this.layer = tile.getTileY();
 				playerXOff = 0;
+				instance.setPlayerTurn(false);
 			}
 		} else if (travelRight) {
 			if (pos.x + playerXOff < map.getTiles()[tile.getTileX() + 1][tile
@@ -110,8 +114,8 @@ public class Player extends LivingEntity {
 				newTile.addEntity(this);
 				tile.removeEntity(this);
 				tile = newTile;
-
 				playerXOff = 0;
+				instance.setPlayerTurn(false);
 			}
 		} else if (travelUp) {
 			if (pos.y + playerYOff > map.getTiles()[tile.getTileX()][tile
@@ -126,8 +130,8 @@ public class Player extends LivingEntity {
 				this.layer = tile.getTileY();
 				tile.removeEntity(this);
 				tile = newTile;
-
 				playerYOff = 0;
+				instance.setPlayerTurn(false);
 			}
 		} else if (travelDown) {
 
@@ -144,8 +148,8 @@ public class Player extends LivingEntity {
 				newTile.addEntity(this);
 				tile.removeEntity(this);
 				tile = newTile;
-
 				playerYOff = 0;
+				instance.setPlayerTurn(false);
 			}
 		}
 	}
@@ -165,11 +169,17 @@ public class Player extends LivingEntity {
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
 							dEnt.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
 							Mob mob = (Mob) entity;
-							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
+							Main.resourceLoader
+									.playClip(
+											Main.resourceLoader.hitSounds[random
+													.nextInt(Main.resourceLoader.hitSounds.length)],
+											1f, false);
 							mob.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else {
 							travelLeft = true;
 							if (moveLeftAnimation.isStopped()) {
@@ -179,6 +189,7 @@ public class Player extends LivingEntity {
 														.nextInt(Main.resourceLoader.walkSounds.length)],
 												.5f, false);
 								moveLeftAnimation.start(false);
+								instance.setPlayerTurn(false);
 							}
 						}
 					}
@@ -214,11 +225,17 @@ public class Player extends LivingEntity {
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
 							dEnt.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
 							Mob mob = (Mob) entity;
-							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
+							Main.resourceLoader
+									.playClip(
+											Main.resourceLoader.hitSounds[random
+													.nextInt(Main.resourceLoader.hitSounds.length)],
+											1f, false);
 							mob.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else {
 							travelRight = true;
 							if (moveRightAnimation.isStopped()) {
@@ -263,11 +280,17 @@ public class Player extends LivingEntity {
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
 							dEnt.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
-							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
+							Main.resourceLoader
+									.playClip(
+											Main.resourceLoader.hitSounds[random
+													.nextInt(Main.resourceLoader.hitSounds.length)],
+											1f, false);
 							Mob mob = (Mob) entity;
 							mob.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else {
 
 							travelUp = true;
@@ -312,11 +335,17 @@ public class Player extends LivingEntity {
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
 							dEnt.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
-							Main.resourceLoader.playClip(Main.resourceLoader.hitSounds[random.nextInt(Main.resourceLoader.hitSounds.length)], 1f, false);
+							Main.resourceLoader
+									.playClip(
+											Main.resourceLoader.hitSounds[random
+													.nextInt(Main.resourceLoader.hitSounds.length)],
+											1f, false);
 							Mob mob = (Mob) entity;
 							mob.hit(stats.getStrength());
+							instance.setPlayerTurn(false);
 						} else {
 							travelDown = true;
 							if (moveDownAnimation.isStopped()) {

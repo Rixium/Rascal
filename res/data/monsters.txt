@@ -1,0 +1,37 @@
+[
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 1
+		}
+		
+		{
+			"name" : "Imp",
+			"health" : 150,
+			"strength" : 2,
+			"image" : 1,
+			"experience_worth" : 30,
+			"rarity" : 3
+		}
+		
+		{
+			"name" : "Monkey",
+			"health" : 60,
+			"strength" : 1,
+			"image" : 2,
+			"experience_worth" : 10,
+			"rarity" : 1
+		}
+		
+		{
+			"name" : "Angry Carrot",
+			"health" : 200,
+			"strength" : 3,
+			"image" : 3,
+			"experience_worth" : 40,
+			"rarity" : 10
+		}
+]
