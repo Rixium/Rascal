@@ -52,10 +52,6 @@ public class ResourceLoader {
 	public BufferedImage[] door;
 	public BufferedImage[] sideDoor = new BufferedImage[2];
 
-	// Map
-
-	public BufferedImage[] rooms;
-
 	// Animations
 
 	public BufferedImage[] moveLeft = new BufferedImage[3];
@@ -98,30 +94,32 @@ public class ResourceLoader {
 	public ArrayList<String> specialities = new ArrayList<String>();
 	public ArrayList<String> titles = new ArrayList<String>();
 
+	private ClassLoader cl = this.getClass().getClassLoader();
+
 	public ResourceLoader() {
-		splashImage = getBufferedImage("res/engine/splash.png");
-		icon = getBufferedImage("res/client/icon.png");
+		splashImage = getBufferedImage("/engine/splash.png");
+		icon = getBufferedImage("/client/icon.png");
 
 		// Menu
 
-		menuBackground = getBufferedImage("res/menu/menuImage.png");
+		menuBackground = getBufferedImage("/menu/menuImage.png");
 
 		// Menu Buttons
 
-		startGameButtonImage = getBufferedImage("res/menu/buttons/newGameButton.png");
-		exitGameButtonImage = getBufferedImage("res/menu/buttons/exitGameButton.png");
+		startGameButtonImage = getBufferedImage("/menu/buttons/newGameButton.png");
+		exitGameButtonImage = getBufferedImage("/menu/buttons/exitGameButton.png");
 
 		// Entities
 
 		// Monsters
 
-		monster = getBufferedImage("res/entity/mob/monster.png");
+		monster = getBufferedImage("/entity/mob/monster.png");
 
 		// Tiles
 
-		fog = getBufferedImage("res/mechanics/fog.png");
+		fog = getBufferedImage("/mechanics/fog.png");
 
-		BufferedImage wallTileSheet = getBufferedImage("res/tile/wallTiles.png");
+		BufferedImage wallTileSheet = getBufferedImage("/tile/wallTiles.png");
 		int rows = 10;
 		int cols = 10;
 		int iteration = 0;
@@ -135,7 +133,7 @@ public class ResourceLoader {
 			}
 		}
 
-		BufferedImage tileSheet = getBufferedImage("res/tile/tileSheet.png");
+		BufferedImage tileSheet = getBufferedImage("/tile/tileSheet.png");
 		rows = 1;
 		cols = 5;
 		iteration = 0;
@@ -150,7 +148,7 @@ public class ResourceLoader {
 		}
 
 		// Player Animations
-		BufferedImage playerSheet = getBufferedImage("res/entity/player/playerSheet.png");
+		BufferedImage playerSheet = getBufferedImage("/entity/player/playerSheet.png");
 		rows = 4;
 		cols = 3;
 		iteration = 0;
@@ -182,7 +180,7 @@ public class ResourceLoader {
 
 		// Door
 
-		BufferedImage doorSheet = getBufferedImage("res/entity/door/doorSheet.png");
+		BufferedImage doorSheet = getBufferedImage("/entity/door/doorSheet.png");
 		rows = 1;
 		cols = 2;
 		iteration = 0;
@@ -196,14 +194,8 @@ public class ResourceLoader {
 			}
 		}
 
-		sideDoor[0] = getBufferedImage("res/entity/door/sideDoor1.png");
-		sideDoor[1] = getBufferedImage("res/entity/door/sideDoor2.png");
-
-		// Map
-
-		rooms = new BufferedImage[2];
-		rooms[0] = getBufferedImage("res/rooms/room1.png");
-		rooms[1] = getBufferedImage("res/rooms/room2.png");
+		sideDoor[0] = getBufferedImage("/entity/door/sideDoor1.png");
+		sideDoor[1] = getBufferedImage("/entity/door/sideDoor2.png");
 
 		// Music
 
@@ -232,11 +224,11 @@ public class ResourceLoader {
 
 		// UI
 
-		healthBar = getBufferedImage("res/ui/healthBar.png");
+		healthBar = getBufferedImage("/ui/healthBar.png");
 
 		// Portraits
 
-		playerPortraits[0] = getBufferedImage("res/ui/portraits/1.png");
+		playerPortraits[0] = getBufferedImage("/ui/portraits/1.png");
 
 		// Fonts
 
@@ -244,7 +236,7 @@ public class ResourceLoader {
 			GraphicsEnvironment ge = GraphicsEnvironment
 					.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(
-					"res/fonts/font.ttf")));
+					"/fonts/font.ttf")));
 		} catch (IOException | FontFormatException e) {
 			// Handle exception
 		}
@@ -253,11 +245,7 @@ public class ResourceLoader {
 
 		Scanner s = null;
 
-		try {
-			s = new Scanner(new File("res/text/wittyLines.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/wittyLines.txt"));
 
 		while (s.hasNextLine()) {
 			loadingText.add(s.nextLine());
@@ -266,11 +254,7 @@ public class ResourceLoader {
 
 		// Names
 
-		try {
-			s = new Scanner(new File("res/text/names.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/names.txt"));
 
 		while (s.hasNextLine()) {
 			names.add(s.nextLine());
@@ -279,11 +263,7 @@ public class ResourceLoader {
 
 		// Specialities
 
-		try {
-			s = new Scanner(new File("res/text/specialities.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/specialities.txt"));
 
 		while (s.hasNextLine()) {
 			specialities.add(s.nextLine());
@@ -292,11 +272,7 @@ public class ResourceLoader {
 
 		// Titles
 
-		try {
-			s = new Scanner(new File("res/text/titles.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/titles.txt"));
 
 		while (s.hasNextLine()) {
 			titles.add(s.nextLine());
@@ -309,8 +285,7 @@ public class ResourceLoader {
 		Clip clip = null;
 
 		try {
-			AudioInputStream audioIn = AudioSystem
-					.getAudioInputStream(getClass().getResource(filename));
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(ResourceLoader.class.getResource(filename));
 			clip = AudioSystem.getClip();
 			clip.open(audioIn);
 		} catch (Exception e) {
@@ -346,7 +321,8 @@ public class ResourceLoader {
 	public static Image getImage(String url) {
 
 		try {
-			return ImageIO.read(new File(url));
+			return ImageIO.read(Main.resourceLoader.getClass().getClassLoader()
+					.getResourceAsStream(url));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -356,9 +332,9 @@ public class ResourceLoader {
 	}
 
 	public static BufferedImage getBufferedImage(String url) {
-
 		try {
-			return ImageIO.read(new File(url));
+			return ImageIO.read(ResourceLoader.class.getResourceAsStream(url));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
