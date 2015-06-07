@@ -8,11 +8,16 @@ import java.awt.event.MouseMotionListener;
 
 import com.bourneless.engine.main.Main;
 
-public class InputListener implements KeyListener, MouseMotionListener, MouseListener {
+public class InputListener implements KeyListener, MouseMotionListener,
+		MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Main.game.getScreen().mouseClicked(e);
+		if (Main.game.getLoaded()) {
+			if (Main.game.getScreen() != null) {
+				Main.game.getScreen().mouseClicked(e);
+			}
+		}
 	}
 
 	@Override
@@ -42,17 +47,29 @@ public class InputListener implements KeyListener, MouseMotionListener, MouseLis
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		Main.game.getScreen().mouseMoved(e);
+		if (Main.game.getLoaded()) {
+			if (Main.game.getScreen() != null) {
+				Main.game.getScreen().mouseMoved(e);
+			}
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		Main.game.getScreen().keyPressed(e);
+		if (Main.game.getLoaded()) {
+			if (Main.game.getScreen() != null) {
+				Main.game.getScreen().keyPressed(e);
+			}
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		Main.game.getScreen().keyReleased(e);
+		if (Main.game.getLoaded()) {
+			if (Main.game.getScreen() != null) {
+				Main.game.getScreen().keyReleased(e);
+			}
+		}
 	}
 
 	@Override

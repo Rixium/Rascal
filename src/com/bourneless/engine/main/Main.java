@@ -15,7 +15,7 @@ public class Main {
 	public final static int GAME_WIDTH = 640 * SCALE; // Default Width.
 	public static final int GAME_HEIGHT = 360 * SCALE; // Default Height.
 
-	public static ResourceLoader resourceLoader = new ResourceLoader();
+	public static ResourceLoader resourceLoader;
 	public static JFrame frame = new JFrame();
 	public static Game game = new Game(frame, GAME_WIDTH, GAME_HEIGHT);
 
@@ -27,6 +27,7 @@ public class Main {
 		game.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 		frame.setLayout(new BorderLayout());
 		frame.add(game);
+		resourceLoader = new ResourceLoader();
 		frame.setTitle(title); // Set the title of JFrame.
 		frame.setFocusable(true);
 		frame.setResizable(false); // Stop the window getting resized.
@@ -41,5 +42,6 @@ public class Main {
 		game.passInsets(frame.getInsets());
 		frame.createBufferStrategy(3);
 		frame.setIconImage(Main.resourceLoader.icon);
+		
 	}
 }

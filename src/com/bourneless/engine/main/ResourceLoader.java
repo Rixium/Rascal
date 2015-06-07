@@ -6,7 +6,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -63,6 +62,10 @@ public class ResourceLoader {
 
 	public BufferedImage healthBar;
 
+	public BufferedImage statScreen;
+
+	public BufferedImage paused;
+
 	// Portraits
 
 	public BufferedImage[] playerPortraits = new BufferedImage[1];
@@ -93,6 +96,7 @@ public class ResourceLoader {
 	public ArrayList<String> names = new ArrayList<String>();
 	public ArrayList<String> specialities = new ArrayList<String>();
 	public ArrayList<String> titles = new ArrayList<String>();
+	public ArrayList<String> randomMessages = new ArrayList<String>();
 
 	private ClassLoader cl = this.getClass().getClassLoader();
 
@@ -225,6 +229,8 @@ public class ResourceLoader {
 		// UI
 
 		healthBar = getBufferedImage("/ui/healthBar.png");
+		statScreen = getBufferedImage("/ui/menus/characterStats.png");
+		paused = getBufferedImage("/ui/menus/pausedOverlay.png");
 
 		// Portraits
 
@@ -245,7 +251,9 @@ public class ResourceLoader {
 
 		Scanner s = null;
 
-		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/wittyLines.txt"));
+		s = new Scanner(
+				ResourceLoader.class
+						.getResourceAsStream("/text/wittyLines.txt"));
 
 		while (s.hasNextLine()) {
 			loadingText.add(s.nextLine());
@@ -254,7 +262,8 @@ public class ResourceLoader {
 
 		// Names
 
-		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/names.txt"));
+		s = new Scanner(
+				ResourceLoader.class.getResourceAsStream("/text/names.txt"));
 
 		while (s.hasNextLine()) {
 			names.add(s.nextLine());
@@ -263,7 +272,9 @@ public class ResourceLoader {
 
 		// Specialities
 
-		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/specialities.txt"));
+		s = new Scanner(
+				ResourceLoader.class
+						.getResourceAsStream("/text/specialities.txt"));
 
 		while (s.hasNextLine()) {
 			specialities.add(s.nextLine());
@@ -272,10 +283,23 @@ public class ResourceLoader {
 
 		// Titles
 
-		s = new Scanner(ResourceLoader.class.getResourceAsStream("/text/titles.txt"));
+		s = new Scanner(
+				ResourceLoader.class.getResourceAsStream("/text/titles.txt"));
 
 		while (s.hasNextLine()) {
 			titles.add(s.nextLine());
+		}
+		s.close();
+
+		// Random Messages
+
+		s = new Scanner(
+				ResourceLoader.class
+						.getResourceAsStream("/text/randomMessages.txt"));
+
+		while (s.hasNextLine()) {
+			randomMessages.add(s.nextLine());
+
 		}
 		s.close();
 
@@ -285,7 +309,9 @@ public class ResourceLoader {
 		Clip clip = null;
 
 		try {
-			AudioInputStream audioIn = AudioSystem.getAudioInputStream(ResourceLoader.class.getResource(filename));
+			AudioInputStream audioIn = AudioSystem
+					.getAudioInputStream(ResourceLoader.class
+							.getResource(filename));
 			clip = AudioSystem.getClip();
 			clip.open(audioIn);
 		} catch (Exception e) {

@@ -1,6 +1,8 @@
 package com.bourneless.engine.main;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -8,7 +10,6 @@ import java.awt.Insets;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -28,9 +29,9 @@ public class Game extends JPanel implements Runnable {
 	private int updates = 0;
 	public static int width;
 	public static int height;
-	
+
 	// Insets
-	
+
 	private int top, left, bottom, right;
 
 	private BufferedImage image;
@@ -41,7 +42,12 @@ public class Game extends JPanel implements Runnable {
 	private int resolution = 0;
 
 	private float durationMS = 0;
-	
+
+	private boolean loaded = false;
+	private long loadPerc = 0;
+	private boolean loading = false;
+	private Font loadingFont = new Font("A Font With Serifs", Font.PLAIN, 50);
+
 	@SuppressWarnings("static-access")
 	public Game(JFrame frame, int width, int height) {
 
@@ -60,22 +66,65 @@ public class Game extends JPanel implements Runnable {
 
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-		currentScreen = new SplashScreen();
-
 		running = true;
 		Thread thread = new Thread(this);
 		thread.start();
 	}
 
 	public void update() {
-		currentScreen.update();
+		if (loaded) {
+			currentScreen.update();
+		}
+
+		if (!loaded && !loading) {
+			int i = 0;
+			loading = true;
+			while (i < 100) {
+				loadPerc = i;
+				i++;
+				draw();
+				try {
+					thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+			}
+			if (loadPerc >= 99) {
+				System.out.println("Loaded");
+				loaded = true;
+				currentScreen = new SplashScreen();
+			}
+		}
 	}
 
 	public void blit() {
 		float current = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D) image.createGraphics(); // Create graphics of g2d.
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
-		currentScreen.paint(g2d);
+		if (loaded) {
+			currentScreen.paint(g2d);
+		} else {
+			g2d.setColor(Color.black);
+			g2d.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
+			g2d.setColor(Color.WHITE);
+			g2d.setFont(loadingFont);
+			int stringLength = (int) g2d.getFontMetrics()
+					.getStringBounds("Loading", g2d).getWidth();
+			int stringHeight = (int) g2d.getFontMetrics()
+					.getStringBounds("Loading", g2d).getHeight();
+			int start = Main.GAME_WIDTH / 2 - stringLength / 2;
+			int xPos = Main.GAME_HEIGHT / 2 - stringHeight / 2;
+			g2d.drawString("Loading", start, xPos);
+
+			stringLength = (int) g2d.getFontMetrics()
+					.getStringBounds(loadPerc + "%", g2d).getWidth();
+			stringHeight = (int) g2d.getFontMetrics()
+					.getStringBounds(loadPerc + "%", g2d).getHeight();
+			start = Main.GAME_WIDTH / 2 - stringLength / 2;
+			xPos = Main.GAME_HEIGHT / 2 + stringHeight / 2;
+			g2d.drawString(loadPerc + "%", start, xPos);
+		}
 		g2d.dispose();
 	}
 
@@ -139,12 +188,17 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public Screen getScreen() {
-		return this.currentScreen;
+		if (loaded) {
+			return this.currentScreen;
+		}
+		return null;
 	}
 
 	public void setScreen(Screen screen) {
-		this.currentScreen = screen;
-		System.gc();
+		if (loaded) {
+			this.currentScreen = screen;
+			System.gc();
+		}
 	}
 
 	public void passInsets(Insets insets) {
@@ -154,5 +208,8 @@ public class Game extends JPanel implements Runnable {
 		bottom = insets.bottom;
 	}
 
+	public boolean getLoaded() {
+		return loaded;
+	}
 
 }

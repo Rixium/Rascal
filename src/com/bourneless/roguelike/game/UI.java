@@ -15,6 +15,7 @@ public class UI {
 	private Font font;
 
 	private int playerPortrait;
+	private boolean showCharacterScreen = false;
 
 	public UI(Player player) {
 		font = new Font("A Font With Serifs", Font.PLAIN, 18);
@@ -88,5 +89,40 @@ public class UI {
 
 		g.drawImage(Main.resourceLoader.playerPortraits[playerPortrait], 10,
 				20, null);
+
+		if (showCharacterScreen) {
+			g.drawImage(Main.resourceLoader.statScreen, 20, Main.GAME_HEIGHT
+					/ 2 - Main.resourceLoader.statScreen.getHeight() / 2, null);
+
+			g.setColor(Color.WHITE);
+			g.drawString("Strength: " + player.getStats().strength, 80,
+					Main.GAME_HEIGHT / 2);
+			g.drawString("Constitution: " + player.getStats().constitution, 80,
+					Main.GAME_HEIGHT / 2 + 20);
+			g.drawString("Fortitude: " + player.getStats().fortitude, 80,
+					Main.GAME_HEIGHT / 2 + 40);
+			g.drawString("Reflexes: " + player.getStats().reflexes, 80,
+					Main.GAME_HEIGHT / 2 + 60);
+			g.drawString("Mind: " + player.getStats().mind, 80,
+					Main.GAME_HEIGHT / 2 + 80);
+			g.drawString("Presence: " + player.getStats().presence, 80,
+					Main.GAME_HEIGHT / 2 + 100);
+			g.drawString("Spirit: " + player.getStats().spirit, 80,
+					Main.GAME_HEIGHT / 2 + 120);
+			g.drawString("Sanity: " + player.getStats().sanity, 80,
+					Main.GAME_HEIGHT / 2 + 140);
+			g.drawString("Awareness: " + player.getStats().awareness, 80,
+					Main.GAME_HEIGHT / 2 + 160);
+			g.drawString("Luck: " + player.getStats().luck, 80,
+					Main.GAME_HEIGHT / 2 + 180);
+		}
+	}
+
+	public void showCScreen(boolean bool) {
+		this.showCharacterScreen = bool;
+	}
+
+	public boolean getShowingCScreen() {
+		return this.showCharacterScreen;
 	}
 }

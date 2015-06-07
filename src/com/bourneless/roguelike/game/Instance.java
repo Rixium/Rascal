@@ -72,6 +72,13 @@ public class Instance {
 			miniMap.showMap(false);
 			player.keyPressed(e, map);
 		}
+
+		if (e.getKeyCode() == 67) {
+			miniMap.setDrawn(false);
+			miniMap.showMap(false);
+			player.keyPressed(e, map);
+			ui.showCScreen(!ui.getShowingCScreen());
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
