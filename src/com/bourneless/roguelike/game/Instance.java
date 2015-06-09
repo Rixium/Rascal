@@ -3,8 +3,11 @@ package com.bourneless.roguelike.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.Minimap;
@@ -25,6 +28,8 @@ public class Instance {
 
 	private int camSpeed = 4;
 
+	private ArrayList<Hit> hits = new ArrayList<Hit>();
+
 	public Instance() {
 		map = new Map();
 
@@ -40,6 +45,15 @@ public class Instance {
 	}
 
 	public void update() {
+
+		for (Hit hit : hits) {
+			if (hit.getDead()) {
+				hits.remove(hit);
+				break;
+			}
+			hit.update(xOffset, yOffset);
+		}
+
 		if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() < xOffset) {
 			xOffset -= camSpeed;
 		} else if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() > xOffset) {
@@ -64,11 +78,29 @@ public class Instance {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
 		map.paint(g);
+
+		try {
+			for (Hit hit : hits) {
+				hit.paint(g);
+				if (hit.getDead()) {
+					hits.remove(hit);
+					break;
+				}
+			}
+		} catch (ConcurrentModificationException e) {
+			System.out.println("Hit break.");
+		}
+
 		ui.paint(g);
 		miniMap.paint(g);
 	}
 
 	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == 32) {
+			if (playerTurn) {
+				playerTurn = false;
+			}
+		}
 		if (e.getKeyCode() == 77) {
 			miniMap.showMap(!miniMap.getShowing());
 		} else {
@@ -101,4 +133,7 @@ public class Instance {
 		this.playerTurn = bool;
 	}
 
+	public ArrayList<Hit> getHits() {
+		return this.hits;
+	}
 }

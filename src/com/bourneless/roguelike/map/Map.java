@@ -28,6 +28,8 @@ public class Map {
 	private int xOffset;
 	private int yOffset;
 
+	private int mobSpawnRarity = 20;
+
 	private ArrayList<Room> rooms = new ArrayList<Room>();
 
 	private Player player;
@@ -336,7 +338,7 @@ public class Map {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
-					int spawnMonster = random.nextInt(10);
+					int spawnMonster = random.nextInt(mobSpawnRarity);
 					if (spawnMonster == 1) {
 						if (tiles[i][j].getEntities().isEmpty()) {
 							Mob monster = new Mob(tiles[i][j],
@@ -360,6 +362,7 @@ public class Map {
 				if (entity.getType() == EntityType.ENEMY) {
 					Mob mob = (Mob) entity;
 					if (mob.getDead()) {
+						Main.game.getGameStats().totalKills++;
 						player.getStats().addExperience(
 								mob.getExperienceWorth());
 						entities.remove(mob);

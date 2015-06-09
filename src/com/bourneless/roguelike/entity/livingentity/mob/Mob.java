@@ -9,8 +9,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
+import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.game.Instance;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
@@ -42,9 +44,55 @@ public class Mob extends LivingEntity {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 
-		if (!instance.getPlayerTurn()) {
+		turn: if (!instance.getPlayerTurn()) {
+			boolean hasPlayer = false;
+			if (map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
+					.hasEntity()) {
+				for (Entity entity : map.getTiles()[tile.getTileX() - 1][tile
+						.getTileY()].getEntities()) {
+					if (entity.getType() == EntityType.PLAYER) {
+						Player player = (Player) entity;
+						player.hit(this);
+						break turn;
+					}
+				}
+			}
+			if (map.getTiles()[tile.getTileX() + 1][tile.getTileY()]
+					.hasEntity()) {
+				for (Entity entity : map.getTiles()[tile.getTileX() + 1][tile
+						.getTileY()].getEntities()) {
+					if (entity.getType() == EntityType.PLAYER) {
+						Player player = (Player) entity;
+						player.hit(this);
+						break turn;
+					}
+				}
+			}
+			if (map.getTiles()[tile.getTileX()][tile.getTileY() - 1]
+					.hasEntity()) {
+				for (Entity entity : map.getTiles()[tile.getTileX()][tile
+						.getTileY() - 1].getEntities()) {
+					if (entity.getType() == EntityType.PLAYER) {
+						Player player = (Player) entity;
+						player.hit(this);
+						break turn;
+					}
+				}
+			}
+			if (map.getTiles()[tile.getTileX()][tile.getTileY() + 1]
+					.hasEntity()) {
+				for (Entity entity : map.getTiles()[tile.getTileX()][tile
+						.getTileY() + 1].getEntities()) {
+					if (entity.getType() == EntityType.PLAYER) {
+						Player player = (Player) entity;
+						player.hit(this);
+						break turn;
+					}
+				}
+			}
+
 			int getDestination = random.nextInt(2);
-			if (getDestination == 1) {
+			if (getDestination == 1 && !hasPlayer) {
 				int randomTile = random.nextInt(4);
 				Tile newTile;
 				switch (randomTile) {
@@ -59,6 +107,7 @@ public class Mob extends LivingEntity {
 							newTile.addEntity(this);
 							tile.removeEntity(this);
 							tile = newTile;
+							break turn;
 						}
 					}
 					break;
@@ -73,6 +122,7 @@ public class Mob extends LivingEntity {
 							newTile.addEntity(this);
 							tile.removeEntity(this);
 							tile = newTile;
+							break turn;
 						}
 					}
 					break;
@@ -87,6 +137,7 @@ public class Mob extends LivingEntity {
 							newTile.addEntity(this);
 							tile.removeEntity(this);
 							tile = newTile;
+							break turn;
 						}
 					}
 					break;
@@ -101,6 +152,7 @@ public class Mob extends LivingEntity {
 							newTile.addEntity(this);
 							tile.removeEntity(this);
 							tile = newTile;
+							break turn;
 						}
 					}
 					break;
@@ -126,16 +178,6 @@ public class Mob extends LivingEntity {
 					+ yOffset - image.getHeight() / 2, stats.health * 50
 					/ stats.maxHealth, 5);
 		}
-
-		int stringLength = (int) g.getFontMetrics()
-				.getStringBounds(stats.name, g).getWidth();
-		int stringHeight = (int) g.getFontMetrics()
-				.getStringBounds(stats.name, g).getHeight();
-		int start = pos.x + xOffset + image.getWidth() / 2 - stringLength / 2;
-		int xPos = pos.y + yOffset - image.getHeight() / 2 + stringHeight;
-		g.setColor(Color.WHITE);
-		g.drawString(stats.name, start, xPos);
-
 	}
 
 	public boolean getDead() {
@@ -167,6 +209,10 @@ public class Mob extends LivingEntity {
 				this.passable = true;
 			}
 		}
+	}
+
+	public MonsterStats getStats() {
+		return this.stats;
 	}
 
 }

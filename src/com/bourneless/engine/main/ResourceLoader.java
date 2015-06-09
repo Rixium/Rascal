@@ -6,8 +6,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -91,6 +91,9 @@ public class ResourceLoader {
 
 	public Clip hitSounds[] = new Clip[4];
 	public Clip buttonHover;
+
+	public Clip closeBook;
+	public Clip openBook;
 
 	// Fonts
 
@@ -246,6 +249,9 @@ public class ResourceLoader {
 		hitSounds[1] = loadClip("/audio/hit/2.wav");
 		hitSounds[2] = loadClip("/audio/hit/3.wav");
 		hitSounds[3] = loadClip("/audio/hit/4.wav");
+		
+		openBook = loadClip("/audio/ui/openBook.wav");
+		closeBook = loadClip("/audio/ui/closeBook.wav");
 
 		buttonHover = loadClip("/audio/menu/buttonHover.wav");
 
@@ -261,14 +267,18 @@ public class ResourceLoader {
 
 		// Fonts
 
+		InputStream is = ResourceLoader.class
+				.getResourceAsStream("/fonts/font.ttf");
+
 		try {
 			GraphicsEnvironment ge = GraphicsEnvironment
 					.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(
-					"/fonts/font.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, is));
 		} catch (IOException | FontFormatException e) {
 			// Handle exception
 		}
+
+		gameFont = new Font("Calibri", Font.TRUETYPE_FONT, 10);
 
 		// Text
 

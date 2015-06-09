@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import com.bourneless.engine.screen.Screen;
 import com.bourneless.engine.screen.SplashScreen;
+import com.bourneless.roguelike.game.GameStats;
 
 public class Game extends JPanel implements Runnable {
 
@@ -39,7 +40,9 @@ public class Game extends JPanel implements Runnable {
 
 	private Screen currentScreen;
 
-	private int resolution = 0;
+	private int resolution;
+
+	private GameStats gameStats = new GameStats();
 
 	private float durationMS = 0;
 
@@ -177,7 +180,7 @@ public class Game extends JPanel implements Runnable {
 			}
 
 			try {
-				thread.sleep(8);
+				thread.sleep(0);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -210,6 +213,10 @@ public class Game extends JPanel implements Runnable {
 
 	public boolean getLoaded() {
 		return loaded;
+	}
+
+	public GameStats getGameStats() {
+		return this.gameStats;
 	}
 
 }

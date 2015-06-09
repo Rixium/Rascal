@@ -28,6 +28,8 @@ public class MonsterStats {
 	public int awareness = 0;
 	public int luck = 0;
 
+	public int defence = 0;
+
 	public int rarity = 0;
 
 	public int image = 0;
@@ -58,7 +60,7 @@ public class MonsterStats {
 		System.out.println("got monster");
 		this.name = (String) thisMonster.get("name");
 		this.strength = ((Long) thisMonster.get("strength")).intValue();
-
+		this.reflexes = ((Long) thisMonster.get("reflexes")).intValue();
 		this.image = ((Long) thisMonster.get("image")).intValue();
 
 		this.experienceWorth = ((Long) thisMonster.get("experience_worth"))

@@ -29,6 +29,8 @@ public class Entity {
 	protected Map map;
 	protected int layer;
 
+	protected Instance instance;
+
 	protected Rectangle rect;
 
 	public Entity(Tile tile, BufferedImage image, int type) {
@@ -39,6 +41,7 @@ public class Entity {
 	}
 
 	public void update(int xOffset, int yOffset, Map map, Instance instance) {
+		this.instance = instance;
 		this.layer = tile.getTileY();
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;

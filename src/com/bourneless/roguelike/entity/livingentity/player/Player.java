@@ -1,17 +1,22 @@
 package com.bourneless.roguelike.entity.livingentity.player;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.engine.screen.MenuScreen;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.FieldOfView;
+import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.destroyableentity.DestroyableEntity;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
@@ -47,6 +52,10 @@ public class Player extends LivingEntity {
 	private Instance instance;
 
 	private Stats stats;
+	private Vector2 hitPos;
+	private int hit;
+
+	private ArrayList<Hit> hits = new ArrayList<Hit>();
 
 	public Player(Tile tile, BufferedImage image) {
 		super(tile, image, EntityType.PLAYER);
@@ -76,6 +85,7 @@ public class Player extends LivingEntity {
 					pos.y - image.getHeight() / 4 - Tile.size + yOffset
 							+ playerYOff, null);
 		}
+
 	}
 
 	public void update(int xOffset, int yOffset, Map map, Instance instance) {
@@ -404,5 +414,33 @@ public class Player extends LivingEntity {
 
 	public Stats getStats() {
 		return this.stats;
+	}
+
+	public void hit(Mob mob) {
+
+		hit = mob.getStats().strength * random.nextInt(mob.getStats().reflexes)
+				- random.nextInt(stats.fortitude) * random.nextInt(stats.luck);
+
+		while (hit < 0) {
+			hit = mob.getStats().strength
+					* random.nextInt(mob.getStats().reflexes)
+					- random.nextInt(stats.fortitude)
+					* random.nextInt(stats.luck);
+		}
+
+		instance.getHits().add(
+				new Hit(hit, new Vector2(pos.x + image.getWidth() / 2, pos.y
+						- image.getHeight() / 4)));
+
+		System.out.println(mob.getStats().name + " hits for " + hit + "!");
+
+		if (hit > 0) {
+			this.health -= hit;
+		}
+
+		if (this.health <= 0) {
+			Main.game.getGameStats().totalDeaths++;
+			Main.game.setScreen(new MenuScreen());
+		}
 	}
 }

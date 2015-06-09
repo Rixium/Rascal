@@ -7,6 +7,7 @@ import java.util.Random;
 import com.bourneless.engine.main.Main;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.tile.Tile;
+import com.bourneless.roguelike.map.tile.TileType;
 
 public class Room {
 
@@ -38,6 +39,10 @@ public class Room {
 		rect = new Rectangle(x, y, size, size2);
 
 		this.tileType = random.nextInt(Main.resourceLoader.tiles.length);
+
+		while (this.tileType == TileType.TUNNEL) {
+			this.tileType = random.nextInt(Main.resourceLoader.tiles.length);
+		}
 	}
 
 	public Tile[][] getTiles() {

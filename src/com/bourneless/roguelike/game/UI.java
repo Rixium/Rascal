@@ -94,6 +94,8 @@ public class UI {
 			g.drawImage(Main.resourceLoader.statScreen, 20, Main.GAME_HEIGHT
 					/ 2 - Main.resourceLoader.statScreen.getHeight() / 2, null);
 
+			// Left page
+
 			g.setColor(Color.WHITE);
 			g.drawString("Strength: " + player.getStats().strength, 80,
 					Main.GAME_HEIGHT / 2);
@@ -115,11 +117,40 @@ public class UI {
 					Main.GAME_HEIGHT / 2 + 160);
 			g.drawString("Luck: " + player.getStats().luck, 80,
 					Main.GAME_HEIGHT / 2 + 180);
+
+			// Right page
+
+			g.setColor(Color.BLACK);
+
+			String nameString = player.getStats().getName() + " the "
+					+ player.getStats().getTitle() + " of "
+					+ player.getStats().getSpeciality();
+			int stringLength = (int) g.getFontMetrics()
+					.getStringBounds(nameString, g).getWidth();
+			int stringHeight = (int) g.getFontMetrics()
+					.getStringBounds(nameString, g).getHeight();
+
+			int start = 20 + Main.resourceLoader.statScreen.getWidth() / 2
+					+ Main.resourceLoader.statScreen.getWidth() / 4
+					- stringLength / 2;
+
+			int xPos = Main.GAME_HEIGHT / 2 - stringHeight / 2;
+
+			g.drawString(nameString, start, xPos);
+
 		}
 	}
 
 	public void showCScreen(boolean bool) {
 		this.showCharacterScreen = bool;
+
+		if (bool) {
+			Main.resourceLoader.playClip(Main.resourceLoader.openBook, 1f,
+					false);
+		} else if (!bool) {
+			Main.resourceLoader.playClip(Main.resourceLoader.closeBook, 1f,
+					false);
+		}
 	}
 
 	public boolean getShowingCScreen() {
