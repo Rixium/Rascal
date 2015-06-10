@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
+import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.map.tile.Tile;
 

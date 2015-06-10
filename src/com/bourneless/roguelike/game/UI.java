@@ -46,8 +46,9 @@ public class UI {
 				20
 						+ Main.resourceLoader.playerPortraits[playerPortrait]
 								.getHeight() / 2
-						- Main.resourceLoader.healthBar.getHeight(), player
-						.getHealth() * 2, Main.resourceLoader.healthBar
+						- Main.resourceLoader.healthBar.getHeight(),
+				player.getHealth() * Main.resourceLoader.healthBar.getWidth()
+						/ player.getMaxHealth(), Main.resourceLoader.healthBar
 						.getHeight());
 
 		g.drawImage(

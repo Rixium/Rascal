@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.engine.screen.MenuScreen;
 import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Map;
@@ -125,6 +126,10 @@ public class Instance {
 				miniMap.showMap(false);
 				player.keyPressed(e, map);
 				ui.showCScreen(!ui.getShowingCScreen());
+			}
+		} else if (deathScreenActive) {
+			if (e.getKeyCode() == 27) {
+				Main.game.setScreen(new MenuScreen());
 			}
 		}
 	}

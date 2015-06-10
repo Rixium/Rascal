@@ -108,9 +108,9 @@ public class Game extends JPanel implements Runnable {
 		if (loaded) {
 			currentScreen.paint(g2d);
 		} else {
-			g2d.setColor(Color.black);
+			g2d.setColor(new Color(2433814));
 			g2d.fillRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
-			g2d.setColor(Color.WHITE);
+			g2d.setColor(new Color(16776164));
 			g2d.setFont(loadingFont);
 			int stringLength = (int) g2d.getFontMetrics()
 					.getStringBounds("Loading", g2d).getWidth();

@@ -91,6 +91,9 @@ public class ResourceLoader {
 
 	public Clip monsterDeath[] = new Clip[3];
 
+	public Clip playerHurt[] = new Clip[3];
+	public Clip playerDeath[] = new Clip[3];
+
 	public Clip hitSounds[] = new Clip[4];
 	public Clip buttonHover;
 
@@ -255,6 +258,14 @@ public class ResourceLoader {
 		hitSounds[1] = loadClip("/audio/hit/2.wav");
 		hitSounds[2] = loadClip("/audio/hit/3.wav");
 		hitSounds[3] = loadClip("/audio/hit/4.wav");
+
+		playerHurt[0] = loadClip("/audio/playerhurt/1.wav");
+		playerHurt[1] = loadClip("/audio/playerhurt/2.wav");
+		playerHurt[2] = loadClip("/audio/playerhurt/3.wav");
+
+		playerDeath[0] = loadClip("/audio/playerdeath/1.wav");
+		playerDeath[1] = loadClip("/audio/playerdeath/2.wav");
+		playerDeath[2] = loadClip("/audio/playerdeath/3.wav");
 
 		openBook = loadClip("/audio/ui/openBook.wav");
 		closeBook = loadClip("/audio/ui/closeBook.wav");

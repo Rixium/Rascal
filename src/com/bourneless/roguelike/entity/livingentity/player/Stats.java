@@ -28,8 +28,8 @@ public class Stats {
 
 	private int points = 10;
 
-	public Stats() {
-		createPlayer();
+	public Stats(Player player) {
+		createPlayer(player);
 	}
 
 	public void addExperience(int exp) {
@@ -67,7 +67,7 @@ public class Stats {
 		return this.title;
 	}
 
-	public void createPlayer() {
+	public void createPlayer(Player player) {
 		this.name = Main.resourceLoader.names.get(random
 				.nextInt(Main.resourceLoader.names.size()));
 		this.speciality = Main.resourceLoader.specialities.get(random
@@ -123,6 +123,7 @@ public class Stats {
 				break;
 			}
 		}
+		player.setHealth(player.getHealth() * constitution);
 		print();
 	}
 

@@ -57,7 +57,7 @@ public class Player extends LivingEntity {
 	public Player(Tile tile, BufferedImage image) {
 		super(tile, image, EntityType.PLAYER);
 		type = EntityType.PLAYER;
-		stats = new Stats();
+		stats = new Stats(this);
 	}
 
 	public void paint(Graphics2D g) {
@@ -432,10 +432,27 @@ public class Player extends LivingEntity {
 		System.out.println(mob.getStats().name + " hits for " + hit + "!");
 
 		if (hit > 0) {
+			if (hit > stats.fortitude) {
+				if (!Main.resourceLoader.playerHurt[0].isActive()
+						&& !Main.resourceLoader.playerHurt[1].isActive()
+						&& !Main.resourceLoader.playerHurt[2].isActive()) {
+					int play = random.nextInt(2);
+					if (play == 0) {
+						Main.resourceLoader
+								.playClip(
+										Main.resourceLoader.playerHurt[random
+												.nextInt(Main.resourceLoader.playerHurt.length)],
+										1f, false);
+					}
+				}
+			}
 			this.health -= hit;
 		}
 
 		if (this.health <= 0) {
+			Main.resourceLoader.playClip(Main.resourceLoader.playerDeath[random
+					.nextInt(Main.resourceLoader.playerDeath.length)], 1f,
+					false);
 			Main.game.getGameStats().totalDeaths++;
 			this.dead = true;
 			moveLeftAnimation.stop();
