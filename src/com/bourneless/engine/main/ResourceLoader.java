@@ -72,6 +72,8 @@ public class ResourceLoader {
 
 	public BufferedImage paused;
 
+	public BufferedImage deathScreen;
+
 	// Portraits
 
 	public BufferedImage[] playerPortraits = new BufferedImage[1];
@@ -98,6 +100,10 @@ public class ResourceLoader {
 	// Fonts
 
 	public Font gameFont;
+
+	// Alerts
+
+	public BufferedImage exclamation;
 
 	// Text
 
@@ -249,7 +255,7 @@ public class ResourceLoader {
 		hitSounds[1] = loadClip("/audio/hit/2.wav");
 		hitSounds[2] = loadClip("/audio/hit/3.wav");
 		hitSounds[3] = loadClip("/audio/hit/4.wav");
-		
+
 		openBook = loadClip("/audio/ui/openBook.wav");
 		closeBook = loadClip("/audio/ui/closeBook.wav");
 
@@ -260,6 +266,7 @@ public class ResourceLoader {
 		healthBar = getBufferedImage("/ui/healthBar.png");
 		statScreen = getBufferedImage("/ui/menus/characterStats.png");
 		paused = getBufferedImage("/ui/menus/pausedOverlay.png");
+		deathScreen = getBufferedImage("/ui/deathScreen.png");
 
 		// Portraits
 
@@ -279,6 +286,10 @@ public class ResourceLoader {
 		}
 
 		gameFont = new Font("Calibri", Font.TRUETYPE_FONT, 10);
+
+		// Alerts
+
+		exclamation = getBufferedImage("/alerts/exclamation.png");
 
 		// Text
 

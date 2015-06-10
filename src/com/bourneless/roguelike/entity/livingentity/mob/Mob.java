@@ -27,10 +27,23 @@ public class Mob extends LivingEntity {
 	protected boolean hasDestination = false;
 	protected Tile destinationTile;
 
+	protected int viewDistance = 5;
+
+	protected MonsterFOV fov = new MonsterFOV();
+
 	Timer hitBarTimer = new Timer(2000, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			showHitBar = false;
+		}
+	});
+
+	protected boolean showAlert = false;
+
+	Timer alertTimer = new Timer(1000, new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			showAlert = false;
 		}
 	});
 
@@ -45,7 +58,11 @@ public class Mob extends LivingEntity {
 		this.yOffset = yOffset;
 
 		turn: if (!instance.getPlayerTurn()) {
+
+			fov.CheckFieldOfView(map, map.getPlayer(), this);
+
 			boolean hasPlayer = false;
+
 			if (map.getTiles()[tile.getTileX() - 1][tile.getTileY()]
 					.hasEntity()) {
 				for (Entity entity : map.getTiles()[tile.getTileX() - 1][tile
@@ -91,75 +108,133 @@ public class Mob extends LivingEntity {
 				}
 			}
 
-			int getDestination = random.nextInt(2);
-			if (getDestination == 1 && !hasPlayer) {
-				int randomTile = random.nextInt(4);
-				Tile newTile;
-				switch (randomTile) {
-				case 0:
-					if (tile.getTileY() - 1 > 0) {
-						newTile = map.getTiles()[tile.getTileX()][tile
-								.getTileY() - 1];
-						if (newTile.isPassable()
-								&& newTile.getEntities().isEmpty()) {
-							this.layer = tile.getTileY();
-							this.pos.y -= 64;
-							newTile.addEntity(this);
-							tile.removeEntity(this);
-							tile = newTile;
-							break turn;
+			if (destinationTile == null) {
+				int getDestination = random.nextInt(2);
+				if (getDestination == 1 && !hasPlayer) {
+					int randomTile = random.nextInt(4);
+					Tile newTile;
+					switch (randomTile) {
+					case 0:
+						if (tile.getTileY() - 1 > 0) {
+							newTile = map.getTiles()[tile.getTileX()][tile
+									.getTileY() - 1];
+							if (newTile.isPassable()) {
+								this.layer = tile.getTileY();
+								this.pos.y -= 64;
+								newTile.addEntity(this);
+								tile.removeEntity(this);
+								tile = newTile;
+								break turn;
+							}
 						}
-					}
-					break;
-				case 1:
-					if (tile.getTileY() + 1 < map.getTiles().length) {
-						newTile = map.getTiles()[tile.getTileX()][tile
-								.getTileY() + 1];
-						if (newTile.isPassable()
-								&& newTile.getEntities().isEmpty()) {
-							this.layer = tile.getTileY();
-							this.pos.y += 64;
-							newTile.addEntity(this);
-							tile.removeEntity(this);
-							tile = newTile;
-							break turn;
+						break;
+					case 1:
+						if (tile.getTileY() + 1 < map.getTiles().length) {
+							newTile = map.getTiles()[tile.getTileX()][tile
+									.getTileY() + 1];
+							if (newTile.isPassable()) {
+								this.layer = tile.getTileY();
+								this.pos.y += 64;
+								newTile.addEntity(this);
+								tile.removeEntity(this);
+								tile = newTile;
+								break turn;
+							}
 						}
+						break;
+					case 2:
+						if (tile.getTileX() - 1 > 0) {
+							newTile = map.getTiles()[tile.getTileX() - 1][tile
+									.getTileY()];
+							if (newTile.isPassable()) {
+								this.layer = tile.getTileY();
+								this.pos.x -= 64;
+								newTile.addEntity(this);
+								tile.removeEntity(this);
+								tile = newTile;
+								break turn;
+							}
+						}
+						break;
+					case 3:
+						if (tile.getTileX() + 1 < map.getTiles().length) {
+							newTile = map.getTiles()[tile.getTileX() + 1][tile
+									.getTileY()];
+							if (newTile.isPassable()) {
+								this.layer = newTile.getTileY();
+								this.pos.x += 64;
+								newTile.addEntity(this);
+								tile.removeEntity(this);
+								tile = newTile;
+								break turn;
+							}
+						}
+						break;
+					default:
+						break;
 					}
-					break;
-				case 2:
-					if (tile.getTileX() - 1 > 0) {
-						newTile = map.getTiles()[tile.getTileX() - 1][tile
+				}
+			} else {
+
+				int randomDir = random.nextInt(4);
+
+				if (randomDir == 0) {
+					if (destinationTile.getTileX() < tile.getTileX()) {
+						Tile newTile = map.getTiles()[tile.getTileX() - 1][tile
 								.getTileY()];
-						if (newTile.isPassable()
-								&& newTile.getEntities().isEmpty()) {
-							this.layer = tile.getTileY();
+						if (newTile.isPassable()) {
+							this.layer = newTile.getTileY();
 							this.pos.x -= 64;
 							newTile.addEntity(this);
 							tile.removeEntity(this);
 							tile = newTile;
-							break turn;
+							tile.setPassable(false);
 						}
 					}
-					break;
-				case 3:
-					if (tile.getTileX() + 1 < map.getTiles().length) {
-						newTile = map.getTiles()[tile.getTileX() + 1][tile
+				} else if (randomDir == 1) {
+					if (destinationTile.getTileX() > tile.getTileX()) {
+						Tile newTile = map.getTiles()[tile.getTileX() + 1][tile
 								.getTileY()];
-						if (newTile.isPassable()
-								&& newTile.getEntities().isEmpty()) {
-							this.layer = tile.getTileY();
+						if (newTile.isPassable()) {
+							this.layer = newTile.getTileY();
 							this.pos.x += 64;
 							newTile.addEntity(this);
 							tile.removeEntity(this);
 							tile = newTile;
-							break turn;
+							tile.setPassable(false);
 						}
 					}
-					break;
-				default:
-					break;
+				} else if (randomDir == 2) {
+					if (destinationTile.getTileY() > tile.getTileY()) {
+						Tile newTile = map.getTiles()[tile.getTileX()][tile
+								.getTileY() + 1];
+						if (newTile.isPassable()) {
+							this.layer = newTile.getTileY();
+							this.pos.y += 64;
+							newTile.addEntity(this);
+							tile.removeEntity(this);
+							tile = newTile;
+							tile.setPassable(false);
+						}
+					}
+				} else if (randomDir == 3) {
+					if (destinationTile.getTileY() < tile.getTileY()) {
+						Tile newTile = map.getTiles()[tile.getTileX()][tile
+								.getTileY() - 1];
+						if (newTile.isPassable()) {
+							this.layer = newTile.getTileY();
+							this.pos.y -= 64;
+							newTile.addEntity(this);
+							tile.removeEntity(this);
+							tile = newTile;
+							tile.setPassable(false);
+						}
+					}
+				} else {
+					destinationTile = null;
 				}
 			}
+
 		}
 	}
 
@@ -177,6 +252,16 @@ public class Mob extends LivingEntity {
 			g.fillRect(pos.x + image.getWidth() / 2 - 50 / 2 + xOffset, pos.y
 					+ yOffset - image.getHeight() / 2, stats.health * 50
 					/ stats.maxHealth, 5);
+		}
+
+		if (showAlert) {
+			g.drawImage(Main.resourceLoader.exclamation,
+					pos.x + xOffset + image.getWidth() / 2
+							- Main.resourceLoader.exclamation.getWidth() / 4,
+					pos.y + yOffset - image.getHeight() / 2
+							- Main.resourceLoader.exclamation.getHeight() / 2,
+					Main.resourceLoader.exclamation.getWidth() / 2,
+					Main.resourceLoader.exclamation.getHeight() / 2, null);
 		}
 	}
 
@@ -213,6 +298,20 @@ public class Mob extends LivingEntity {
 
 	public MonsterStats getStats() {
 		return this.stats;
+	}
+
+	public int getViewDistance() {
+		return this.viewDistance;
+	}
+
+	public void setDestination(Tile tile) {
+		if (destinationTile == null) {
+			showAlert = true;
+			alertTimer.start();
+		}
+
+		this.destinationTile = tile;
+
 	}
 
 }

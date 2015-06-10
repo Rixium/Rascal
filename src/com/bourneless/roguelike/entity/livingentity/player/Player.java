@@ -1,7 +1,5 @@
 package com.bourneless.roguelike.entity.livingentity.player;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -12,7 +10,6 @@ import java.util.Random;
 import com.bourneless.engine.animation.Animation;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
-import com.bourneless.engine.screen.MenuScreen;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.FieldOfView;
@@ -440,7 +437,13 @@ public class Player extends LivingEntity {
 
 		if (this.health <= 0) {
 			Main.game.getGameStats().totalDeaths++;
-			Main.game.setScreen(new MenuScreen());
+			this.dead = true;
+			moveLeftAnimation.stop();
+			moveRightAnimation.stop();
+			moveUpAnimation.stop();
+			moveDownAnimation.stop();
+
+			instance.showDeathScreen();
 		}
 	}
 }

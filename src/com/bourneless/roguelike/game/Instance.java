@@ -11,6 +11,7 @@ import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.Minimap;
+import com.bourneless.roguelike.screen.DeathScreen;
 
 public class Instance {
 
@@ -27,6 +28,8 @@ public class Instance {
 	private boolean ready = false;
 
 	private int camSpeed = 4;
+	private boolean deathScreenActive = false;
+	private DeathScreen ds;
 
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
 
@@ -45,33 +48,36 @@ public class Instance {
 	}
 
 	public void update() {
-
-		for (Hit hit : hits) {
-			if (hit.getDead()) {
-				hits.remove(hit);
-				break;
+		if (!deathScreenActive) {
+			for (Hit hit : hits) {
+				if (hit.getDead()) {
+					hits.remove(hit);
+					break;
+				}
+				hit.update(xOffset, yOffset);
 			}
-			hit.update(xOffset, yOffset);
-		}
 
-		if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() < xOffset) {
-			xOffset -= camSpeed;
-		} else if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() > xOffset) {
-			xOffset += camSpeed;
-		}
-		if (Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() < yOffset) {
-			yOffset -= camSpeed;
-		} else if (Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() > yOffset) {
-			yOffset += camSpeed;
-		}
+			if (Main.GAME_WIDTH / 2 - player.getPos().x - player.getXOff() < xOffset) {
+				xOffset -= camSpeed;
+			} else if (Main.GAME_WIDTH / 2 - player.getPos().x
+					- player.getXOff() > xOffset) {
+				xOffset += camSpeed;
+			}
+			if (Main.GAME_HEIGHT / 2 - player.getPos().y - player.getYOff() < yOffset) {
+				yOffset -= camSpeed;
+			} else if (Main.GAME_HEIGHT / 2 - player.getPos().y
+					- player.getYOff() > yOffset) {
+				yOffset += camSpeed;
+			}
 
-		map.update(xOffset, yOffset, this);
+			map.update(xOffset, yOffset, this);
 
-		if (playerTurn) {
-			player.update(xOffset, yOffset, map, this);
+			if (playerTurn) {
+				player.update(xOffset, yOffset, map, this);
+			}
+
+			miniMap.update(xOffset, yOffset);
 		}
-
-		miniMap.update(xOffset, yOffset);
 	}
 
 	public void paint(Graphics2D g) {
@@ -93,32 +99,40 @@ public class Instance {
 
 		ui.paint(g);
 		miniMap.paint(g);
+
+		if (deathScreenActive) {
+			ds.paint(g);
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == 32) {
-			if (playerTurn) {
-				playerTurn = false;
+		if (!deathScreenActive) {
+			if (e.getKeyCode() == 32) {
+				if (playerTurn) {
+					playerTurn = false;
+				}
 			}
-		}
-		if (e.getKeyCode() == 77) {
-			miniMap.showMap(!miniMap.getShowing());
-		} else {
-			miniMap.setDrawn(false);
-			miniMap.showMap(false);
-			player.keyPressed(e, map);
-		}
+			if (e.getKeyCode() == 77) {
+				miniMap.showMap(!miniMap.getShowing());
+			} else {
+				miniMap.setDrawn(false);
+				miniMap.showMap(false);
+				player.keyPressed(e, map);
+			}
 
-		if (e.getKeyCode() == 67) {
-			miniMap.setDrawn(false);
-			miniMap.showMap(false);
-			player.keyPressed(e, map);
-			ui.showCScreen(!ui.getShowingCScreen());
+			if (e.getKeyCode() == 67) {
+				miniMap.setDrawn(false);
+				miniMap.showMap(false);
+				player.keyPressed(e, map);
+				ui.showCScreen(!ui.getShowingCScreen());
+			}
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
-		player.keyReleased(e);
+		if (!deathScreenActive) {
+			player.keyReleased(e);
+		}
 	}
 
 	public boolean isReady() {
@@ -135,5 +149,10 @@ public class Instance {
 
 	public ArrayList<Hit> getHits() {
 		return this.hits;
+	}
+
+	public void showDeathScreen() {
+		this.deathScreenActive = true;
+		ds = new DeathScreen(player);
 	}
 }

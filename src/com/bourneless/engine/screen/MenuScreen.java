@@ -22,7 +22,7 @@ public class MenuScreen extends Screen {
 
 	private Button[] menuButtons = new Button[2];
 
-	private String vNumber = "v 0.3.44";
+	private String vNumber = "v 0.3.45";
 	private Font font = new Font("Arial", Font.PLAIN, 10);
 	private Font messageFont = new Font("A Font With Serifs",
 			Font.TRUETYPE_FONT, 40);

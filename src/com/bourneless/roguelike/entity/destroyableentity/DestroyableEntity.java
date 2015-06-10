@@ -30,6 +30,7 @@ public class DestroyableEntity extends Entity {
 		if (health <= 0) {
 			Main.resourceLoader.playClip(Main.resourceLoader.breakSound, 1f,
 					false);
+			this.tile.setPassable(true);
 			broken = true;
 			passable = true;
 		}
