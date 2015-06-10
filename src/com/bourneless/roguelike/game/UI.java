@@ -16,6 +16,7 @@ public class UI {
 
 	private int playerPortrait;
 	private boolean showCharacterScreen = false;
+	private boolean showInventory = false;
 
 	public UI(Player player) {
 		font = new Font("A Font With Serifs", Font.PLAIN, 18);
@@ -140,6 +141,10 @@ public class UI {
 			g.drawString(nameString, start, xPos);
 
 		}
+		
+		if (showInventory) {
+			player.getInventory().paint(g);
+		}
 	}
 
 	public void showCScreen(boolean bool) {
@@ -156,5 +161,13 @@ public class UI {
 
 	public boolean getShowingCScreen() {
 		return this.showCharacterScreen;
+	}
+	
+	public void showInventoryScreen(boolean bool) {
+		this.showInventory = bool;
+	}
+	
+	public boolean getShowingInventoryScreen() {
+		return this.showInventory;
 	}
 }

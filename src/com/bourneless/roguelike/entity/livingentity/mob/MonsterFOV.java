@@ -37,7 +37,8 @@ public class MonsterFOV {
 				if (map.getTiles()[(int) ox][(int) oy].hasEntity()) {
 					for (Entity entity : map.getTiles()[(int) ox][(int) oy]
 							.getEntities()) {
-						if (entity.getType() == EntityType.DOOR) {
+						if (entity.getType() == EntityType.DOOR ||
+								entity.getSolid()) {
 							return;
 						}
 						if (entity.getType() == EntityType.PLAYER) {

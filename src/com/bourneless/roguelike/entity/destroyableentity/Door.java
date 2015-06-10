@@ -1,7 +1,6 @@
 package com.bourneless.roguelike.entity.destroyableentity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.bourneless.engine.main.Main;
@@ -16,10 +15,17 @@ public class Door extends DestroyableEntity {
 		super(tile, Main.resourceLoader.door[0], EntityType.BREAKABLE);
 		this.solid = true;
 		this.side = side;
+		this.name = "door";
 	}
 
 	public void paint(Graphics2D g) {
 		if (broken) {
+			
+			if(!this.tile.isPassable()) {
+				this.tile.setPassable(true);
+				this.passable = true;
+			}
+			
 			if (!side) {
 				g.drawImage(
 						Main.resourceLoader.door[1],
@@ -45,5 +51,7 @@ public class Door extends DestroyableEntity {
 			}
 		}
 	}
+	
+	
 
 }

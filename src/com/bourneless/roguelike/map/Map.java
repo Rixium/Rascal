@@ -8,6 +8,7 @@ import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
+import com.bourneless.roguelike.entity.destroyableentity.Chest;
 import com.bourneless.roguelike.entity.destroyableentity.Door;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
@@ -28,7 +29,9 @@ public class Map {
 	private int xOffset;
 	private int yOffset;
 
-	private int mobSpawnRarity = 20;
+	// Lower is for higher spawn chance.
+	private int mobSpawnRarity = 60;
+	private int chestRarity = 10;
 
 	private ArrayList<Room> rooms = new ArrayList<Room>();
 
@@ -335,6 +338,7 @@ public class Map {
 	}
 
 	public void populateMap() {
+		addChests();
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
@@ -346,6 +350,28 @@ public class Map {
 							tiles[i][j].setLayer(0);
 							tiles[i][j].addEntity(monster);
 							entities.add(monster);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void addChests() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
+					int spawnChest = random.nextInt(chestRarity);
+					if (spawnChest == 1) {
+						if (tiles[i][j - 1].getTileClass() == TileClass.WALL) {
+							if (tiles[i][j].getEntities().isEmpty()) {
+								Chest chest = new Chest(tiles[i][j],
+										Main.resourceLoader.chest[0],
+										EntityType.BREAKABLE);
+								tiles[i][j].setLayer(0);
+								tiles[i][j].addEntity(chest);
+								entities.add(chest);
+							}
 						}
 					}
 				}
@@ -368,6 +394,13 @@ public class Map {
 						entities.remove(mob);
 						mob.getTile().removeEntity(mob);
 						break;
+					}
+				} else if (entity.getType() == EntityType.BREAKABLE) {
+					if(entity.getName().equals("chest")) {
+						Chest chest = (Chest) entity;
+						if(chest.getBroken() && !chest.givenItem()) {
+							chest.dropItem(player);
+						}
 					}
 				}
 			}

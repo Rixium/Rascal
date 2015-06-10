@@ -57,6 +57,9 @@ public class ResourceLoader {
 	public BufferedImage[] door;
 	public BufferedImage[] sideDoor = new BufferedImage[2];
 
+	// Chest
+	public BufferedImage[] chest = new BufferedImage[2];
+
 	// Animations
 
 	public BufferedImage[] moveLeft = new BufferedImage[3];
@@ -69,6 +72,7 @@ public class ResourceLoader {
 	public BufferedImage healthBar;
 
 	public BufferedImage statScreen;
+	public BufferedImage inventoryScreen;	
 
 	public BufferedImage paused;
 
@@ -77,6 +81,9 @@ public class ResourceLoader {
 	// Portraits
 
 	public BufferedImage[] playerPortraits = new BufferedImage[1];
+	
+	// item
+	public BufferedImage[] itemInvImages = new BufferedImage[100];
 
 	// Music
 
@@ -236,6 +243,37 @@ public class ResourceLoader {
 			}
 		}
 
+		// Chest
+
+		BufferedImage chestSheet = getBufferedImage("/entity/chest/chest.png");
+		rows = 1;
+		cols = 2;
+		iteration = 0;
+		chest = new BufferedImage[rows * cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				chest[iteration] = chestSheet.getSubimage(j * 64, i * 64, 64,
+						64);
+				iteration++;
+			}
+		}
+		
+		// Items
+		
+		BufferedImage itemSheet = getBufferedImage("/item/itemSheet.png");
+		rows = 10;
+		cols = 10;
+		iteration = 0;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				itemInvImages[iteration] = itemSheet.getSubimage(j * 32, i * 32, 32,
+						32);
+				iteration++;
+			}
+		}
+
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
@@ -278,6 +316,7 @@ public class ResourceLoader {
 		statScreen = getBufferedImage("/ui/menus/characterStats.png");
 		paused = getBufferedImage("/ui/menus/pausedOverlay.png");
 		deathScreen = getBufferedImage("/ui/deathScreen.png");
+		inventoryScreen = getBufferedImage("/ui/menus/inventoryScreen.png");
 
 		// Portraits
 

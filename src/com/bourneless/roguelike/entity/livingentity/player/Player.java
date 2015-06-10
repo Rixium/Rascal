@@ -51,6 +51,8 @@ public class Player extends LivingEntity {
 	private Stats stats;
 	private Vector2 hitPos;
 	private int hit;
+	
+	private Inventory  inventory;
 
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
 
@@ -58,6 +60,7 @@ public class Player extends LivingEntity {
 		super(tile, image, EntityType.PLAYER);
 		type = EntityType.PLAYER;
 		stats = new Stats(this);
+		inventory = new Inventory();
 	}
 
 	public void paint(Graphics2D g) {
@@ -462,5 +465,9 @@ public class Player extends LivingEntity {
 
 			instance.showDeathScreen();
 		}
+	}
+	
+	public Inventory getInventory() {
+		return this.inventory;
 	}
 }

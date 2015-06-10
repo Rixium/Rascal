@@ -98,8 +98,10 @@ public class Instance {
 			System.out.println("Hit break.");
 		}
 
-		ui.paint(g);
 		miniMap.paint(g);
+		
+		ui.paint(g);
+		
 
 		if (deathScreenActive) {
 			ds.paint(g);
@@ -126,6 +128,11 @@ public class Instance {
 				miniMap.showMap(false);
 				player.keyPressed(e, map);
 				ui.showCScreen(!ui.getShowingCScreen());
+			} else if (e.getKeyCode() == 73) {
+				miniMap.setDrawn(false);
+				miniMap.showMap(false);
+				player.keyPressed(e, map);
+				ui.showInventoryScreen(!ui.getShowingInventoryScreen());
 			}
 		} else if (deathScreenActive) {
 			if (e.getKeyCode() == 27) {

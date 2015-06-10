@@ -28,6 +28,8 @@ public class Entity {
 	protected boolean passable;
 	protected Map map;
 	protected int layer;
+	
+	protected String name = "";
 
 	protected Instance instance;
 
@@ -101,6 +103,10 @@ public class Entity {
 
 	public void setLayer(int layer) {
 		this.layer = layer;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 
 }
