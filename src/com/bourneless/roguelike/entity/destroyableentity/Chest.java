@@ -17,7 +17,7 @@ public class Chest extends DestroyableEntity {
 	public Chest(Tile tile, BufferedImage image, int type) {
 		super(tile, image, EntityType.BREAKABLE);
 		this.name = "chest";
-		this.solid = true;
+		this.solid = false;
 		this.passable = false;
 		tile.setPassable(false);
 	}

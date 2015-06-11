@@ -15,29 +15,40 @@ public class Stats {
 	public int experience = 0;
 	public int expToLevel = 100;
 
-	public int strength = 5;
-	public int constitution = 5;
-	public int fortitude = 5;
-	public int reflexes = 5;
-	public int mind = 5;
-	public int presence = 5;
-	public int spirit = 5;
-	public int sanity = 5;
-	public int awareness = 5;
-	public int luck = 5;
+	public int strength = 2;
+	public int constitution = 2;
+	public int fortitude = 2;
+	public int reflexes = 2;
+	public int mind = 2;
+	public int presence = 2;
+	public int spirit = 2;
+	public int sanity = 2;
+	public int awareness = 2;
+	public int luck = 2;
 
-	private int points = 10;
+	private int points = 25;
+
+	private Player player;
 
 	public Stats(Player player) {
+		this.player = player;
 		createPlayer(player);
 	}
 
 	public void addExperience(int exp) {
 		if (this.experience + exp >= expToLevel) {
 			this.level++;
+
+			if (player.getHealth() + 100 <= player.getMaxHealth()) {
+				player.addHealth(100);
+			} else {
+				player.setHealth(player.getMaxHealth());
+			}
+
 			this.experience += exp;
 			this.experience -= expToLevel;
 			expToLevel = 100 * level;
+			points += 3;
 		} else {
 			this.experience += exp;
 		}
@@ -53,6 +64,14 @@ public class Stats {
 
 	public int getStrength() {
 		return this.strength;
+	}
+
+	public int getPoints() {
+		return this.points;
+	}
+
+	public void removePoint() {
+		this.points -= 1;
 	}
 
 	public String getName() {
@@ -124,6 +143,7 @@ public class Stats {
 			}
 		}
 		player.setHealth(player.getHealth() * constitution);
+		points = 5;
 		print();
 	}
 

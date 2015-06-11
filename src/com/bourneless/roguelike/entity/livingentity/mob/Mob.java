@@ -9,8 +9,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.engine.math.Vector2;
 import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
+import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.game.Instance;
@@ -273,8 +275,18 @@ public class Mob extends LivingEntity {
 		return stats.experienceWorth;
 	}
 
-	public void hit(int health) {
+	public void hit(int health, Instance instance, Player player) {
 		if (!dead) {
+
+			int hit = player.getStats().strength
+					* random.nextInt(player.getStats().reflexes)
+					- random.nextInt(stats.fortitude)
+					* random.nextInt(stats.luck);
+
+			if (hit < 0) {
+				hit = 0;
+			}
+
 			showHitBar = true;
 			if (!hitBarTimer.isRunning()) {
 				hitBarTimer.start();
@@ -282,7 +294,10 @@ public class Mob extends LivingEntity {
 				hitBarTimer.restart();
 			}
 			if (stats.health - health > 0) {
-				stats.health -= health;
+				instance.getHits().add(
+						new Hit(hit, new Vector2(pos.x + image.getWidth() / 2,
+								pos.y - image.getHeight() / 4)));
+				stats.health -= hit;
 			} else {
 				Main.resourceLoader
 						.playClip(

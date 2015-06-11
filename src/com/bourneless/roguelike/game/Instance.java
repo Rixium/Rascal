@@ -2,6 +2,7 @@ package com.bourneless.roguelike.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -146,6 +147,10 @@ public class Instance {
 			player.keyReleased(e);
 		}
 	}
+	
+	public void mousePressed(Rectangle rect) {
+		ui.mousePressed(rect);
+	}
 
 	public boolean isReady() {
 		return this.ready;
@@ -167,4 +172,5 @@ public class Instance {
 		this.deathScreenActive = true;
 		ds = new DeathScreen(player);
 	}
+	
 }

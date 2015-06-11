@@ -110,7 +110,7 @@ public class MenuScreen extends Screen {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		Rectangle mouseRect = new Rectangle(e.getX(), e.getY() - 20, 10, 10);
+		Rectangle mouseRect = new Rectangle(e.getX(), e.getY() - 20, 1, 1);
 
 		if (mouseRect.intersects(menuButtons[0].getRect())) {
 			Main.game.setScreen(new LoadScreen());

@@ -158,6 +158,8 @@ public class Tile {
 			passable = true;
 			entityLayer = 0;
 			this.layer = 0;
+		} else {
+			passable = true;
 		}
 
 	}

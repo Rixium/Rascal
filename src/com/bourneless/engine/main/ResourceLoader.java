@@ -22,6 +22,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.bourneless.engine.animation.Animation;
+
 public class ResourceLoader {
 
 	public BufferedImage splashImage;
@@ -72,16 +74,21 @@ public class ResourceLoader {
 	public BufferedImage healthBar;
 
 	public BufferedImage statScreen;
-	public BufferedImage inventoryScreen;	
+	public BufferedImage inventoryScreen;
 
 	public BufferedImage paused;
 
 	public BufferedImage deathScreen;
 
+	public BufferedImage[] levelUpImage;
+	public Animation levelUpAnimation;
+	
+	public BufferedImage levelUpButton;
+
 	// Portraits
 
 	public BufferedImage[] playerPortraits = new BufferedImage[1];
-	
+
 	// item
 	public BufferedImage[] itemInvImages = new BufferedImage[100];
 
@@ -258,9 +265,9 @@ public class ResourceLoader {
 				iteration++;
 			}
 		}
-		
+
 		// Items
-		
+
 		BufferedImage itemSheet = getBufferedImage("/item/itemSheet.png");
 		rows = 10;
 		cols = 10;
@@ -268,8 +275,8 @@ public class ResourceLoader {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				itemInvImages[iteration] = itemSheet.getSubimage(j * 32, i * 32, 32,
-						32);
+				itemInvImages[iteration] = itemSheet.getSubimage(j * 32,
+						i * 32, 32, 32);
 				iteration++;
 			}
 		}
@@ -318,6 +325,23 @@ public class ResourceLoader {
 		deathScreen = getBufferedImage("/ui/deathScreen.png");
 		inventoryScreen = getBufferedImage("/ui/menus/inventoryScreen.png");
 
+		BufferedImage levelUpSheet = getBufferedImage("/ui/levelUpImage.png");
+		levelUpImage = new BufferedImage[2];
+		rows = 1;
+		cols = 2;
+		iteration = 0;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				levelUpImage[iteration] = levelUpSheet.getSubimage(j * 32,
+						i * 32, 32, 32);
+				iteration++;
+			}
+		}
+
+		levelUpAnimation = new Animation(levelUpImage, 400);
+		levelUpButton = getBufferedImage("/ui/levelUpButton.png");
+
 		// Portraits
 
 		playerPortraits[0] = getBufferedImage("/ui/portraits/1.png");
@@ -335,7 +359,7 @@ public class ResourceLoader {
 			// Handle exception
 		}
 
-		gameFont = new Font("Calibri", Font.TRUETYPE_FONT, 10);
+		gameFont = new Font("Calibri", Font.TRUETYPE_FONT, 20);
 
 		// Alerts
 

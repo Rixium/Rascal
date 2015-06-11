@@ -19,11 +19,13 @@ public class Inventory {
 		int x = 0;
 
 		for (int i = 0; i < slotCount; i++) {
-			slots[i] = new Slot(new Vector2(x * slotSize
-					+ Main.resourceLoader.inventoryScreen.getWidth() / 2
-					- slotSize * 5 / 2 + 20, y * slotSize + Main.GAME_HEIGHT
-					/ 2 - Main.resourceLoader.inventoryScreen.getHeight() / 2
-					+ 10), 32);
+			slots[i] = new Slot(
+					new Vector2(x * slotSize - slotSize * 5 / 2
+							+ Main.GAME_WIDTH / 2
+							+ Main.resourceLoader.inventoryScreen.getWidth(), y
+							* slotSize + Main.GAME_HEIGHT / 2
+							- Main.resourceLoader.inventoryScreen.getHeight()
+							/ 2 + 10), 32);
 
 			x++;
 			if (x == 5 || x == 10 || x == 15 || x == 20) {
@@ -34,8 +36,14 @@ public class Inventory {
 	}
 
 	public void paint(Graphics2D g) {
-		g.drawImage(Main.resourceLoader.inventoryScreen, 20, Main.GAME_HEIGHT
-				/ 2 - Main.resourceLoader.inventoryScreen.getHeight() / 2, null);
+		g.drawImage(
+				Main.resourceLoader.inventoryScreen,
+				Main.GAME_WIDTH / 2
+						- Main.resourceLoader.inventoryScreen.getWidth() / 2
+						+ Main.resourceLoader.inventoryScreen.getWidth(),
+				Main.GAME_HEIGHT / 2
+						- Main.resourceLoader.inventoryScreen.getHeight() / 2,
+				null);
 
 		for (Slot slot : slots) {
 			slot.paint(g);
@@ -51,7 +59,7 @@ public class Inventory {
 			}
 		}
 	}
-	
+
 	public Slot[] getSlots() {
 		return this.slots;
 	}

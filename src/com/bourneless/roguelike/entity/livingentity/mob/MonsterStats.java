@@ -58,8 +58,12 @@ public class MonsterStats {
 
 	public void createMonster(JSONObject thisMonster) {
 		this.name = (String) thisMonster.get("name");
+
 		this.strength = ((Long) thisMonster.get("strength")).intValue();
 		this.reflexes = ((Long) thisMonster.get("reflexes")).intValue();
+		this.fortitude = ((Long) thisMonster.get("fortitude")).intValue();
+		this.luck = ((Long) thisMonster.get("luck")).intValue();
+
 		this.image = ((Long) thisMonster.get("image")).intValue();
 
 		this.experienceWorth = ((Long) thisMonster.get("experience_worth"))

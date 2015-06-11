@@ -4,6 +4,8 @@
 			"health" : 100,
 			"strength" : 4,
 			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
 			"image" : 0,
 			"experience_worth" : 20,
 			"rarity" : 1
@@ -14,6 +16,8 @@
 			"health" : 150,
 			"strength" : 2,
 			"reflexes" : 7,
+			"fortitude" : 2,
+			"luck" : 5,
 			"image" : 1,
 			"experience_worth" : 30,
 			"rarity" : 3
@@ -24,6 +28,8 @@
 			"health" : 60,
 			"strength" : 1,
 			"reflexes" : 8,
+			"fortitude" : 2,
+			"luck" : 1,
 			"image" : 2,
 			"experience_worth" : 10,
 			"rarity" : 1
@@ -34,6 +40,8 @@
 			"health" : 200,
 			"strength" : 2,
 			"reflexes" : 1,
+			"fortitude" : 10,
+			"luck" : 10,
 			"image" : 3,
 			"experience_worth" : 40,
 			"rarity" : 10
@@ -44,6 +52,8 @@
 			"health" : 250,
 			"strength" : 9,
 			"reflexes" : 3,
+			"fortitude" : 7,
+			"luck" : 2,
 			"image" : 4,
 			"experience_worth" : 80,
 			"rarity" : 3

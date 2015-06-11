@@ -30,8 +30,8 @@ public class Map {
 	private int yOffset;
 
 	// Lower is for higher spawn chance.
-	private int mobSpawnRarity = 60;
-	private int chestRarity = 10;
+	private int mobSpawnRarity = 20;
+	private int chestRarity = 40;
 
 	private ArrayList<Room> rooms = new ArrayList<Room>();
 

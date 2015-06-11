@@ -21,7 +21,7 @@ public class DeathScreen {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (pos.y > endPos.y) {
-				pos.y--;
+				pos.y -= 4;
 			}
 		}
 	});
@@ -45,7 +45,7 @@ public class DeathScreen {
 	public void paint(Graphics2D g) {
 		g.drawImage(Main.resourceLoader.deathScreen, pos.x, pos.y, null);
 
-		if (pos.y == endPos.y) {
+		if (pos.y <= endPos.y) {
 			String s = "You Died";
 			g.setFont(font);
 			g.setColor(Color.WHITE);

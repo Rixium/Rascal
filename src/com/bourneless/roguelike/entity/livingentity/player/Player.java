@@ -51,8 +51,8 @@ public class Player extends LivingEntity {
 	private Stats stats;
 	private Vector2 hitPos;
 	private int hit;
-	
-	private Inventory  inventory;
+
+	private Inventory inventory;
 
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
 
@@ -188,7 +188,7 @@ public class Player extends LivingEntity {
 											Main.resourceLoader.hitSounds[random
 													.nextInt(Main.resourceLoader.hitSounds.length)],
 											1f, false);
-							mob.hit(stats.getStrength());
+							mob.hit(stats.getStrength(), instance, this);
 							instance.setPlayerTurn(false);
 						} else {
 							travelLeft = true;
@@ -244,7 +244,7 @@ public class Player extends LivingEntity {
 											Main.resourceLoader.hitSounds[random
 													.nextInt(Main.resourceLoader.hitSounds.length)],
 											1f, false);
-							mob.hit(stats.getStrength());
+							mob.hit(stats.getStrength(), instance, this);
 							instance.setPlayerTurn(false);
 						} else {
 							travelRight = true;
@@ -299,7 +299,7 @@ public class Player extends LivingEntity {
 													.nextInt(Main.resourceLoader.hitSounds.length)],
 											1f, false);
 							Mob mob = (Mob) entity;
-							mob.hit(stats.getStrength());
+							mob.hit(stats.getStrength(), instance, this);
 							instance.setPlayerTurn(false);
 						} else {
 
@@ -354,7 +354,7 @@ public class Player extends LivingEntity {
 													.nextInt(Main.resourceLoader.hitSounds.length)],
 											1f, false);
 							Mob mob = (Mob) entity;
-							mob.hit(stats.getStrength());
+							mob.hit(stats.getStrength(), instance, this);
 							instance.setPlayerTurn(false);
 						} else {
 							travelDown = true;
@@ -428,10 +428,6 @@ public class Player extends LivingEntity {
 					* random.nextInt(stats.luck);
 		}
 
-		instance.getHits().add(
-				new Hit(hit, new Vector2(pos.x + image.getWidth() / 2, pos.y
-						- image.getHeight() / 4)));
-
 		System.out.println(mob.getStats().name + " hits for " + hit + "!");
 
 		if (hit > 0) {
@@ -466,7 +462,7 @@ public class Player extends LivingEntity {
 			instance.showDeathScreen();
 		}
 	}
-	
+
 	public Inventory getInventory() {
 		return this.inventory;
 	}

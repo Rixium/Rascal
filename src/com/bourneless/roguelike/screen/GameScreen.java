@@ -3,7 +3,9 @@ package com.bourneless.roguelike.screen;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.screen.MenuScreen;
@@ -59,6 +61,11 @@ public class GameScreen extends Screen {
 		}
 	}
 
+	public void mouseClicked(MouseEvent e) {
+		Rectangle mouseRect = new Rectangle(e.getX(), e.getY() - 20, 1, 1);
+		instance.mousePressed(mouseRect);
+	}
+	
 	public boolean getIsReady() {
 		return this.isReady;
 	}

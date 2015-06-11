@@ -20,12 +20,13 @@ public class Door extends DestroyableEntity {
 
 	public void paint(Graphics2D g) {
 		if (broken) {
-			
-			if(!this.tile.isPassable()) {
+
+			if (!this.tile.isPassable()) {
+				this.solid = false;
 				this.tile.setPassable(true);
 				this.passable = true;
 			}
-			
+
 			if (!side) {
 				g.drawImage(
 						Main.resourceLoader.door[1],
@@ -51,7 +52,5 @@ public class Door extends DestroyableEntity {
 			}
 		}
 	}
-	
-	
 
 }
