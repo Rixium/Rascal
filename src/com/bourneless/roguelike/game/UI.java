@@ -243,10 +243,10 @@ public class UI {
 					player.getStats().removePoint();
 				} else if (levelButtons[1].getRect().contains(mouseRect)) {
 					player.getStats().constitution += 1;
+					player.setMaxHealth(player.getStats().constitution * 100);
 					player.getStats().removePoint();
 				} else if (levelButtons[2].getRect().contains(mouseRect)) {
 					player.getStats().fortitude += 1;
-					player.setMaxHealth(player.getStats().fortitude * 100);
 					player.getStats().removePoint();
 				} else if (levelButtons[3].getRect().contains(mouseRect)) {
 					player.getStats().reflexes += 1;
