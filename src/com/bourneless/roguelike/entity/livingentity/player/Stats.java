@@ -15,15 +15,34 @@ public class Stats {
 	public int experience = 0;
 	public int expToLevel = 100;
 
+	public int baseStrength = 2;
 	public int strength = 2;
+
+	public int baseConst = 2;
 	public int constitution = 2;
+
+	public int baseFort = 2;
 	public int fortitude = 2;
+
+	public int baseRefl = 2;
 	public int reflexes = 2;
+
+	public int baseMind = 2;
 	public int mind = 2;
+
+	public int basePres = 2;
 	public int presence = 2;
+
+	public int baseSpir = 2;
 	public int spirit = 2;
+
+	public int baseSan = 2;
 	public int sanity = 2;
+
+	public int baseAware = 2;
 	public int awareness = 2;
+
+	public int baseLuck = 2;
 	public int luck = 2;
 
 	private int points = 25;
@@ -99,49 +118,50 @@ public class Stats {
 
 			switch (skill) {
 			case 0:
-				strength += 1;
+				baseStrength += 1;
 				points -= 1;
 				break;
 			case 1:
-				constitution += 1;
+				baseConst += 1;
 				points -= 1;
 				break;
 			case 2:
-				fortitude += 1;
+				baseFort += 1;
 				points -= 1;
 				break;
 			case 3:
-				reflexes += 1;
+				baseRefl += 1;
 				points -= 1;
 				break;
 			case 4:
-				mind += 1;
+				baseMind += 1;
 				points -= 1;
 				break;
 			case 5:
-				presence += 1;
+				basePres += 1;
 				points -= 1;
 				break;
 			case 6:
-				spirit += 1;
+				baseSpir += 1;
 				points -= 1;
 				break;
 			case 7:
-				sanity += 1;
+				baseSan += 1;
 				points -= 1;
 				break;
 			case 8:
-				awareness += 1;
+				baseAware += 1;
 				points -= 1;
 				break;
 			case 9:
-				luck += 1;
+				baseLuck += 1;
 				points -= 1;
 				break;
 			default:
 				break;
 			}
 		}
+		checkStats(null);
 		player.setHealth(player.getHealth() * constitution);
 		points = 5;
 		print();
@@ -167,4 +187,27 @@ public class Stats {
 		System.out.println("______________");
 		System.out.println();
 	}
+
+	public void checkStats(EquipmentSlot[] e) {
+		strength = baseStrength;
+		fortitude = baseFort;
+		constitution = baseConst;
+		reflexes = baseRefl;
+		luck = baseLuck;
+		spirit = baseSpir;
+		sanity = baseSan;
+		awareness = baseAware;
+		mind = baseMind;
+		presence = basePres;
+
+		if (e != null) {
+			for (int i = 0; i < e.length; i++) {
+				if (e[i].hasItem()) {
+					strength += e[i].getItem().getStats().itemStrength;
+					fortitude += e[i].getItem().getStats().itemDefence;
+				}
+			}
+		}
+	}
+
 }

@@ -82,8 +82,10 @@ public class ResourceLoader {
 
 	public BufferedImage[] levelUpImage;
 	public Animation levelUpAnimation;
-	
+
 	public BufferedImage levelUpButton;
+
+	public BufferedImage inventoryPlayer;
 
 	// Portraits
 
@@ -324,6 +326,7 @@ public class ResourceLoader {
 		paused = getBufferedImage("/ui/menus/pausedOverlay.png");
 		deathScreen = getBufferedImage("/ui/deathScreen.png");
 		inventoryScreen = getBufferedImage("/ui/menus/inventoryScreen.png");
+		inventoryPlayer = getBufferedImage("/ui/menus/inventoryPlayer.png");
 
 		BufferedImage levelUpSheet = getBufferedImage("/ui/levelUpImage.png");
 		levelUpImage = new BufferedImage[2];

@@ -61,11 +61,16 @@ public class GameScreen extends Screen {
 		}
 	}
 
+	public void mouseMoved(MouseEvent e) {
+		Rectangle mouseRect = new Rectangle(e.getX() - 3, e.getY() - 27, 1, 1);
+		instance.mouseMoved(mouseRect);
+	}
+
 	public void mouseClicked(MouseEvent e) {
-		Rectangle mouseRect = new Rectangle(e.getX(), e.getY() - 20, 1, 1);
+		Rectangle mouseRect = new Rectangle(e.getX() - 3, e.getY() - 27, 1, 1);
 		instance.mousePressed(mouseRect);
 	}
-	
+
 	public boolean getIsReady() {
 		return this.isReady;
 	}

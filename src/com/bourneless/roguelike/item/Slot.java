@@ -2,6 +2,7 @@ package com.bourneless.roguelike.item;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import com.bourneless.engine.math.Vector2;
 
@@ -12,9 +13,13 @@ public class Slot {
 	private int slotSize = 0;
 	private boolean free = true;
 	
+	private Rectangle rect;
+	
 	public Slot(Vector2 pos, int slotSize) {
 		this.pos = pos;
 		this.slotSize = slotSize;
+		
+		rect = new Rectangle(pos.x, pos.y, slotSize, slotSize);
 	}
 	
 	public void paint(Graphics2D g) {
@@ -43,4 +48,7 @@ public class Slot {
 		return this.item;
 	}
 	
+	public Rectangle getRect() {
+		return this.rect;
+	}
 }

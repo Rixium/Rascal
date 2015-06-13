@@ -100,9 +100,8 @@ public class Instance {
 		}
 
 		miniMap.paint(g);
-		
+
 		ui.paint(g);
-		
 
 		if (deathScreenActive) {
 			ds.paint(g);
@@ -147,7 +146,7 @@ public class Instance {
 			player.keyReleased(e);
 		}
 	}
-	
+
 	public void mousePressed(Rectangle rect) {
 		ui.mousePressed(rect);
 	}
@@ -172,5 +171,9 @@ public class Instance {
 		this.deathScreenActive = true;
 		ds = new DeathScreen(player);
 	}
-	
+
+	public void mouseMoved(Rectangle mouseRect) {
+		ui.mouseMoved(mouseRect);
+	}
+
 }

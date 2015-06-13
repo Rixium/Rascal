@@ -56,11 +56,24 @@ public class Player extends LivingEntity {
 
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
 
+	private EquipmentSlot[] equipment = new EquipmentSlot[6];
+
 	public Player(Tile tile, BufferedImage image) {
 		super(tile, image, EntityType.PLAYER);
 		type = EntityType.PLAYER;
 		stats = new Stats(this);
 		inventory = new Inventory();
+
+		createEquipmentSlots();
+	}
+
+	public void createEquipmentSlots() {
+		equipment[0] = new EquipmentSlot(3, this);
+		equipment[1] = new EquipmentSlot(2, this);
+		equipment[2] = new EquipmentSlot(0, this);
+		equipment[3] = new EquipmentSlot(1, this);
+		equipment[4] = new EquipmentSlot(4, this);
+		equipment[5] = new EquipmentSlot(6, this);
 	}
 
 	public void paint(Graphics2D g) {
@@ -93,6 +106,7 @@ public class Player extends LivingEntity {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		fOV.CheckFieldOfView(map, this);
+
 		if (travelLeft) {
 			if (pos.x + playerXOff > map.getTiles()[tile.getTileX() - 1][tile
 					.getTileY()].getPos().x) {
@@ -465,5 +479,9 @@ public class Player extends LivingEntity {
 
 	public Inventory getInventory() {
 		return this.inventory;
+	}
+	
+	public EquipmentSlot[] getEquipment() {
+		return this.equipment;
 	}
 }

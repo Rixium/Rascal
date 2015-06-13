@@ -1,5 +1,6 @@
 package com.bourneless.roguelike.game;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -9,7 +10,10 @@ import java.util.Random;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.engine.util.Button;
+import com.bourneless.roguelike.entity.livingentity.player.EquipmentSlot;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
+import com.bourneless.roguelike.item.Item;
+import com.bourneless.roguelike.item.Slot;
 
 public class UI {
 
@@ -21,6 +25,13 @@ public class UI {
 	private boolean showCharacterScreen = false;
 	private boolean showInventory = false;
 	private boolean levelUpStart = false;
+
+	private boolean holdingItem = false;
+	private Item heldItem;
+
+	private int slotSize = 32;
+
+	private Rectangle mouseRect = new Rectangle(0, 0, 0, 0);
 
 	private Button[] levelButtons = new Button[10];
 
@@ -50,6 +61,38 @@ public class UI {
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 152));
 		levelButtons[9] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 172));
+
+		player.getEquipment()[0].setPos(new Vector2(20
+				+ Main.resourceLoader.statScreen.getWidth() / 2
+				+ Main.resourceLoader.statScreen.getWidth() / 4 - slotSize / 2,
+				Main.GAME_HEIGHT / 2 - slotSize));
+		player.getEquipment()[1].setPos(new Vector2(20
+				+ Main.resourceLoader.statScreen.getWidth() / 2
+				+ Main.resourceLoader.statScreen.getWidth() / 4 - slotSize / 2
+				+ Main.resourceLoader.inventoryPlayer.getWidth() / 2,
+				Main.GAME_HEIGHT / 2 - slotSize / 2));
+		player.getEquipment()[2].setPos(new Vector2(20
+				+ Main.resourceLoader.statScreen.getWidth() / 2
+				+ Main.resourceLoader.statScreen.getWidth() / 4 - slotSize / 2
+				- Main.resourceLoader.inventoryPlayer.getWidth() / 2,
+				Main.GAME_HEIGHT / 2 - slotSize / 2));
+		player.getEquipment()[3].setPos(new Vector2(20
+				+ Main.resourceLoader.statScreen.getWidth() / 2
+				+ Main.resourceLoader.statScreen.getWidth() / 4 - slotSize / 2,
+				Main.GAME_HEIGHT / 2
+						- Main.resourceLoader.inventoryPlayer.getHeight() / 2
+						+ slotSize));
+
+		player.getEquipment()[4].setPos(new Vector2(20
+				+ Main.resourceLoader.statScreen.getWidth() / 2
+				+ Main.resourceLoader.statScreen.getWidth() / 4 - slotSize / 2,
+				Main.GAME_HEIGHT / 2 + slotSize));
+		player.getEquipment()[5].setPos(new Vector2(20
+				+ Main.resourceLoader.statScreen.getWidth() / 2
+				+ Main.resourceLoader.statScreen.getWidth() / 4 - slotSize / 2,
+				Main.GAME_HEIGHT / 2
+						+ Main.resourceLoader.inventoryPlayer.getHeight() / 2
+						- slotSize));
 
 	}
 
@@ -200,15 +243,46 @@ public class UI {
 					+ Main.resourceLoader.statScreen.getWidth() / 4
 					- stringLength / 2;
 
-			int xPos = Main.GAME_HEIGHT / 2 - stringHeight / 2;
+			int xPos = Main.GAME_HEIGHT / 2
+					- Main.resourceLoader.statScreen.getHeight() / 3;
 
 			g.drawString(nameString, start, xPos);
+
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					0.7f));
+
+			g.drawImage(
+					Main.resourceLoader.inventoryPlayer,
+					20 + Main.resourceLoader.statScreen.getWidth() / 2
+							+ Main.resourceLoader.statScreen.getWidth() / 4
+							- Main.resourceLoader.inventoryPlayer.getWidth()
+							/ 2 - 4,
+					Main.GAME_HEIGHT / 2
+							- Main.resourceLoader.inventoryPlayer.getHeight()
+							/ 2, null);
+
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					0.8f));
+			g.setColor(Color.BLACK);
+
+			for (EquipmentSlot e : player.getEquipment()) {
+				e.paint(g);
+			}
+
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					1));
 
 		}
 
 		if (showInventory) {
 			player.getInventory().paint(g);
 		}
+
+		if (holdingItem) {
+			g.drawImage(heldItem.getItemInvImage(), mouseRect.x, mouseRect.y,
+					null);
+		}
+
 	}
 
 	public void showCScreen(boolean bool) {
@@ -235,42 +309,120 @@ public class UI {
 		return this.showInventory;
 	}
 
+	public void mouseMoved(Rectangle mouseRect) {
+		this.mouseRect = mouseRect;
+	}
+
 	public void mousePressed(Rectangle mouseRect) {
 		if (showCharacterScreen) {
+			// Left Side
 			if (player.getStats().getPoints() > 0) {
 				if (levelButtons[0].getRect().contains(mouseRect)) {
-					player.getStats().strength += 1;
+					player.getStats().baseStrength += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[1].getRect().contains(mouseRect)) {
-					player.getStats().constitution += 1;
+					player.getStats().baseConst += 1;
 					player.setMaxHealth(player.getStats().constitution * 100);
 					player.getStats().removePoint();
 				} else if (levelButtons[2].getRect().contains(mouseRect)) {
-					player.getStats().fortitude += 1;
+					player.getStats().baseFort += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[3].getRect().contains(mouseRect)) {
-					player.getStats().reflexes += 1;
+					player.getStats().baseRefl += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[4].getRect().contains(mouseRect)) {
-					player.getStats().mind += 1;
+					player.getStats().baseMind += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[5].getRect().contains(mouseRect)) {
-					player.getStats().presence += 1;
+					player.getStats().basePres += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[6].getRect().contains(mouseRect)) {
-					player.getStats().spirit += 1;
+					player.getStats().baseSpir += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[7].getRect().contains(mouseRect)) {
-					player.getStats().sanity += 1;
+					player.getStats().baseSan += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[8].getRect().contains(mouseRect)) {
-					player.getStats().awareness += 1;
+					player.getStats().baseAware += 1;
 					player.getStats().removePoint();
 				} else if (levelButtons[9].getRect().contains(mouseRect)) {
-					player.getStats().luck += 1;
+					player.getStats().baseLuck += 1;
 					player.getStats().removePoint();
 				}
+				player.getStats().checkStats(player.getEquipment());
+			}
 
+			// Right Side
+
+			if (holdingItem) {
+				if (player.getEquipment()[0].getRect().contains(mouseRect)) {
+					if (heldItem.getStats().itemType == player.getEquipment()[0]
+							.getType()) {
+						player.getEquipment()[0].giveItem(heldItem);
+						heldItem = null;
+						holdingItem = false;
+					}
+				} else if (player.getEquipment()[1].getRect().contains(
+						mouseRect)) {
+					if (heldItem.getStats().itemType == player.getEquipment()[1]
+							.getType()) {
+						player.getEquipment()[1].giveItem(heldItem);
+						heldItem = null;
+						holdingItem = false;
+					}
+				} else if (player.getEquipment()[2].getRect().contains(
+						mouseRect)) {
+					if (heldItem.getStats().itemType == player.getEquipment()[2]
+							.getType()) {
+						player.getEquipment()[2].giveItem(heldItem);
+						heldItem = null;
+						holdingItem = false;
+					}
+				} else if (player.getEquipment()[3].getRect().contains(
+						mouseRect)) {
+					if (heldItem.getStats().itemType == player.getEquipment()[3]
+							.getType()) {
+						player.getEquipment()[3].giveItem(heldItem);
+						heldItem = null;
+						holdingItem = false;
+					}
+				} else if (player.getEquipment()[4].getRect().contains(
+						mouseRect)) {
+					if (heldItem.getStats().itemType == player.getEquipment()[4]
+							.getType()) {
+						player.getEquipment()[4].giveItem(heldItem);
+						heldItem = null;
+						holdingItem = false;
+					}
+				} else if (player.getEquipment()[5].getRect().contains(
+						mouseRect)) {
+					if (heldItem.getStats().itemType == player.getEquipment()[5]
+							.getType()) {
+						player.getEquipment()[5].giveItem(heldItem);
+						heldItem = null;
+						holdingItem = false;
+					}
+				}
+			}
+		}
+
+		if (showInventory) {
+			for (Slot slot : player.getInventory().getSlots()) {
+				if (slot.getRect().contains(mouseRect)) {
+					if (slot.getItem() != null && !holdingItem) {
+						holdingItem = true;
+						heldItem = slot.getItem();
+						slot.removeItem();
+					} else if (holdingItem) {
+						for (Slot s : player.getInventory().getSlots()) {
+							if (s.getItem() == null) {
+								s.setItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
