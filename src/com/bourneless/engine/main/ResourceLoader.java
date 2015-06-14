@@ -93,6 +93,7 @@ public class ResourceLoader {
 
 	// item
 	public BufferedImage[] itemInvImages = new BufferedImage[100];
+	public BufferedImage[] foodImages;
 
 	// Music
 
@@ -112,6 +113,9 @@ public class ResourceLoader {
 
 	public Clip hitSounds[] = new Clip[4];
 	public Clip buttonHover;
+
+	public Clip eatSounds[] = new Clip[3];
+	public Clip playerSick[] = new Clip[4];
 
 	public Clip closeBook;
 	public Clip openBook;
@@ -283,6 +287,20 @@ public class ResourceLoader {
 			}
 		}
 
+		BufferedImage foodSheet = getBufferedImage("/item/foodSheet.png");
+		foodImages = new BufferedImage[2];
+		rows = 1;
+		cols = 2;
+		iteration = 0;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				foodImages[iteration] = foodSheet.getSubimage(j * 32, i * 32,
+						32, 32);
+				iteration++;
+			}
+		}
+
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
@@ -313,6 +331,15 @@ public class ResourceLoader {
 		playerDeath[0] = loadClip("/audio/playerdeath/1.wav");
 		playerDeath[1] = loadClip("/audio/playerdeath/2.wav");
 		playerDeath[2] = loadClip("/audio/playerdeath/3.wav");
+
+		eatSounds[0] = loadClip("/audio/playereat/1.wav");
+		eatSounds[1] = loadClip("/audio/playereat/2.wav");
+		eatSounds[2] = loadClip("/audio/playereat/2.wav");
+
+		playerSick[0] = loadClip("/audio/playersick/1.wav");
+		playerSick[1] = loadClip("/audio/playersick/2.wav");
+		playerSick[2] = loadClip("/audio/playersick/3.wav");
+		playerSick[3] = loadClip("/audio/playersick/4.wav");
 
 		openBook = loadClip("/audio/ui/openBook.wav");
 		closeBook = loadClip("/audio/ui/closeBook.wav");

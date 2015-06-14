@@ -27,14 +27,22 @@ public class LivingEntity extends Entity {
 	}
 
 	public void addHealth(int h) {
-		this.health += h;
+		if (this.health + h < maxHealth) {
+			this.health += h;
+		} else {
+			this.health = maxHealth;
+		}
 	}
 
 	public int getMaxHealth() {
 		return this.maxHealth;
 	}
-	
+
 	public void setMaxHealth(int h) {
 		this.maxHealth = h;
+	}
+
+	public void hurt(int h) {
+		this.health -= h;
 	}
 }

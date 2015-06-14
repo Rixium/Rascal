@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import com.bourneless.engine.main.Main;
-import com.bourneless.engine.screen.MenuScreen;
 import com.bourneless.engine.screen.Screen;
 import com.bourneless.roguelike.game.Instance;
 
@@ -73,5 +72,9 @@ public class GameScreen extends Screen {
 
 	public boolean getIsReady() {
 		return this.isReady;
+	}
+
+	public Instance getInstance() {
+		return this.instance;
 	}
 }

@@ -12,7 +12,10 @@ import com.bourneless.engine.math.Vector2;
 import com.bourneless.engine.util.Button;
 import com.bourneless.roguelike.entity.livingentity.player.EquipmentSlot;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
+import com.bourneless.roguelike.feature.debuff.HealthDebuff;
+import com.bourneless.roguelike.item.Food;
 import com.bourneless.roguelike.item.Item;
+import com.bourneless.roguelike.item.ItemType;
 import com.bourneless.roguelike.item.Slot;
 
 public class UI {
@@ -43,24 +46,39 @@ public class UI {
 
 		levelButtons[0] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 - 8));
+		levelButtons[0].setPopupText("Increases the power of your hit.");
 		levelButtons[1] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 12));
+		levelButtons[1].setPopupText("Raises your maximum health.");
 		levelButtons[2] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 32));
+		levelButtons[2]
+				.setPopupText("Increases your maximum defence to creature attacks.");
 		levelButtons[3] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 52));
+		levelButtons[3].setPopupText("Increases the chance of a higher hit.");
 		levelButtons[4] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 72));
+		levelButtons[4]
+				.setPopupText("Increases the chance to develop new skills.");
 		levelButtons[5] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 92));
+		levelButtons[5].setPopupText("Lowers the prices of merchants.");
 		levelButtons[6] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 112));
+		levelButtons[6].setPopupText("Increases your maximum mana pool.");
 		levelButtons[7] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 132));
+		levelButtons[7]
+				.setPopupText("Increases your mental resistance to fear and pain.");
 		levelButtons[8] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 152));
+		levelButtons[8]
+				.setPopupText("Increases your ability to sense traps and other dangers.");
 		levelButtons[9] = new Button(Main.resourceLoader.levelUpButton,
 				new Vector2(250, Main.GAME_HEIGHT / 2 + 172));
+		levelButtons[9]
+				.setPopupText("Increases the chance to crit, and find better items.");
 
 		player.getEquipment()[0].setPos(new Vector2(20
 				+ Main.resourceLoader.statScreen.getWidth() / 2
@@ -198,34 +216,34 @@ public class UI {
 			// Left page
 
 			g.setColor(Color.WHITE);
-			g.drawString("Strength: " + player.getStats().strength, 80,
-					Main.GAME_HEIGHT / 2);
-			g.drawString("Constitution: " + player.getStats().constitution, 80,
+			g.drawString(
+					"Strength: "
+							+ player.getStats().baseStrength
+							+ " +"
+							+ (player.getStats().strength - player.getStats().baseStrength),
+					80, Main.GAME_HEIGHT / 2);
+			g.drawString("Constitution: " + player.getStats().baseConst, 80,
 					Main.GAME_HEIGHT / 2 + 20);
-			g.drawString("Fortitude: " + player.getStats().fortitude, 80,
-					Main.GAME_HEIGHT / 2 + 40);
-			g.drawString("Reflexes: " + player.getStats().reflexes, 80,
+			g.drawString(
+					"Fortitude: "
+							+ player.getStats().baseFort
+							+ " +"
+							+ (player.getStats().fortitude - player.getStats().baseFort),
+					80, Main.GAME_HEIGHT / 2 + 40);
+			g.drawString("Reflexes: " + player.getStats().baseRefl, 80,
 					Main.GAME_HEIGHT / 2 + 60);
-			g.drawString("Mind: " + player.getStats().mind, 80,
+			g.drawString("Mind: " + player.getStats().baseMind, 80,
 					Main.GAME_HEIGHT / 2 + 80);
-			g.drawString("Presence: " + player.getStats().presence, 80,
+			g.drawString("Presence: " + player.getStats().basePres, 80,
 					Main.GAME_HEIGHT / 2 + 100);
-			g.drawString("Spirit: " + player.getStats().spirit, 80,
+			g.drawString("Spirit: " + player.getStats().baseSpir, 80,
 					Main.GAME_HEIGHT / 2 + 120);
-			g.drawString("Sanity: " + player.getStats().sanity, 80,
+			g.drawString("Sanity: " + player.getStats().baseSan, 80,
 					Main.GAME_HEIGHT / 2 + 140);
-			g.drawString("Awareness: " + player.getStats().awareness, 80,
+			g.drawString("Awareness: " + player.getStats().baseAware, 80,
 					Main.GAME_HEIGHT / 2 + 160);
-			g.drawString("Luck: " + player.getStats().luck, 80,
+			g.drawString("Luck: " + player.getStats().baseLuck, 80,
 					Main.GAME_HEIGHT / 2 + 180);
-
-			// Left Side Buttons
-
-			if (player.getStats().getPoints() > 0) {
-				for (Button button : levelButtons) {
-					button.paint(g);
-				}
-			}
 
 			// Right page
 
@@ -272,6 +290,14 @@ public class UI {
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 					1));
 
+			// Left Side Buttons
+
+			if (player.getStats().getPoints() > 0) {
+				for (Button button : levelButtons) {
+					button.paint(g);
+				}
+			}
+
 		}
 
 		if (showInventory) {
@@ -311,6 +337,22 @@ public class UI {
 
 	public void mouseMoved(Rectangle mouseRect) {
 		this.mouseRect = mouseRect;
+
+		for (Button button : levelButtons) {
+			if (mouseRect.intersects(button.getRect())) {
+				button.showPopup();
+			} else {
+				button.hidePopup();
+			}
+		}
+
+		for (Slot slot : player.getInventory().getSlots()) {
+			if (mouseRect.intersects(slot.getRect())) {
+				slot.showPopup();
+			} else {
+				slot.hidePopup();
+			}
+		}
 	}
 
 	public void mousePressed(Rectangle mouseRect) {
@@ -407,18 +449,41 @@ public class UI {
 		}
 
 		if (showInventory) {
-			for (Slot slot : player.getInventory().getSlots()) {
+			checkSlots: for (Slot slot : player.getInventory().getSlots()) {
 				if (slot.getRect().contains(mouseRect)) {
 					if (slot.getItem() != null && !holdingItem) {
-						holdingItem = true;
-						heldItem = slot.getItem();
-						slot.removeItem();
+						if (slot.getItem().getStats().itemType == ItemType.FOOD) {
+							Food food = (Food) slot.getItem();
+							player.addHealth(food.getStats().itemHealPower);
+							if (food.getDegradation() >= 20) {
+								Main.resourceLoader
+										.playClip(
+												Main.resourceLoader.playerSick[random
+														.nextInt(Main.resourceLoader.playerSick.length)],
+												1f, false);
+								player.addDebuff(new HealthDebuff(10));
+							} else {
+								Main.resourceLoader
+										.playClip(
+												Main.resourceLoader.eatSounds[random
+														.nextInt(Main.resourceLoader.eatSounds.length)],
+												1f, false);
+							}
+							slot.removeItem();
+							break checkSlots;
+						} else {
+							holdingItem = true;
+							heldItem = slot.getItem();
+							slot.removeItem();
+							break checkSlots;
+						}
 					} else if (holdingItem) {
 						for (Slot s : player.getInventory().getSlots()) {
 							if (s.getItem() == null) {
 								s.setItem(heldItem);
 								heldItem = null;
 								holdingItem = false;
+								break checkSlots;
 							}
 						}
 					}

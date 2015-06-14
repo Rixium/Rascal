@@ -9,5 +9,6 @@ public class Helmet extends Item {
 		stats.itemName = "Helmet";
 		stats.itemType = ItemType.HELMET;
 		this.itemInvImage = Main.resourceLoader.itemInvImages[stats.itemType];
+		stats.createStats();
 	}
 }

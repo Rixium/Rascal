@@ -9,25 +9,44 @@ public class Item {
 
 	protected ItemStats stats;
 	protected BufferedImage itemInvImage;
-	
+
+	protected int degradation;
+	protected int maxDegradation = 20;
+	protected boolean hasDegraded = false;
+
 	public Item() {
-		
+
 	}
-	
+
 	public void drawButton(Vector2 pos, Graphics2D g) {
 		g.drawImage(itemInvImage, pos.x, pos.y, null);
 	}
-	
+
 	public void setItemInvImage(BufferedImage image) {
 		this.itemInvImage = image;
 	}
-	
+
 	public BufferedImage getItemInvImage() {
 		return this.itemInvImage;
 	}
-	
+
 	public ItemStats getStats() {
 		return this.stats;
 	}
-	
+
+	public void degrade() {
+		if (degradation < maxDegradation) {
+			this.degradation++;
+		}
+
+	}
+
+	public int getDegradation() {
+		return this.degradation;
+	}
+
+	public int getMaxDegredation() {
+		return this.maxDegradation;
+	}
+
 }

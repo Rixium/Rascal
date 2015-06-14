@@ -9,6 +9,7 @@ public class Torso extends Item {
 		stats.itemName = "Torso";
 		stats.itemType = ItemType.TORSO;
 		this.itemInvImage = Main.resourceLoader.itemInvImages[stats.itemType];
+		stats.createStats();
 	}
 
 }

@@ -12,7 +12,14 @@ public class ItemDropper {
 	public void dropItem(Player player) {
 		Item item = null;
 
-		int itemType = Random.getRandom(ItemType.ITEM_TYPE_COUNT);
+		int itemType = 0;
+
+		int isFood = Random.getRandom(5);
+		if (isFood > 2) {
+			itemType = ItemType.FOOD;
+		} else {
+			itemType = Random.getRandom(ItemType.ITEM_TYPE_COUNT);
+		}
 
 		switch (itemType) {
 		case ItemType.WEAPON:
@@ -42,7 +49,6 @@ public class ItemDropper {
 		case ItemType.BOOTS:
 			item = new Boots();
 			break;
-
 		default:
 			break;
 		}

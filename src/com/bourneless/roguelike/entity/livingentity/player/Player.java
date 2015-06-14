@@ -17,7 +17,11 @@ import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.destroyableentity.DestroyableEntity;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
+import com.bourneless.roguelike.feature.debuff.Debuff;
 import com.bourneless.roguelike.game.Instance;
+import com.bourneless.roguelike.item.Food;
+import com.bourneless.roguelike.item.ItemType;
+import com.bourneless.roguelike.item.Slot;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.tile.Tile;
 
@@ -55,6 +59,7 @@ public class Player extends LivingEntity {
 	private Inventory inventory;
 
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
+	private ArrayList<Debuff> debuffs = new ArrayList<Debuff>();
 
 	private EquipmentSlot[] equipment = new EquipmentSlot[6];
 
@@ -107,6 +112,8 @@ public class Player extends LivingEntity {
 		this.yOffset = yOffset;
 		fOV.CheckFieldOfView(map, this);
 
+		stats.checkStats(equipment);
+
 		if (travelLeft) {
 			if (pos.x + playerXOff > map.getTiles()[tile.getTileX() - 1][tile
 					.getTileY()].getPos().x) {
@@ -122,6 +129,7 @@ public class Player extends LivingEntity {
 				tile = newTile;
 				this.layer = tile.getTileY();
 				playerXOff = 0;
+				sortPlayer();
 				instance.setPlayerTurn(false);
 			}
 		} else if (travelRight) {
@@ -139,6 +147,7 @@ public class Player extends LivingEntity {
 				tile.removeEntity(this);
 				tile = newTile;
 				playerXOff = 0;
+				sortPlayer();
 				instance.setPlayerTurn(false);
 			}
 		} else if (travelUp) {
@@ -155,6 +164,7 @@ public class Player extends LivingEntity {
 				tile.removeEntity(this);
 				tile = newTile;
 				playerYOff = 0;
+				sortPlayer();
 				instance.setPlayerTurn(false);
 			}
 		} else if (travelDown) {
@@ -173,12 +183,15 @@ public class Player extends LivingEntity {
 				tile.removeEntity(this);
 				tile = newTile;
 				playerYOff = 0;
+				sortPlayer();
 				instance.setPlayerTurn(false);
 			}
 		}
 	}
 
 	public void keyPressed(KeyEvent e, Map map) {
+		stats.checkStats(equipment);
+
 		if (e.getKeyCode() == 65 && lastKey != 65 || e.getKeyCode() == 37
 				&& lastKey != 37) {
 			// A Key
@@ -193,6 +206,7 @@ public class Player extends LivingEntity {
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
 							dEnt.hit(stats.getStrength());
+							sortPlayer();
 							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
@@ -203,6 +217,7 @@ public class Player extends LivingEntity {
 													.nextInt(Main.resourceLoader.hitSounds.length)],
 											1f, false);
 							mob.hit(stats.getStrength(), instance, this);
+							sortPlayer();
 							instance.setPlayerTurn(false);
 						} else {
 							travelLeft = true;
@@ -213,6 +228,7 @@ public class Player extends LivingEntity {
 														.nextInt(Main.resourceLoader.walkSounds.length)],
 												.5f, false);
 								moveLeftAnimation.start(false);
+								sortPlayer();
 								instance.setPlayerTurn(false);
 							}
 						}
@@ -249,6 +265,7 @@ public class Player extends LivingEntity {
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
 							dEnt.hit(stats.getStrength());
+							sortPlayer();
 							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
@@ -259,6 +276,7 @@ public class Player extends LivingEntity {
 													.nextInt(Main.resourceLoader.hitSounds.length)],
 											1f, false);
 							mob.hit(stats.getStrength(), instance, this);
+							sortPlayer();
 							instance.setPlayerTurn(false);
 						} else {
 							travelRight = true;
@@ -303,6 +321,7 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
+							sortPlayer();
 							dEnt.hit(stats.getStrength());
 							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
@@ -314,6 +333,7 @@ public class Player extends LivingEntity {
 											1f, false);
 							Mob mob = (Mob) entity;
 							mob.hit(stats.getStrength(), instance, this);
+							sortPlayer();
 							instance.setPlayerTurn(false);
 						} else {
 
@@ -358,6 +378,7 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
+							sortPlayer();
 							dEnt.hit(stats.getStrength());
 							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
@@ -369,6 +390,7 @@ public class Player extends LivingEntity {
 											1f, false);
 							Mob mob = (Mob) entity;
 							mob.hit(stats.getStrength(), instance, this);
+							sortPlayer();
 							instance.setPlayerTurn(false);
 						} else {
 							travelDown = true;
@@ -444,6 +466,18 @@ public class Player extends LivingEntity {
 
 		System.out.println(mob.getStats().name + " hits for " + hit + "!");
 
+		for (EquipmentSlot e : equipment) {
+			if (e.hasItem()) {
+				e.getItem().degrade();
+				System.out.println(e.getItem().getDegradation());
+
+				if (e.getItem().getDegradation() >= e.getItem()
+						.getMaxDegredation()) {
+					e.removeItem();
+				}
+			}
+		}
+
 		if (hit > 0) {
 			if (hit > stats.fortitude) {
 				if (!Main.resourceLoader.playerHurt[0].isActive()
@@ -477,11 +511,36 @@ public class Player extends LivingEntity {
 		}
 	}
 
+	private void sortPlayer() {
+		for (Slot slot : inventory.getSlots()) {
+			if (slot.getItem() != null) {
+				if (slot.getItem().getStats().itemType == ItemType.FOOD) {
+					Food food = (Food) slot.getItem();
+					food.degrade();
+				}
+			}
+		}
+
+		for (Debuff d : debuffs) {
+			if (d.hasEnded()) {
+				debuffs.remove(d);
+				break;
+			} else {
+				d.tick(this);
+			}
+		}
+	}
+
 	public Inventory getInventory() {
 		return this.inventory;
 	}
-	
+
 	public EquipmentSlot[] getEquipment() {
 		return this.equipment;
 	}
+
+	public void addDebuff(Debuff debuff) {
+		this.debuffs.add(debuff);
+	}
+
 }

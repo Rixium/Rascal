@@ -11,12 +11,16 @@ import com.bourneless.engine.main.Main;
 import com.bourneless.engine.screen.MenuScreen;
 import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
+import com.bourneless.roguelike.item.Food;
+import com.bourneless.roguelike.item.ItemType;
+import com.bourneless.roguelike.item.Slot;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.Minimap;
 import com.bourneless.roguelike.screen.DeathScreen;
 
 public class Instance {
 
+	private int floor = 1;
 	private Map map;
 	private Minimap miniMap;
 	private UI ui;
@@ -76,6 +80,7 @@ public class Instance {
 
 			if (playerTurn) {
 				player.update(xOffset, yOffset, map, this);
+
 			}
 
 			miniMap.update(xOffset, yOffset);
@@ -174,6 +179,14 @@ public class Instance {
 
 	public void mouseMoved(Rectangle mouseRect) {
 		ui.mouseMoved(mouseRect);
+	}
+
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	public int getFloor() {
+		return this.floor;
 	}
 
 }

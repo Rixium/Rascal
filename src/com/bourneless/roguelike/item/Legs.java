@@ -9,6 +9,7 @@ public class Legs extends Item {
 		stats.itemName = "Legs";
 		stats.itemType = ItemType.LEGS;
 		this.itemInvImage = Main.resourceLoader.itemInvImages[stats.itemType];
+		stats.createStats();
 	}
 
 }

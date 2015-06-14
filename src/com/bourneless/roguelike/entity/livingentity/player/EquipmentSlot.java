@@ -54,8 +54,12 @@ public class EquipmentSlot {
 	public Rectangle getRect() {
 		return this.rect;
 	}
-	
+
 	public int getType() {
 		return this.type;
+	}
+
+	public void removeItem() {
+		this.item = null;
 	}
 }

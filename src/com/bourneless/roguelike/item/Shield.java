@@ -9,6 +9,7 @@ public class Shield extends Item {
 		stats.itemName = "Shield";
 		stats.itemType = ItemType.SHIELD;
 		this.itemInvImage = Main.resourceLoader.itemInvImages[stats.itemType];
+		stats.createStats();
 	}
 
 }
