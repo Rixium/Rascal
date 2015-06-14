@@ -176,6 +176,11 @@ public class UI {
 								.getHeight() / 2
 						+ Main.resourceLoader.healthBar.getHeight() / 2, null);
 
+		// Draw Portrait
+
+		g.drawImage(Main.resourceLoader.playerPortraits[playerPortrait], 10,
+				20, null);
+
 		// Draw level up animation
 
 		if (player.getStats().getPoints() > 0) {
@@ -183,31 +188,14 @@ public class UI {
 				Main.resourceLoader.levelUpAnimation.start(false);
 				levelUpStart = true;
 			}
-			Main.resourceLoader.levelUpAnimation
-					.paint(g,
-							new Vector2(
-									10
-											+ Main.resourceLoader.playerPortraits[playerPortrait]
-													.getWidth()
-											+ Main.resourceLoader.healthBar
-													.getWidth() + 20,
-									20
-											+ Main.resourceLoader.playerPortraits[playerPortrait]
-													.getHeight()
-											/ 2
-											+ Main.resourceLoader.healthBar
-													.getHeight() / 2));
+			Main.resourceLoader.levelUpAnimation.paint(g, new Vector2(20,
+					20 + 10));
 		} else {
 			if (levelUpStart) {
 				Main.resourceLoader.levelUpAnimation.stop();
 				levelUpStart = false;
 			}
 		}
-
-		// Draw Portrait
-
-		g.drawImage(Main.resourceLoader.playerPortraits[playerPortrait], 10,
-				20, null);
 
 		if (showCharacterScreen) {
 			g.drawImage(Main.resourceLoader.statScreen, 20, Main.GAME_HEIGHT

@@ -57,7 +57,8 @@ public class Stats {
 	public void addExperience(int exp) {
 		if (this.experience + exp >= expToLevel) {
 			this.level++;
-
+			Main.resourceLoader
+					.playClip(Main.resourceLoader.levelUp, 1f, false);
 			if (player.getHealth() + 100 <= player.getMaxHealth()) {
 				player.addHealth(100);
 			} else {
@@ -204,7 +205,9 @@ public class Stats {
 			for (int i = 0; i < e.length; i++) {
 				if (e[i].hasItem()) {
 					strength += e[i].getItem().getStats().itemStrength;
-					fortitude += e[i].getItem().getStats().itemDefence;
+					fortitude += e[i].getItem().getStats().itemFortitude;
+					reflexes += e[i].getItem().getStats().itemReflexes;
+					constitution += e[i].getItem().getStats().itemConstitution;
 				}
 			}
 		}

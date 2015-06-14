@@ -11,9 +11,6 @@ import com.bourneless.engine.main.Main;
 import com.bourneless.engine.screen.MenuScreen;
 import com.bourneless.roguelike.entity.Hit;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
-import com.bourneless.roguelike.item.Food;
-import com.bourneless.roguelike.item.ItemType;
-import com.bourneless.roguelike.item.Slot;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.Minimap;
 import com.bourneless.roguelike.screen.DeathScreen;
@@ -24,6 +21,7 @@ public class Instance {
 	private Map map;
 	private Minimap miniMap;
 	private UI ui;
+	private Cheat cheat;
 	private boolean playerTurn = true;
 
 	private Player player;
@@ -40,7 +38,7 @@ public class Instance {
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
 
 	public Instance() {
-		map = new Map();
+		map = new Map(this);
 
 		map.generate();
 		player = map.getPlayer();
@@ -50,6 +48,13 @@ public class Instance {
 		player.setTile(player.getTile());
 		ui = new UI(player);
 
+		cheat = new Cheat(player, this);
+
+		for (int i = 0; i < map.getEntityList().size(); i++) {
+			map.getEntityList().get(i)
+					.setLayer(map.getEntityList().get(i).getTile().getTileY());
+		}
+		
 		ready = true;
 	}
 
@@ -111,44 +116,72 @@ public class Instance {
 		if (deathScreenActive) {
 			ds.paint(g);
 		}
+
+		if (cheat.hasStarted()) {
+			g.setColor(Color.white);
+			String cheatString = "> " + cheat.cheat;
+			int stringLength = (int) g.getFontMetrics()
+					.getStringBounds(cheatString, g).getWidth();
+			int stringHeight = (int) g.getFontMetrics()
+					.getStringBounds(cheatString, g).getHeight();
+			int start = Main.GAME_WIDTH - stringLength - 10;
+			int xPos = 0 + stringHeight + 10;
+			g.drawString(cheatString, start, xPos);
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (!deathScreenActive) {
-			if (e.getKeyCode() == 32) {
-				if (playerTurn) {
-					playerTurn = false;
+		if (!cheat.hasStarted()) {
+			if (!deathScreenActive) {
+				if (e.getKeyCode() == 32) {
+					if (playerTurn) {
+						playerTurn = false;
+					}
+				}
+				if (e.getKeyCode() == 77) {
+					miniMap.showMap(!miniMap.getShowing());
+				} else {
+					miniMap.setDrawn(false);
+					miniMap.showMap(false);
+					player.keyPressed(e, map);
+				}
+
+				if (e.getKeyCode() == 67) {
+					miniMap.setDrawn(false);
+					miniMap.showMap(false);
+					player.keyPressed(e, map);
+					ui.showCScreen(!ui.getShowingCScreen());
+				} else if (e.getKeyCode() == 73) {
+					miniMap.setDrawn(false);
+					miniMap.showMap(false);
+					player.keyPressed(e, map);
+					ui.showInventoryScreen(!ui.getShowingInventoryScreen());
+				}
+			} else if (deathScreenActive) {
+				if (e.getKeyCode() == 27) {
+					Main.game.setScreen(new MenuScreen());
 				}
 			}
-			if (e.getKeyCode() == 77) {
-				miniMap.showMap(!miniMap.getShowing());
-			} else {
-				miniMap.setDrawn(false);
-				miniMap.showMap(false);
-				player.keyPressed(e, map);
-			}
+		}
 
-			if (e.getKeyCode() == 67) {
-				miniMap.setDrawn(false);
-				miniMap.showMap(false);
-				player.keyPressed(e, map);
-				ui.showCScreen(!ui.getShowingCScreen());
-			} else if (e.getKeyCode() == 73) {
-				miniMap.setDrawn(false);
-				miniMap.showMap(false);
-				player.keyPressed(e, map);
-				ui.showInventoryScreen(!ui.getShowingInventoryScreen());
+		if (e.getKeyCode() == 16) {
+			if (cheat.hasStarted()) {
+				cheat.stop();
+			} else {
+				cheat.start();
 			}
-		} else if (deathScreenActive) {
-			if (e.getKeyCode() == 27) {
-				Main.game.setScreen(new MenuScreen());
-			}
+		}
+
+		if (cheat.hasStarted()) {
+			cheat.addKey(e);
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
-		if (!deathScreenActive) {
-			player.keyReleased(e);
+		if (!cheat.hasStarted()) {
+			if (!deathScreenActive) {
+				player.keyReleased(e);
+			}
 		}
 	}
 
@@ -177,6 +210,11 @@ public class Instance {
 		ds = new DeathScreen(player);
 	}
 
+	public void setShowDeathScreen(boolean bool) {
+		this.deathScreenActive = bool;
+		ds = null;
+	}
+
 	public void mouseMoved(Rectangle mouseRect) {
 		ui.mouseMoved(mouseRect);
 	}
@@ -187,6 +225,14 @@ public class Instance {
 
 	public int getFloor() {
 		return this.floor;
+	}
+
+	public Map getMap() {
+		return this.map;
+	}
+
+	public Cheat getCheat() {
+		return this.cheat;
 	}
 
 }

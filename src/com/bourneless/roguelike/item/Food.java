@@ -23,4 +23,14 @@ public class Food extends Item {
 			}
 		}
 	}
+
+	public void setDegradation(int deg) {
+		this.degradation = deg;
+		if (deg < 20) {
+			this.stats.itemHealPower = this.stats.originalHealPower;
+			this.itemInvImage = Main.resourceLoader.foodImages[0];
+			hasDegraded = false;
+		}
+	}
+
 }

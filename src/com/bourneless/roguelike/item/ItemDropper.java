@@ -15,7 +15,7 @@ public class ItemDropper {
 		int itemType = 0;
 
 		int isFood = Random.getRandom(5);
-		if (isFood > 2) {
+		if (isFood > 1) {
 			itemType = ItemType.FOOD;
 		} else {
 			itemType = Random.getRandom(ItemType.ITEM_TYPE_COUNT);

@@ -94,6 +94,7 @@ public class ResourceLoader {
 	// item
 	public BufferedImage[] itemInvImages = new BufferedImage[100];
 	public BufferedImage[] foodImages;
+	public BufferedImage[] swordImages = new BufferedImage[8];
 
 	// Music
 
@@ -119,6 +120,8 @@ public class ResourceLoader {
 
 	public Clip closeBook;
 	public Clip openBook;
+
+	public Clip levelUp;
 
 	// Fonts
 
@@ -290,12 +293,26 @@ public class ResourceLoader {
 		BufferedImage foodSheet = getBufferedImage("/item/foodSheet.png");
 		foodImages = new BufferedImage[2];
 		rows = 1;
-		cols = 2;
+		cols = foodSheet.getWidth() / 32;
 		iteration = 0;
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				foodImages[iteration] = foodSheet.getSubimage(j * 32, i * 32,
+						32, 32);
+				iteration++;
+			}
+		}
+
+		BufferedImage swordSheet = getBufferedImage("/item/swordSheet.png");
+
+		iteration = 0;
+		rows = 1;
+		cols = swordSheet.getWidth() / 32;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				swordImages[iteration] = swordSheet.getSubimage(j * 32, i * 32,
 						32, 32);
 				iteration++;
 			}
@@ -345,6 +362,8 @@ public class ResourceLoader {
 		closeBook = loadClip("/audio/ui/closeBook.wav");
 
 		buttonHover = loadClip("/audio/menu/buttonHover.wav");
+
+		levelUp = loadClip("/audio/alerts/levelup.wav");
 
 		// UI
 

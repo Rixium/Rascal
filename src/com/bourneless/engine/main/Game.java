@@ -69,6 +69,9 @@ public class Game extends JPanel implements Runnable {
 
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+		loaded = true;
+		currentScreen = new SplashScreen();
+
 		running = true;
 		Thread thread = new Thread(this);
 		thread.start();
@@ -79,26 +82,6 @@ public class Game extends JPanel implements Runnable {
 			currentScreen.update();
 		}
 
-		if (!loaded && !loading) {
-			int i = 0;
-			loading = true;
-			while (i < 100) {
-				loadPerc = i;
-				i++;
-				draw();
-				try {
-					thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
-			}
-			if (loadPerc >= 99) {
-				System.out.println("Loaded");
-				loaded = true;
-				currentScreen = new SplashScreen();
-			}
-		}
 	}
 
 	public void blit() {

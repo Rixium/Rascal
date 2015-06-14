@@ -8,8 +8,8 @@ public class Weapon extends Item {
 		stats = new ItemStats(this);
 		stats.itemName = "Weapon";
 		stats.itemType = ItemType.WEAPON;
-		this.itemInvImage = Main.resourceLoader.itemInvImages[stats.itemType];
 		stats.createStats();
+		this.itemInvImage = Main.resourceLoader.swordImages[stats.rarity - 1];
 	}
 
 }

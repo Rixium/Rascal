@@ -40,12 +40,16 @@ public class Item {
 		}
 
 	}
+	
+	public void setDegradation(int deg) { 
+		this.degradation = deg;
+	}
 
 	public int getDegradation() {
 		return this.degradation;
 	}
 
-	public int getMaxDegredation() {
+	public int getMaxDegradation() {
 		return this.maxDegradation;
 	}
 

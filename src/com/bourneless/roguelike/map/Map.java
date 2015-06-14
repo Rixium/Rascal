@@ -36,9 +36,10 @@ public class Map {
 	private ArrayList<Room> rooms = new ArrayList<Room>();
 
 	private Player player;
+	private Instance instance;
 
-	public Map() {
-
+	public Map(Instance instance) {
+		this.instance = instance;
 	}
 
 	public void generate() {
@@ -382,24 +383,26 @@ public class Map {
 	public void update(int xOffset, int yOffset, Instance instance) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
-		for (Entity entity : entities) {
-			if (entity.getType() != EntityType.PLAYER) {
-				entity.update(xOffset, yOffset, this, instance);
-				if (entity.getType() == EntityType.ENEMY) {
-					Mob mob = (Mob) entity;
-					if (mob.getDead()) {
-						Main.game.getGameStats().totalKills++;
-						player.getStats().addExperience(
-								mob.getExperienceWorth());
-						entities.remove(mob);
-						mob.getTile().removeEntity(mob);
-						break;
-					}
-				} else if (entity.getType() == EntityType.BREAKABLE) {
-					if(entity.getName().equals("chest")) {
-						Chest chest = (Chest) entity;
-						if(chest.getBroken() && !chest.givenItem()) {
-							chest.dropItem(player);
+		if (!instance.getCheat().hasStarted()) {
+			for (Entity entity : entities) {
+				if (entity.getType() != EntityType.PLAYER) {
+					entity.update(xOffset, yOffset, this, instance);
+					if (entity.getType() == EntityType.ENEMY) {
+						Mob mob = (Mob) entity;
+						if (mob.getDead()) {
+							Main.game.getGameStats().totalKills++;
+							player.getStats().addExperience(
+									mob.getExperienceWorth());
+							entities.remove(mob);
+							mob.getTile().removeEntity(mob);
+							break;
+						}
+					} else if (entity.getType() == EntityType.BREAKABLE) {
+						if (entity.getName().equals("chest")) {
+							Chest chest = (Chest) entity;
+							if (chest.getBroken() && !chest.givenItem()) {
+								chest.dropItem(player);
+							}
 						}
 					}
 				}

@@ -36,11 +36,11 @@ public class Slot {
 				String itemString = "";
 
 				if (item.getStats().itemType != ItemType.FOOD) {
-					itemString = item.getStats().itemName + " of the "
+					itemString = item.getStats().itemName + " of "
 							+ item.getStats().speciality + " | " + "Strength: "
 							+ item.getStats().itemStrength + " | "
-							+ "Defence: " + item.getStats().itemDefence + " | "
-							+ item.getDegradation();
+							+ "Defence: " + item.getStats().itemFortitude
+							+ " | " + item.getDegradation();
 				} else {
 					itemString = item.getStats().itemName + " | " + "Heal: "
 							+ item.getStats().itemHealPower + " | "
@@ -62,16 +62,18 @@ public class Slot {
 				g.setComposite(AlphaComposite.getInstance(
 						AlphaComposite.SRC_OVER, 1f));
 
-				if (item.getStats().rarity <= 5) {
-					g.setColor(Color.white);
-				} else if (item.getStats().rarity > 5
-						&& item.getStats().rarity <= 6) {
-					g.setColor(Color.green);
-				} else if (item.getStats().rarity > 6
-						&& item.getStats().rarity <= 7) {
-					g.setColor(Color.yellow);
-				} else if (item.getStats().rarity == 8) {
-					g.setColor(new Color(9502975));
+				if (item != null) {
+					if (item.getStats().rarity <= 5) {
+						g.setColor(Color.white);
+					} else if (item.getStats().rarity > 5
+							&& item.getStats().rarity <= 6) {
+						g.setColor(Color.green);
+					} else if (item.getStats().rarity > 6
+							&& item.getStats().rarity <= 7) {
+						g.setColor(Color.yellow);
+					} else if (item.getStats().rarity == 8) {
+						g.setColor(new Color(9502975));
+					}
 				}
 
 				g.drawString(itemString, start, xPos);
@@ -86,6 +88,7 @@ public class Slot {
 
 	public void removeItem() {
 		this.item = null;
+		popup = false;
 		free = true;
 	}
 

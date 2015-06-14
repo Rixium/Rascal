@@ -18,6 +18,7 @@ import com.bourneless.roguelike.entity.destroyableentity.DestroyableEntity;
 import com.bourneless.roguelike.entity.livingentity.LivingEntity;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.feature.debuff.Debuff;
+import com.bourneless.roguelike.game.Cheat;
 import com.bourneless.roguelike.game.Instance;
 import com.bourneless.roguelike.item.Food;
 import com.bourneless.roguelike.item.ItemType;
@@ -79,6 +80,7 @@ public class Player extends LivingEntity {
 		equipment[3] = new EquipmentSlot(1, this);
 		equipment[4] = new EquipmentSlot(4, this);
 		equipment[5] = new EquipmentSlot(6, this);
+
 	}
 
 	public void paint(Graphics2D g) {
@@ -421,7 +423,6 @@ public class Player extends LivingEntity {
 				this.image = Main.resourceLoader.player[0];
 			}
 		} else if (e.getKeyCode() == 69) {
-
 			// E Key
 		}
 
@@ -452,6 +453,24 @@ public class Player extends LivingEntity {
 		return this.stats;
 	}
 
+	public void hurt(int h) {
+		this.health -= h;
+
+		if (this.health <= 0) {
+			Main.resourceLoader.playClip(Main.resourceLoader.playerDeath[random
+					.nextInt(Main.resourceLoader.playerDeath.length)], 1f,
+					false);
+			Main.game.getGameStats().totalDeaths++;
+			this.dead = true;
+			moveLeftAnimation.stop();
+			moveRightAnimation.stop();
+			moveUpAnimation.stop();
+			moveDownAnimation.stop();
+
+			instance.showDeathScreen();
+		}
+	}
+
 	public void hit(Mob mob) {
 
 		hit = mob.getStats().strength * random.nextInt(mob.getStats().reflexes)
@@ -472,7 +491,7 @@ public class Player extends LivingEntity {
 				System.out.println(e.getItem().getDegradation());
 
 				if (e.getItem().getDegradation() >= e.getItem()
-						.getMaxDegredation()) {
+						.getMaxDegradation()) {
 					e.removeItem();
 				}
 			}

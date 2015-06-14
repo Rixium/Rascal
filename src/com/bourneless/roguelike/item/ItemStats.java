@@ -14,8 +14,11 @@ public class ItemStats {
 	public int itemQuality;
 
 	public int itemStrength;
-	public int itemDefence;
+	public int itemFortitude;
+	public int itemReflexes;
+	public int itemConstitution;
 
+	public int originalHealPower;
 	public int itemHealPower;
 
 	public int itemType = 0;
@@ -46,57 +49,54 @@ public class ItemStats {
 			rarity = 8;
 		}
 
-		System.out.println(rarity);
 		if (itemType == ItemType.FOOD) {
 			itemHealPower = rarity * 100;
+			originalHealPower = itemHealPower;
 		} else {
 			GameScreen screen = (GameScreen) Main.game.getScreen();
 
-			int strOrDef = Random.getRandom(10);
-			if (strOrDef >= 0 && strOrDef < 4) {
-				itemStrength = rarity
-						+ (Random.getRandom(screen.getInstance().getPlayer()
-								.getStats().level
-								+ 1
-								* Random.getRandom(screen.getInstance()
-										.getFloor() + 1)));
-				itemDefence = 0;
-			} else if (strOrDef >= 4 && strOrDef < 8) {
-				itemDefence = rarity
-						+ (Random.getRandom(screen.getInstance().getPlayer()
-								.getStats().level
-								+ 1
-								* Random.getRandom(screen.getInstance()
-										.getFloor() + 1)));
-				itemStrength = 0;
-			} else {
-				itemStrength = rarity
-						+ (Random.getRandom(screen.getInstance().getPlayer()
-								.getStats().level
-								+ 1
-								* Random.getRandom(screen.getInstance()
-										.getFloor() + 1)));
-				itemDefence = rarity
-						+ (Random.getRandom(screen.getInstance().getPlayer()
-								.getStats().level
-								+ 1
-								* Random.getRandom(screen.getInstance()
-										.getFloor() + 1)));
+			int points = screen.getInstance().getPlayer().getStats().level
+					* rarity;
+
+			while (points > 0) {
+				int ranSkill = Random.getRandom(4);
+				switch (ranSkill) {
+				case 0:
+					itemStrength++;
+					points--;
+					break;
+				case 1:
+					itemFortitude++;
+					points--;
+					break;
+				case 2:
+					itemReflexes++;
+					points--;
+					break;
+				case 3:
+					itemConstitution++;
+					points--;
+					break;
+				default:
+					break;
+				}
 			}
 
-			if (itemStrength > itemDefence) {
-				speciality = "Powerful";
-			} else if (itemDefence > itemStrength) {
-				speciality = "Defender";
-			} else if (itemDefence == itemStrength && itemDefence > 1) {
-				speciality = "Hero";
-			} else {
-				speciality = "Peasant";
+			int highestSkill = Math.max(
+					itemStrength,
+					Math.max(itemFortitude,
+							Math.max(itemReflexes, itemConstitution)));
+
+			if (highestSkill == itemStrength) {
+				speciality = "Power";
+			} else if (highestSkill == itemFortitude) {
+				speciality = "Protection";
+			} else if (highestSkill == itemReflexes) {
+				speciality = "Swiftness";
+			} else if (highestSkill == itemConstitution) {
+				speciality = "Physique";
 			}
 
-			if (rarity == 8) {
-				speciality = "Almighty";
-			}
 		}
 	}
 }
