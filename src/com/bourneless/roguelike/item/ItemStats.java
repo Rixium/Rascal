@@ -8,8 +8,10 @@ public class ItemStats {
 
 	public String itemName;
 	public String speciality;
+	public String prefix;
 
 	public int rarity;
+	public int level;
 
 	public int itemQuality;
 
@@ -27,9 +29,14 @@ public class ItemStats {
 
 	}
 
-	public void createStats() {
+	public void createStats(int r) {
+		int getRarity = r;
 
-		int getRarity = Random.getRandom(1000);
+		if (getRarity == 0) {
+			getRarity = Random.getRandom(1000);
+		}
+
+		prefix = "";
 
 		if (getRarity < 600) {
 			rarity = 1;
@@ -43,10 +50,13 @@ public class ItemStats {
 			rarity = 5;
 		} else if (getRarity >= 975 && getRarity < 990) {
 			rarity = 6;
+			prefix = "Rare ";
 		} else if (getRarity >= 990 && getRarity < 998) {
 			rarity = 7;
+			prefix = "Elite ";
 		} else if (getRarity >= 998) {
 			rarity = 8;
+			prefix = "Epic ";
 		}
 
 		if (itemType == ItemType.FOOD) {
@@ -55,8 +65,14 @@ public class ItemStats {
 		} else {
 			GameScreen screen = (GameScreen) Main.game.getScreen();
 
-			int points = screen.getInstance().getPlayer().getStats().level
-					* rarity;
+			level = Random.getRandom(screen.getInstance().getPlayer()
+					.getStats().level + 2);
+
+			int points = level * rarity;
+
+			if (points == 0) {
+				points = 1;
+			}
 
 			while (points > 0) {
 				int ranSkill = Random.getRandom(4);

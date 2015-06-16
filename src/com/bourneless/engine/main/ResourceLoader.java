@@ -86,6 +86,9 @@ public class ResourceLoader {
 	public BufferedImage levelUpButton;
 
 	public BufferedImage inventoryPlayer;
+	public BufferedImage binImage;
+
+	public BufferedImage notRare, rare, elite, epic;
 
 	// Portraits
 
@@ -95,6 +98,11 @@ public class ResourceLoader {
 	public BufferedImage[] itemInvImages = new BufferedImage[100];
 	public BufferedImage[] foodImages;
 	public BufferedImage[] swordImages = new BufferedImage[8];
+	public BufferedImage[] helmetImages = new BufferedImage[8];
+	public BufferedImage[] shieldImages = new BufferedImage[8];
+	public BufferedImage[] torsoImages = new BufferedImage[8];
+	public BufferedImage[] legImages = new BufferedImage[8];
+	public BufferedImage[] bootImages = new BufferedImage[8];
 
 	// Music
 
@@ -318,6 +326,76 @@ public class ResourceLoader {
 			}
 		}
 
+		BufferedImage helmetSheet = getBufferedImage("/item/helmetSheet.png");
+
+		iteration = 0;
+		rows = 1;
+		cols = helmetSheet.getWidth() / 32;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				helmetImages[iteration] = helmetSheet.getSubimage(j * 32,
+						i * 32, 32, 32);
+				iteration++;
+			}
+		}
+
+		BufferedImage shieldSheet = getBufferedImage("/item/shieldSheet.png");
+
+		iteration = 0;
+		rows = 1;
+		cols = shieldSheet.getWidth() / 32;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				shieldImages[iteration] = shieldSheet.getSubimage(j * 32,
+						i * 32, 32, 32);
+				iteration++;
+			}
+		}
+
+		BufferedImage torsoSheet = getBufferedImage("/item/torsoSheet.png");
+
+		iteration = 0;
+		rows = 1;
+		cols = torsoSheet.getWidth() / 32;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				torsoImages[iteration] = torsoSheet.getSubimage(j * 32, i * 32,
+						32, 32);
+				iteration++;
+			}
+		}
+
+		BufferedImage legSheet = getBufferedImage("/item/legSheet.png");
+
+		iteration = 0;
+		rows = 1;
+		cols = legSheet.getWidth() / 32;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				legImages[iteration] = legSheet.getSubimage(j * 32, i * 32, 32,
+						32);
+				iteration++;
+			}
+		}
+
+		BufferedImage bootSheet = getBufferedImage("/item/bootSheet.png");
+
+		iteration = 0;
+		rows = 1;
+		cols = bootSheet.getWidth() / 32;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				bootImages[iteration] = bootSheet.getSubimage(j * 32, i * 32,
+						32, 32);
+				iteration++;
+			}
+		}
+
 		// Music
 
 		menuMusic = loadClip("/music/menuMusic.wav");
@@ -373,6 +451,11 @@ public class ResourceLoader {
 		deathScreen = getBufferedImage("/ui/deathScreen.png");
 		inventoryScreen = getBufferedImage("/ui/menus/inventoryScreen.png");
 		inventoryPlayer = getBufferedImage("/ui/menus/inventoryPlayer.png");
+		binImage = getBufferedImage("/ui/binicon.png");
+		notRare = getBufferedImage("/ui/notrare.png");
+		rare = getBufferedImage("/ui/rare.png");
+		elite = getBufferedImage("/ui/elite.png");
+		epic = getBufferedImage("/ui/epic.png");
 
 		BufferedImage levelUpSheet = getBufferedImage("/ui/levelUpImage.png");
 		levelUpImage = new BufferedImage[2];

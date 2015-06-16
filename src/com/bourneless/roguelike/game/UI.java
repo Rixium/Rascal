@@ -35,6 +35,14 @@ public class UI {
 	private int slotSize = 32;
 
 	private Rectangle mouseRect = new Rectangle(0, 0, 0, 0);
+	private Button binButton = new Button(Main.resourceLoader.binImage,
+			new Vector2(Main.GAME_WIDTH / 2
+					- Main.resourceLoader.inventoryScreen.getWidth() / 2
+					+ Main.resourceLoader.inventoryScreen.getWidth() + 20
+					+ Main.resourceLoader.inventoryScreen.getWidth(),
+					Main.GAME_HEIGHT / 2
+							- Main.resourceLoader.inventoryScreen.getHeight()
+							/ 2));
 
 	private Button[] levelButtons = new Button[10];
 
@@ -290,6 +298,7 @@ public class UI {
 
 		if (showInventory) {
 			player.getInventory().paint(g);
+			binButton.paint(g);
 		}
 
 		if (holdingItem) {
@@ -335,6 +344,14 @@ public class UI {
 		}
 
 		for (Slot slot : player.getInventory().getSlots()) {
+			if (mouseRect.intersects(slot.getRect())) {
+				slot.showPopup();
+			} else {
+				slot.hidePopup();
+			}
+		}
+
+		for (EquipmentSlot slot : player.getEquipment()) {
 			if (mouseRect.intersects(slot.getRect())) {
 				slot.showPopup();
 			} else {
@@ -388,62 +405,141 @@ public class UI {
 				if (player.getEquipment()[0].getRect().contains(mouseRect)) {
 					if (heldItem.getStats().itemType == player.getEquipment()[0]
 							.getType()) {
-						player.getEquipment()[0].giveItem(heldItem);
-						heldItem = null;
-						holdingItem = false;
+						if (heldItem.getStats().level <= player.getStats().level) {
+							player.getEquipment()[0].giveItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
+								if (s.getItem() == null) {
+									s.setItem(heldItem);
+									heldItem = null;
+									holdingItem = false;
+								}
+							}
+						}
 					}
 				} else if (player.getEquipment()[1].getRect().contains(
 						mouseRect)) {
 					if (heldItem.getStats().itemType == player.getEquipment()[1]
 							.getType()) {
-						player.getEquipment()[1].giveItem(heldItem);
-						heldItem = null;
-						holdingItem = false;
+						if (heldItem.getStats().level <= player.getStats().level) {
+							player.getEquipment()[1].giveItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
+								if (s.getItem() == null) {
+									s.setItem(heldItem);
+									heldItem = null;
+									holdingItem = false;
+								}
+							}
+						}
 					}
 				} else if (player.getEquipment()[2].getRect().contains(
 						mouseRect)) {
 					if (heldItem.getStats().itemType == player.getEquipment()[2]
 							.getType()) {
-						player.getEquipment()[2].giveItem(heldItem);
-						heldItem = null;
-						holdingItem = false;
+						if (heldItem.getStats().level <= player.getStats().level) {
+							player.getEquipment()[2].giveItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
+								if (s.getItem() == null) {
+									s.setItem(heldItem);
+									heldItem = null;
+									holdingItem = false;
+								}
+							}
+						}
 					}
 				} else if (player.getEquipment()[3].getRect().contains(
 						mouseRect)) {
 					if (heldItem.getStats().itemType == player.getEquipment()[3]
 							.getType()) {
-						player.getEquipment()[3].giveItem(heldItem);
-						heldItem = null;
-						holdingItem = false;
+						if (heldItem.getStats().level <= player.getStats().level) {
+							player.getEquipment()[3].giveItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
+								if (s.getItem() == null) {
+									s.setItem(heldItem);
+									heldItem = null;
+									holdingItem = false;
+								}
+							}
+						}
 					}
 				} else if (player.getEquipment()[4].getRect().contains(
 						mouseRect)) {
 					if (heldItem.getStats().itemType == player.getEquipment()[4]
 							.getType()) {
-						player.getEquipment()[4].giveItem(heldItem);
-						heldItem = null;
-						holdingItem = false;
+						if (heldItem.getStats().level <= player.getStats().level) {
+							player.getEquipment()[4].giveItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
+								if (s.getItem() == null) {
+									s.setItem(heldItem);
+									heldItem = null;
+									holdingItem = false;
+								}
+							}
+						}
 					}
 				} else if (player.getEquipment()[5].getRect().contains(
 						mouseRect)) {
 					if (heldItem.getStats().itemType == player.getEquipment()[5]
 							.getType()) {
-						player.getEquipment()[5].giveItem(heldItem);
-						heldItem = null;
-						holdingItem = false;
+						if (heldItem.getStats().level <= player.getStats().level) {
+							player.getEquipment()[5].giveItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
+								if (s.getItem() == null) {
+									s.setItem(heldItem);
+									heldItem = null;
+									holdingItem = false;
+								}
+							}
+						}
+					}
+				}
+			} else {
+				for (EquipmentSlot es : player.getEquipment()) {
+					if (es.getRect().contains(mouseRect)) {
+						if (es.hasItem()) {
+							heldItem = es.getItem();
+							es.removeItem();
+							holdingItem = true;
+						}
 					}
 				}
 			}
 		}
 
 		if (showInventory) {
+
+			if (binButton.getRect().contains(mouseRect)) {
+				if (holdingItem) {
+					heldItem = null;
+					holdingItem = false;
+				}
+			}
+
 			checkSlots: for (Slot slot : player.getInventory().getSlots()) {
 				if (slot.getRect().contains(mouseRect)) {
 					if (slot.getItem() != null && !holdingItem) {
 						if (slot.getItem().getStats().itemType == ItemType.FOOD) {
 							Food food = (Food) slot.getItem();
 							player.addHealth(food.getStats().itemHealPower);
-							if (food.getDegradation() >= 20) {
+							if (food.getDegradation() >= food
+									.getMaxDegradation()) {
 								Main.resourceLoader
 										.playClip(
 												Main.resourceLoader.playerSick[random

@@ -1,6 +1,7 @@
 package com.bourneless.roguelike.game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,9 @@ public class Instance {
 	private UI ui;
 	private Cheat cheat;
 	private boolean playerTurn = true;
+
+	private Font cheatFont = new Font("A Font With Serifs", Font.TRUETYPE_FONT,
+			25);
 
 	private Player player;
 
@@ -54,7 +58,7 @@ public class Instance {
 			map.getEntityList().get(i)
 					.setLayer(map.getEntityList().get(i).getTile().getTileY());
 		}
-		
+
 		ready = true;
 	}
 
@@ -114,11 +118,14 @@ public class Instance {
 		ui.paint(g);
 
 		if (deathScreenActive) {
-			ds.paint(g);
+			if (ds != null) {
+				ds.paint(g);
+			}
 		}
 
 		if (cheat.hasStarted()) {
 			g.setColor(Color.white);
+			g.setFont(cheatFont);
 			String cheatString = "> " + cheat.cheat;
 			int stringLength = (int) g.getFontMetrics()
 					.getStringBounds(cheatString, g).getWidth();

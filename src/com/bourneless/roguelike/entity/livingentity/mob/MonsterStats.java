@@ -35,14 +35,30 @@ public class MonsterStats {
 	public int image = 0;
 
 	public MonsterStats() {
-		int rarity = random.nextInt(100);
+		int rarity = random.nextInt(5501);
 
-		if (rarity < 70) {
+		if (rarity < 1000) {
 			rarity = 1;
-		} else if (rarity >= 70 && rarity < 99) {
+		} else if (rarity >= 1000 && rarity < 1900) {
+			rarity = 2;
+		} else if (rarity >= 1900 && rarity < 2700) {
 			rarity = 3;
-		} else if (rarity == 99) {
+		} else if (rarity >= 2700 && rarity < 3400) {
+			rarity = 4;
+		} else if (rarity >= 3400 && rarity < 4000) {
+			rarity = 5;
+		} else if (rarity >= 4000 && rarity < 4500) {
+			rarity = 6;
+		} else if (rarity >= 4500 && rarity < 4900) {
+			rarity = 7;
+		} else if (rarity >= 4900 && rarity < 5200) {
+			rarity = 8;
+		} else if (rarity >= 5200 && rarity < 5400) {
+			rarity = 9;
+		} else if (rarity >= 5400 && rarity < 5500) {
 			rarity = 10;
+		} else if (rarity == 5500) {
+			rarity = 11;
 		}
 
 		int getMonster = random.nextInt(Main.resourceLoader.monsters.size());

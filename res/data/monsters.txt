@@ -44,7 +44,7 @@
 			"luck" : 10,
 			"image" : 3,
 			"experience_worth" : 40,
-			"rarity" : 10
+			"rarity" : 11
 		}
 		
 		{
@@ -57,6 +57,102 @@
 			"image" : 4,
 			"experience_worth" : 80,
 			"rarity" : 3
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 2
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 4
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 5
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 6
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 7
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 8
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 9
+		}
+		
+		{
+			"name" : "Scorpion",
+			"health" : 100,
+			"strength" : 4,
+			"reflexes" : 3,
+			"fortitude" : 1,
+			"luck" : 1,
+			"image" : 0,
+			"experience_worth" : 20,
+			"rarity" : 10
 		}
 
 ]

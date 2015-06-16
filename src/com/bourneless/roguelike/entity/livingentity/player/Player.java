@@ -485,18 +485,6 @@ public class Player extends LivingEntity {
 
 		System.out.println(mob.getStats().name + " hits for " + hit + "!");
 
-		for (EquipmentSlot e : equipment) {
-			if (e.hasItem()) {
-				e.getItem().degrade();
-				System.out.println(e.getItem().getDegradation());
-
-				if (e.getItem().getDegradation() >= e.getItem()
-						.getMaxDegradation()) {
-					e.removeItem();
-				}
-			}
-		}
-
 		if (hit > 0) {
 			if (hit > stats.fortitude) {
 				if (!Main.resourceLoader.playerHurt[0].isActive()
@@ -560,6 +548,10 @@ public class Player extends LivingEntity {
 
 	public void addDebuff(Debuff debuff) {
 		this.debuffs.add(debuff);
+	}
+
+	public EquipmentSlot[] getEquipmentSlots() {
+		return this.equipment;
 	}
 
 }

@@ -4,12 +4,12 @@ import com.bourneless.engine.main.Main;
 
 public class Torso extends Item {
 	
-	public Torso() {
+	public Torso(int rarity) {
 		stats = new ItemStats(this);
 		stats.itemName = "Torso";
 		stats.itemType = ItemType.TORSO;
-		this.itemInvImage = Main.resourceLoader.itemInvImages[stats.itemType];
-		stats.createStats();
+		stats.createStats(rarity);
+		this.itemInvImage = Main.resourceLoader.torsoImages[stats.rarity - 1];
 	}
 
 }

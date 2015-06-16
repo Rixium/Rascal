@@ -275,6 +275,11 @@ public class Mob extends LivingEntity {
 		return stats.experienceWorth;
 	}
 
+	public void kill() {
+		this.dead = true;
+		this.passable = true;
+	}
+
 	public void hit(int health, Instance instance, Player player) {
 		if (!dead) {
 

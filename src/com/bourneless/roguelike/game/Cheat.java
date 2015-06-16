@@ -3,13 +3,19 @@ package com.bourneless.roguelike.game;
 import java.awt.event.KeyEvent;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.entity.Entity;
+import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
+import com.bourneless.roguelike.item.Boots;
 import com.bourneless.roguelike.item.Food;
+import com.bourneless.roguelike.item.Helmet;
 import com.bourneless.roguelike.item.ItemType;
+import com.bourneless.roguelike.item.Legs;
+import com.bourneless.roguelike.item.Shield;
 import com.bourneless.roguelike.item.Slot;
+import com.bourneless.roguelike.item.Torso;
 import com.bourneless.roguelike.item.Weapon;
-import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 
 public class Cheat {
@@ -40,7 +46,9 @@ public class Cheat {
 		}
 
 		if (e.getKeyCode() == 8) {
-			cheat = cheat.substring(0, cheat.length() - 1);
+			if (cheat.length() > 0) {
+				cheat = cheat.substring(0, cheat.length() - 1);
+			}
 		}
 
 		cheat = cheat.toLowerCase();
@@ -48,7 +56,7 @@ public class Cheat {
 		if (e.getKeyCode() == 10) {
 			if (cheat.matches("givemeweapons")) {
 				for (Slot slot : player.getInventory().getSlots()) {
-					slot.setItem(new Weapon());
+					slot.setItem(new Weapon(0));
 				}
 				stop();
 			}
@@ -73,7 +81,7 @@ public class Cheat {
 
 			if (cheat.matches("imfat")) {
 				for (Slot slot : player.getInventory().getSlots()) {
-					slot.setItem(new Food());
+					slot.setItem(new Food(0));
 				}
 				stop();
 			}
@@ -116,6 +124,68 @@ public class Cheat {
 											.getTile().getTileY());
 				}
 
+				stop();
+			}
+
+			if (cheat.matches("headisbare")) {
+				for (Slot slot : player.getInventory().getSlots()) {
+					slot.setItem(new Helmet(0));
+				}
+				stop();
+			}
+
+			if (cheat.matches("shieldme")) {
+				for (Slot slot : player.getInventory().getSlots()) {
+					slot.setItem(new Shield(0));
+				}
+				stop();
+			}
+
+			if (cheat.matches("ilikenicechests")) {
+				for (Slot slot : player.getInventory().getSlots()) {
+					slot.setItem(new Torso(0));
+				}
+				stop();
+			}
+
+			if (cheat.matches("allmenmustdie")) {
+				for (int i = 0; i < instance.getMap().getTiles().length; i++) {
+					for (int j = 0; j < instance.getMap().getTiles()[i].length; j++) {
+						if (instance.getMap().getTiles()[i][j].hasEntity()) {
+							for (Entity en : instance.getMap().getTiles()[i][j]
+									.getEntities()) {
+								if (en.getType() == EntityType.ENEMY) {
+									Mob mob = (Mob) en;
+									mob.kill();
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if (cheat.matches("protectmyknees")) {
+				for (Slot slot : player.getInventory().getSlots()) {
+					slot.setItem(new Legs(0));
+				}
+				stop();
+			}
+
+			if (cheat.matches("shoeshopping")) {
+				for (Slot slot : player.getInventory().getSlots()) {
+					slot.setItem(new Boots(0));
+				}
+				stop();
+			}
+
+			if (cheat.matches("kitme")) {
+				player.getInventory().getSlots()[0].setItem(new Weapon(998));
+				player.getInventory().getSlots()[1].setItem(new Torso(998));
+				player.getInventory().getSlots()[2].setItem(new Legs(998));
+				player.getInventory().getSlots()[3].setItem(new Boots(998));
+				player.getInventory().getSlots()[4].setItem(new Helmet(998));
+				player.getInventory().getSlots()[5].setItem(new Shield(998));
+				player.getInventory().getSlots()[6].setItem(new Food(998));
 				stop();
 			}
 

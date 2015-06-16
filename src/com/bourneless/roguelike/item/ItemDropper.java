@@ -23,31 +23,31 @@ public class ItemDropper {
 
 		switch (itemType) {
 		case ItemType.WEAPON:
-			item = new Weapon();
+			item = new Weapon(0);
 			break;
 
 		case ItemType.HELMET:
-			item = new Helmet();
+			item = new Helmet(0);
 			break;
 
 		case ItemType.FOOD:
-			item = new Food();
+			item = new Food(0);
 			break;
 
 		case ItemType.LEGS:
-			item = new Legs();
+			item = new Legs(0);
 			break;
 
 		case ItemType.SHIELD:
-			item = new Shield();
+			item = new Shield(0);
 			break;
 
 		case ItemType.TORSO:
-			item = new Torso();
+			item = new Torso(0);
 			break;
 
 		case ItemType.BOOTS:
-			item = new Boots();
+			item = new Boots(0);
 			break;
 		default:
 			break;
