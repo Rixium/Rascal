@@ -397,13 +397,6 @@ public class Map {
 							mob.getTile().removeEntity(mob);
 							break;
 						}
-					} else if (entity.getType() == EntityType.BREAKABLE) {
-						if (entity.getName().equals("chest")) {
-							Chest chest = (Chest) entity;
-							if (chest.getBroken() && !chest.givenItem()) {
-								chest.dropItem(player);
-							}
-						}
 					}
 				}
 			}

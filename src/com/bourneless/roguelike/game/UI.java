@@ -10,6 +10,7 @@ import java.util.Random;
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
 import com.bourneless.engine.util.Button;
+import com.bourneless.roguelike.entity.destroyableentity.Chest;
 import com.bourneless.roguelike.entity.livingentity.player.EquipmentSlot;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.feature.debuff.HealthDebuff;
@@ -34,15 +35,17 @@ public class UI {
 
 	private int slotSize = 32;
 
+	private Chest chest;
+
 	private Rectangle mouseRect = new Rectangle(0, 0, 0, 0);
 	private Button binButton = new Button(Main.resourceLoader.binImage,
 			new Vector2(Main.GAME_WIDTH / 2
 					- Main.resourceLoader.inventoryScreen.getWidth() / 2
-					+ Main.resourceLoader.inventoryScreen.getWidth() + 20
-					+ Main.resourceLoader.inventoryScreen.getWidth(),
+					+ Main.resourceLoader.inventoryScreen.getWidth()
+					+ Main.resourceLoader.inventoryScreen.getWidth() + 5,
 					Main.GAME_HEIGHT / 2
-							- Main.resourceLoader.inventoryScreen.getHeight()
-							/ 2));
+							+ Main.resourceLoader.inventoryScreen.getHeight()
+							/ 2 - Main.resourceLoader.binImage.getHeight()));
 
 	private Button[] levelButtons = new Button[10];
 
@@ -294,6 +297,12 @@ public class UI {
 				}
 			}
 
+			if (chest != null) {
+				if (!chest.getShowChest()) {
+					chest.openChest();
+				}
+			}
+
 		}
 
 		if (showInventory) {
@@ -302,8 +311,10 @@ public class UI {
 		}
 
 		if (holdingItem) {
-			g.drawImage(heldItem.getItemInvImage(), mouseRect.x, mouseRect.y,
-					null);
+			if (heldItem != null) {
+				g.drawImage(heldItem.getItemInvImage(), mouseRect.x,
+						mouseRect.y, null);
+			}
 		}
 
 	}
@@ -357,6 +368,28 @@ public class UI {
 			} else {
 				slot.hidePopup();
 			}
+		}
+
+		if (chest != null) {
+			for (Slot slot : chest.getContents().getSlots()) {
+				if (mouseRect.intersects(slot.getRect())) {
+					slot.showPopup();
+				} else {
+					slot.hidePopup();
+				}
+			}
+		}
+	}
+
+	public void setChest(Chest chest) {
+		if (this.chest == null) {
+			this.chest = chest;
+			this.showInventory = true;
+		} else {
+			this.chest.closeChest();
+			this.chest = null;
+			this.chest = chest;
+			this.showInventory = true;
 		}
 	}
 
@@ -562,8 +595,13 @@ public class UI {
 							break checkSlots;
 						}
 					} else if (holdingItem) {
-						for (Slot s : player.getInventory().getSlots()) {
-							if (s.getItem() == null) {
+						if (slot.getItem() == null) {
+							slot.setItem(heldItem);
+							heldItem = null;
+							holdingItem = false;
+							break checkSlots;
+						} else {
+							for (Slot s : player.getInventory().getSlots()) {
 								s.setItem(heldItem);
 								heldItem = null;
 								holdingItem = false;
@@ -573,6 +611,37 @@ public class UI {
 					}
 				}
 			}
+
+			checkChest: if (chest != null) {
+
+				if (chest.getCloseButton().getRect().intersects(mouseRect)) {
+					chest.closeChest();
+					chest = null;
+					break checkChest;
+				}
+
+				checkSlots: for (Slot s : chest.getContents().getSlots()) {
+					if (s.getRect().contains(mouseRect)) {
+						if (!holdingItem) {
+							heldItem = s.getItem();
+							s.removeItem();
+							holdingItem = true;
+							break checkSlots;
+						} else if (holdingItem) {
+							if (s.isFree()) {
+								s.setItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							}
+							break checkSlots;
+						}
+					}
+				}
+			}
 		}
+	}
+
+	public Chest getChest() {
+		return this.chest;
 	}
 }

@@ -24,6 +24,8 @@ public class Instance {
 	private UI ui;
 	private Cheat cheat;
 	private boolean playerTurn = true;
+	
+	private Rectangle mouseRect;
 
 	private Font cheatFont = new Font("A Font With Serifs", Font.TRUETYPE_FONT,
 			25);
@@ -193,6 +195,7 @@ public class Instance {
 	}
 
 	public void mousePressed(Rectangle rect) {
+		this.mouseRect = rect;
 		ui.mousePressed(rect);
 	}
 
@@ -240,6 +243,14 @@ public class Instance {
 
 	public Cheat getCheat() {
 		return this.cheat;
+	}
+	
+	public Rectangle getMouseRect() {
+		return this.mouseRect;
+	}
+	
+	public UI getUI() {
+		return this.ui;
 	}
 
 }

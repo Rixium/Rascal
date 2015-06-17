@@ -1,7 +1,7 @@
 package com.bourneless.roguelike.item;
 
 import com.bourneless.engine.math.Random;
-import com.bourneless.roguelike.entity.livingentity.player.Player;
+import com.bourneless.roguelike.entity.destroyableentity.Chest;
 
 public class ItemDropper {
 
@@ -9,7 +9,7 @@ public class ItemDropper {
 
 	}
 
-	public void dropItem(Player player) {
+	public Item dropItem() {
 		Item item = null;
 
 		int itemType = 0;
@@ -53,9 +53,6 @@ public class ItemDropper {
 			break;
 		}
 
-		System.out.println("Giving " + player.getStats().getName() + " a "
-				+ item.getStats().itemName + "!");
-
-		player.getInventory().addItem(item);
+		return item;
 	}
 }

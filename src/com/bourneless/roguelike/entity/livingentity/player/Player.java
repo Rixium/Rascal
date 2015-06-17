@@ -207,8 +207,9 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
-							dEnt.hit(stats.getStrength());
 							sortPlayer();
+							dEnt.hit(stats.getStrength());
+
 							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
@@ -266,8 +267,9 @@ public class Player extends LivingEntity {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
 							DestroyableEntity dEnt = (DestroyableEntity) entity;
-							dEnt.hit(stats.getStrength());
 							sortPlayer();
+							dEnt.hit(stats.getStrength());
+
 							instance.setPlayerTurn(false);
 						} else if (entity.getType() == EntityType.ENEMY
 								&& !entity.getPassable()) {
@@ -535,6 +537,10 @@ public class Player extends LivingEntity {
 			} else {
 				d.tick(this);
 			}
+		}
+		if (instance.getUI().getChest() != null) {
+			instance.getUI().getChest().closeChest();
+			instance.getUI().setChest(null);
 		}
 	}
 

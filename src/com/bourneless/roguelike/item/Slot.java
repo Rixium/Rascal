@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 
 import com.bourneless.engine.main.Main;
 import com.bourneless.engine.math.Vector2;
+import com.bourneless.roguelike.screen.GameScreen;
 
 public class Slot {
 
@@ -35,6 +36,7 @@ public class Slot {
 	public void paint(Graphics2D g) {
 		g.setColor(Color.WHITE);
 		g.drawRect(pos.x, pos.y, slotSize, slotSize);
+
 		if (item != null) {
 			if (item.getStats().rarity <= 5) {
 				g.setColor(Color.white);
@@ -85,23 +87,30 @@ public class Slot {
 				}
 
 				if (item.getStats().itemType != ItemType.FOOD) {
-					g.drawString(
-							item.getStats().prefix + item.getStats().itemName
-									+ " of " + item.getStats().speciality,
-							statBox.x + 10, statBox.y + 20);
+					if (item != null) {
+						g.drawString(
+								item.getStats().prefix
+										+ item.getStats().itemName + " of "
+										+ item.getStats().speciality,
+								statBox.x + 10, statBox.y + 20);
 
-					g.setColor(Color.WHITE);
-					g.drawString("Strength: " + item.getStats().itemStrength,
-							statBox.x + 10, statBox.y + 35);
-					g.drawString("Defence: " + item.getStats().itemFortitude,
-							statBox.x + 10, statBox.y + 50);
-					g.drawString("Reflexes: " + item.getStats().itemReflexes,
-							statBox.x + 10, statBox.y + 65);
-					g.drawString("Constitution: "
-							+ item.getStats().itemConstitution, statBox.x + 10,
-							statBox.y + 80);
-					g.drawString("Level Requirement: " + item.getStats().level,
-							statBox.x + 10, statBox.y + 95);
+						g.setColor(Color.WHITE);
+						g.drawString("Strength: "
+								+ item.getStats().itemStrength, statBox.x + 10,
+								statBox.y + 35);
+						g.drawString("Defence: "
+								+ item.getStats().itemFortitude,
+								statBox.x + 10, statBox.y + 50);
+						g.drawString("Reflexes: "
+								+ item.getStats().itemReflexes, statBox.x + 10,
+								statBox.y + 65);
+						g.drawString("Constitution: "
+								+ item.getStats().itemConstitution,
+								statBox.x + 10, statBox.y + 80);
+						g.drawString("Level Requirement: "
+								+ item.getStats().level, statBox.x + 10,
+								statBox.y + 95);
+					}
 				} else {
 					g.drawString(
 							item.getStats().prefix + item.getStats().speciality
@@ -115,7 +124,6 @@ public class Slot {
 							+ item.getMaxDegradation(), statBox.x + 10,
 							statBox.y + 50);
 				}
-
 			}
 		}
 	}
@@ -150,4 +158,5 @@ public class Slot {
 	public void hidePopup() {
 		popup = false;
 	}
+
 }

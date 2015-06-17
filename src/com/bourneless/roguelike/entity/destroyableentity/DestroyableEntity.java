@@ -12,6 +12,7 @@ public class DestroyableEntity extends Entity {
 
 	protected int health = 100;
 	protected boolean broken = false;
+	protected boolean active = false;
 
 	public DestroyableEntity(Tile tile, BufferedImage image, int type) {
 		super(tile, image, type);
@@ -34,6 +35,8 @@ public class DestroyableEntity extends Entity {
 						1f, false);
 				broken = true;
 			}
+		} else {
+			active = !active;
 		}
 	}
 }

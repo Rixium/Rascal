@@ -87,6 +87,8 @@ public class ResourceLoader {
 
 	public BufferedImage inventoryPlayer;
 	public BufferedImage binImage;
+	public BufferedImage closeButton;
+	public BufferedImage chestScreen;
 
 	public BufferedImage notRare, rare, elite, epic;
 
@@ -456,6 +458,8 @@ public class ResourceLoader {
 		rare = getBufferedImage("/ui/rare.png");
 		elite = getBufferedImage("/ui/elite.png");
 		epic = getBufferedImage("/ui/epic.png");
+		closeButton = getBufferedImage("/ui/menus/closeButton.png");
+		chestScreen = getBufferedImage("/ui/menus/chestScreen.png");
 
 		BufferedImage levelUpSheet = getBufferedImage("/ui/levelUpImage.png");
 		levelUpImage = new BufferedImage[2];

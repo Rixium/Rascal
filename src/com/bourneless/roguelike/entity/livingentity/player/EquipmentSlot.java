@@ -120,23 +120,30 @@ public class EquipmentSlot {
 				}
 
 				if (item.getStats().itemType != ItemType.FOOD) {
-					g.drawString(
-							item.getStats().prefix + item.getStats().itemName
-									+ " of " + item.getStats().speciality,
-							statBox.x + 10, statBox.y + 20);
+					if (item != null) {
+						g.drawString(
+								item.getStats().prefix
+										+ item.getStats().itemName + " of "
+										+ item.getStats().speciality,
+								statBox.x + 10, statBox.y + 20);
 
-					g.setColor(Color.WHITE);
-					g.drawString("Strength: " + item.getStats().itemStrength,
-							statBox.x + 10, statBox.y + 35);
-					g.drawString("Defence: " + item.getStats().itemFortitude,
-							statBox.x + 10, statBox.y + 50);
-					g.drawString("Reflexes: " + item.getStats().itemReflexes,
-							statBox.x + 10, statBox.y + 65);
-					g.drawString("Constitution: "
-							+ item.getStats().itemConstitution, statBox.x + 10,
-							statBox.y + 80);
-					g.drawString("Level Requirement: " + item.getStats().level,
-							statBox.x + 10, statBox.y + 95);
+						g.setColor(Color.WHITE);
+						g.drawString("Strength: "
+								+ item.getStats().itemStrength, statBox.x + 10,
+								statBox.y + 35);
+						g.drawString("Defence: "
+								+ item.getStats().itemFortitude,
+								statBox.x + 10, statBox.y + 50);
+						g.drawString("Reflexes: "
+								+ item.getStats().itemReflexes, statBox.x + 10,
+								statBox.y + 65);
+						g.drawString("Constitution: "
+								+ item.getStats().itemConstitution,
+								statBox.x + 10, statBox.y + 80);
+						g.drawString("Level Requirement: "
+								+ item.getStats().level, statBox.x + 10,
+								statBox.y + 95);
+					}
 				}
 			}
 		}
