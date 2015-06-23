@@ -5,6 +5,8 @@ import java.util.Random;
 import org.json.simple.JSONObject;
 
 import com.bourneless.engine.main.Main;
+import com.bourneless.roguelike.game.Instance;
+import com.bourneless.roguelike.screen.GameScreen;
 
 public class MonsterStats {
 
@@ -34,7 +36,7 @@ public class MonsterStats {
 
 	public int image = 0;
 
-	public MonsterStats() {
+	public MonsterStats(Instance instance) {
 		int rarity = random.nextInt(5501);
 
 		if (rarity < 1000) {
@@ -69,23 +71,28 @@ public class MonsterStats {
 			monster = (JSONObject) Main.resourceLoader.monsters.get(getMonster);
 		}
 
-		createMonster(monster);
+		createMonster(monster, instance);
 	}
 
-	public void createMonster(JSONObject thisMonster) {
+	public void createMonster(JSONObject thisMonster, Instance instance) {
 		this.name = (String) thisMonster.get("name");
 
-		this.strength = ((Long) thisMonster.get("strength")).intValue();
-		this.reflexes = ((Long) thisMonster.get("reflexes")).intValue();
-		this.fortitude = ((Long) thisMonster.get("fortitude")).intValue();
-		this.luck = ((Long) thisMonster.get("luck")).intValue();
+		this.strength = ((Long) thisMonster.get("strength")).intValue()
+				* instance.getFloor();
+		this.reflexes = ((Long) thisMonster.get("reflexes")).intValue()
+				* instance.getFloor();
+		this.fortitude = ((Long) thisMonster.get("fortitude")).intValue()
+				* instance.getFloor();
+		this.luck = ((Long) thisMonster.get("luck")).intValue()
+				* instance.getFloor();
 
 		this.image = ((Long) thisMonster.get("image")).intValue();
 
 		this.experienceWorth = ((Long) thisMonster.get("experience_worth"))
-				.intValue();
+				.intValue() * instance.getFloor();
 
-		this.health = ((Long) thisMonster.get("health")).intValue();
+		this.health = ((Long) thisMonster.get("health")).intValue()
+				* instance.getFloor();
 		this.maxHealth = health;
 
 	}

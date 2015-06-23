@@ -107,7 +107,7 @@ public class Cheat {
 										.getTileClass() == TileClass.FLOOR) {
 							Mob monster = new Mob(
 									instance.getMap().getTiles()[i][j],
-									Main.resourceLoader.monsterImages[0]);
+									Main.resourceLoader.monsterImages[0], instance);
 							instance.getMap().getTiles()[i][j].setLayer(0);
 							instance.getMap().getTiles()[i][j]
 									.addEntity(monster);

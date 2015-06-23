@@ -49,7 +49,10 @@ public class FieldOfView {
 							.getEntities()) {
 						if (entity.getType() == EntityType.BREAKABLE
 								&& !entity.getPassable()) {
-							return;
+							if (!entity.getName().matches("exit")
+									&& !entity.getName().matches("chest")) {
+								return;
+							}
 						}
 					}
 				}

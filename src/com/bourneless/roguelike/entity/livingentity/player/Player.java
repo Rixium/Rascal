@@ -480,7 +480,7 @@ public class Player extends LivingEntity {
 
 		while (hit < 0) {
 			hit = mob.getStats().strength
-					* random.nextInt(mob.getStats().reflexes)
+					+ random.nextInt(mob.getStats().reflexes)
 					- random.nextInt(stats.fortitude)
 					* random.nextInt(stats.luck);
 		}

@@ -49,9 +49,9 @@ public class Mob extends LivingEntity {
 		}
 	});
 
-	public Mob(Tile tile, BufferedImage image) {
+	public Mob(Tile tile, BufferedImage image, Instance instance) {
 		super(tile, image, EntityType.ENEMY);
-		this.stats = new MonsterStats();
+		this.stats = new MonsterStats(instance);
 		this.image = Main.resourceLoader.monsterImages[stats.image];
 	}
 
@@ -284,7 +284,7 @@ public class Mob extends LivingEntity {
 		if (!dead) {
 
 			int hit = player.getStats().strength
-					* random.nextInt(player.getStats().reflexes)
+					+ random.nextInt(player.getStats().reflexes)
 					- random.nextInt(stats.fortitude)
 					* random.nextInt(stats.luck);
 

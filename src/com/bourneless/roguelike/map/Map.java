@@ -31,8 +31,8 @@ public class Map {
 	private int yOffset;
 
 	// Lower is for higher spawn chance.
-	private int mobSpawnRarity = 70;
-	private int chestRarity = 10;
+	private int mobSpawnRarity = 20;
+	private int chestRarity = 30;
 
 	private ArrayList<Room> rooms = new ArrayList<Room>();
 
@@ -410,7 +410,7 @@ public class Map {
 					if (spawnMonster == 1) {
 						if (tiles[i][j].getEntities().isEmpty()) {
 							Mob monster = new Mob(tiles[i][j],
-									Main.resourceLoader.monsterImages[0]);
+									Main.resourceLoader.monsterImages[0], instance);
 							tiles[i][j].setLayer(0);
 							tiles[i][j].addEntity(monster);
 							entities.add(monster);
