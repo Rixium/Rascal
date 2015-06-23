@@ -39,6 +39,9 @@ public class ResourceLoader {
 
 	public BufferedImage startGameButtonImage;
 	public BufferedImage exitGameButtonImage;
+	
+	public BufferedImage yesButtonImage;
+	public BufferedImage noButtonImage;
 
 	// Entities
 
@@ -58,6 +61,8 @@ public class ResourceLoader {
 
 	public BufferedImage[] door;
 	public BufferedImage[] sideDoor = new BufferedImage[2];
+
+	public BufferedImage levelExit;
 
 	// Chest
 	public BufferedImage[] chest = new BufferedImage[2];
@@ -89,6 +94,8 @@ public class ResourceLoader {
 	public BufferedImage binImage;
 	public BufferedImage closeButton;
 	public BufferedImage chestScreen;
+	
+	public BufferedImage nextFloorScreen;
 
 	public BufferedImage notRare, rare, elite, epic;
 
@@ -168,6 +175,9 @@ public class ResourceLoader {
 
 		startGameButtonImage = getBufferedImage("/menu/buttons/newGameButton.png");
 		exitGameButtonImage = getBufferedImage("/menu/buttons/exitGameButton.png");
+		
+		yesButtonImage = getBufferedImage("/menu/buttons/yesButton.png");
+		noButtonImage = getBufferedImage("/menu/buttons/noButton.png");
 
 		// Entities
 
@@ -254,6 +264,8 @@ public class ResourceLoader {
 
 		sideDoor[0] = getBufferedImage("/entity/door/sideDoor1.png");
 		sideDoor[1] = getBufferedImage("/entity/door/sideDoor2.png");
+
+		levelExit = getBufferedImage("/entity/door/levelExit.png");
 
 		BufferedImage monsterSheet = getBufferedImage("/entity/mob/monsters.png");
 
@@ -460,6 +472,7 @@ public class ResourceLoader {
 		epic = getBufferedImage("/ui/epic.png");
 		closeButton = getBufferedImage("/ui/menus/closeButton.png");
 		chestScreen = getBufferedImage("/ui/menus/chestScreen.png");
+		nextFloorScreen = getBufferedImage("/ui/menus/nextLevelScreen.png");
 
 		BufferedImage levelUpSheet = getBufferedImage("/ui/levelUpImage.png");
 		levelUpImage = new BufferedImage[2];

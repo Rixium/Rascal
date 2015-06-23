@@ -16,6 +16,7 @@ import com.bourneless.roguelike.item.Shield;
 import com.bourneless.roguelike.item.Slot;
 import com.bourneless.roguelike.item.Torso;
 import com.bourneless.roguelike.item.Weapon;
+import com.bourneless.roguelike.map.tile.Tile;
 import com.bourneless.roguelike.map.tile.TileClass;
 
 public class Cheat {
@@ -187,6 +188,28 @@ public class Cheat {
 				player.getInventory().getSlots()[5].setItem(new Shield(998));
 				player.getInventory().getSlots()[6].setItem(new Food(998));
 				stop();
+			}
+
+			if (cheat.matches("sickofthisplace")) {
+				for (int i = 0; i < instance.getMap().getTiles().length; i++) {
+					for (int j = 0; j < instance.getMap().getTiles()[i].length; j++) {
+						if (instance.getMap().getTiles()[i][j].hasEntity()) {
+							for (Entity ent : instance.getMap().getTiles()[i][j]
+									.getEntities()) {
+								if (ent.getName().matches("exit")) {
+									player.setTile(instance.getMap().getTiles()[i][j + 1]);
+									player.setLayer(instance.getMap()
+											.getTiles()[i][j + 1].getTileY());
+									instance.xOffset = Main.GAME_WIDTH / 2
+											- player.getPos().x;
+									instance.yOffset = Main.GAME_HEIGHT / 2
+											- player.getPos().y;
+									stop();
+								}
+							}
+						}
+					}
+				}
 			}
 
 			stop();

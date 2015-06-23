@@ -439,9 +439,16 @@ public class UI {
 					if (heldItem.getStats().itemType == player.getEquipment()[0]
 							.getType()) {
 						if (heldItem.getStats().level <= player.getStats().level) {
-							player.getEquipment()[0].giveItem(heldItem);
-							heldItem = null;
-							holdingItem = false;
+							if (!player.getEquipment()[0].hasItem()) {
+								player.getEquipment()[0].giveItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							} else {
+								Item newItem = player.getEquipment()[0]
+										.getItem();
+								player.getEquipment()[0].giveItem(heldItem);
+								heldItem = newItem;
+							}
 						} else {
 							for (Slot s : player.getInventory().getSlots()) {
 								if (s.getItem() == null) {
@@ -457,9 +464,16 @@ public class UI {
 					if (heldItem.getStats().itemType == player.getEquipment()[1]
 							.getType()) {
 						if (heldItem.getStats().level <= player.getStats().level) {
-							player.getEquipment()[1].giveItem(heldItem);
-							heldItem = null;
-							holdingItem = false;
+							if (!player.getEquipment()[1].hasItem()) {
+								player.getEquipment()[1].giveItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							} else {
+								Item newItem = player.getEquipment()[1]
+										.getItem();
+								player.getEquipment()[1].giveItem(heldItem);
+								heldItem = newItem;
+							}
 						} else {
 							for (Slot s : player.getInventory().getSlots()) {
 								if (s.getItem() == null) {
@@ -475,9 +489,16 @@ public class UI {
 					if (heldItem.getStats().itemType == player.getEquipment()[2]
 							.getType()) {
 						if (heldItem.getStats().level <= player.getStats().level) {
-							player.getEquipment()[2].giveItem(heldItem);
-							heldItem = null;
-							holdingItem = false;
+							if (!player.getEquipment()[2].hasItem()) {
+								player.getEquipment()[2].giveItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							} else {
+								Item newItem = player.getEquipment()[2]
+										.getItem();
+								player.getEquipment()[2].giveItem(heldItem);
+								heldItem = newItem;
+							}
 						} else {
 							for (Slot s : player.getInventory().getSlots()) {
 								if (s.getItem() == null) {
@@ -493,9 +514,16 @@ public class UI {
 					if (heldItem.getStats().itemType == player.getEquipment()[3]
 							.getType()) {
 						if (heldItem.getStats().level <= player.getStats().level) {
-							player.getEquipment()[3].giveItem(heldItem);
-							heldItem = null;
-							holdingItem = false;
+							if (!player.getEquipment()[3].hasItem()) {
+								player.getEquipment()[3].giveItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							} else {
+								Item newItem = player.getEquipment()[3]
+										.getItem();
+								player.getEquipment()[3].giveItem(heldItem);
+								heldItem = newItem;
+							}
 						} else {
 							for (Slot s : player.getInventory().getSlots()) {
 								if (s.getItem() == null) {
@@ -511,9 +539,16 @@ public class UI {
 					if (heldItem.getStats().itemType == player.getEquipment()[4]
 							.getType()) {
 						if (heldItem.getStats().level <= player.getStats().level) {
-							player.getEquipment()[4].giveItem(heldItem);
-							heldItem = null;
-							holdingItem = false;
+							if (!player.getEquipment()[4].hasItem()) {
+								player.getEquipment()[4].giveItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							} else {
+								Item newItem = player.getEquipment()[4]
+										.getItem();
+								player.getEquipment()[4].giveItem(heldItem);
+								heldItem = newItem;
+							}
 						} else {
 							for (Slot s : player.getInventory().getSlots()) {
 								if (s.getItem() == null) {
@@ -529,9 +564,16 @@ public class UI {
 					if (heldItem.getStats().itemType == player.getEquipment()[5]
 							.getType()) {
 						if (heldItem.getStats().level <= player.getStats().level) {
-							player.getEquipment()[5].giveItem(heldItem);
-							heldItem = null;
-							holdingItem = false;
+							if (!player.getEquipment()[5].hasItem()) {
+								player.getEquipment()[5].giveItem(heldItem);
+								heldItem = null;
+								holdingItem = false;
+							} else {
+								Item newItem = player.getEquipment()[5]
+										.getItem();
+								player.getEquipment()[5].giveItem(heldItem);
+								heldItem = newItem;
+							}
 						} else {
 							for (Slot s : player.getInventory().getSlots()) {
 								if (s.getItem() == null) {

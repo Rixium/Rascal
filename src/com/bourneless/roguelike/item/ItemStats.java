@@ -6,9 +6,9 @@ import com.bourneless.roguelike.screen.GameScreen;
 
 public class ItemStats {
 
-	public String itemName;
-	public String speciality;
-	public String prefix;
+	public String itemName = "";
+	public String speciality = "";
+	public String prefix = "";
 
 	public int rarity;
 	public int level;

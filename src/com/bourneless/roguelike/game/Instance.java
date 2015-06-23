@@ -15,6 +15,7 @@ import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.map.Map;
 import com.bourneless.roguelike.map.Minimap;
 import com.bourneless.roguelike.screen.DeathScreen;
+import com.bourneless.roguelike.screen.LeaveFloorScreen;
 
 public class Instance {
 
@@ -24,7 +25,7 @@ public class Instance {
 	private UI ui;
 	private Cheat cheat;
 	private boolean playerTurn = true;
-	
+
 	private Rectangle mouseRect;
 
 	private Font cheatFont = new Font("A Font With Serifs", Font.TRUETYPE_FONT,
@@ -32,8 +33,8 @@ public class Instance {
 
 	private Player player;
 
-	private int xOffset = 0;
-	private int yOffset = 0;
+	public int xOffset = 0;
+	public int yOffset = 0;
 
 	private boolean ready = false;
 
@@ -42,6 +43,10 @@ public class Instance {
 	private DeathScreen ds;
 
 	private ArrayList<Hit> hits = new ArrayList<Hit>();
+
+	private boolean leaveFloor = false;
+
+	private LeaveFloorScreen leaveFloorScreen = new LeaveFloorScreen();
 
 	public Instance() {
 		map = new Map(this);
@@ -65,7 +70,7 @@ public class Instance {
 	}
 
 	public void update() {
-		if (!deathScreenActive) {
+		if (!deathScreenActive && !leaveFloor) {
 			for (Hit hit : hits) {
 				if (hit.getDead()) {
 					hits.remove(hit);
@@ -137,10 +142,14 @@ public class Instance {
 			int xPos = 0 + stringHeight + 10;
 			g.drawString(cheatString, start, xPos);
 		}
+
+		if (leaveFloor) {
+			leaveFloorScreen.paint(g);
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (!cheat.hasStarted()) {
+		if (!cheat.hasStarted() && !leaveFloor) {
 			if (!deathScreenActive) {
 				if (e.getKeyCode() == 32) {
 					if (playerTurn) {
@@ -187,7 +196,7 @@ public class Instance {
 	}
 
 	public void keyReleased(KeyEvent e) {
-		if (!cheat.hasStarted()) {
+		if (!cheat.hasStarted() && !leaveFloor) {
 			if (!deathScreenActive) {
 				player.keyReleased(e);
 			}
@@ -197,6 +206,32 @@ public class Instance {
 	public void mousePressed(Rectangle rect) {
 		this.mouseRect = rect;
 		ui.mousePressed(rect);
+
+		if (leaveFloor) {
+			if (mouseRect.intersects(leaveFloorScreen.getYesButton().getRect())) {
+				map = new Map(this);
+
+				map.generate();
+				miniMap = new Minimap(map);
+				xOffset = Main.GAME_WIDTH / 2 - player.getPos().x;
+				yOffset = Main.GAME_HEIGHT / 2 - player.getPos().y;
+
+				for (int i = 0; i < map.getEntityList().size(); i++) {
+					map.getEntityList()
+							.get(i)
+							.setLayer(
+									map.getEntityList().get(i).getTile()
+											.getTileY());
+				}
+				this.floor++;
+				leaveFloor = false;
+
+				ready = true;
+			} else if (mouseRect.intersects(leaveFloorScreen.getNoButton()
+					.getRect())) {
+				leaveFloor = false;
+			}
+		}
 	}
 
 	public boolean isReady() {
@@ -244,13 +279,17 @@ public class Instance {
 	public Cheat getCheat() {
 		return this.cheat;
 	}
-	
+
 	public Rectangle getMouseRect() {
 		return this.mouseRect;
 	}
-	
+
 	public UI getUI() {
 		return this.ui;
+	}
+
+	public void goNextFloor() {
+		this.leaveFloor = true;
 	}
 
 }

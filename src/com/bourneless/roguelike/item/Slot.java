@@ -85,9 +85,9 @@ public class Slot {
 								statBox.y - 5, null);
 					}
 				}
+				if (item != null) {
+					if (item.getStats().itemType != ItemType.FOOD) {
 
-				if (item.getStats().itemType != ItemType.FOOD) {
-					if (item != null) {
 						g.drawString(
 								item.getStats().prefix
 										+ item.getStats().itemName + " of "
@@ -110,19 +110,20 @@ public class Slot {
 						g.drawString("Level Requirement: "
 								+ item.getStats().level, statBox.x + 10,
 								statBox.y + 95);
+					} else {
+						g.drawString(
+								item.getStats().prefix
+										+ item.getStats().speciality + " "
+										+ item.getStats().itemName,
+								statBox.x + 10, statBox.y + 20);
+						g.setColor(Color.WHITE);
+						g.drawString("Heal Power: "
+								+ item.getStats().itemHealPower,
+								statBox.x + 10, statBox.y + 35);
+						g.drawString("Quality: " + item.getDegradation() + "/"
+								+ item.getMaxDegradation(), statBox.x + 10,
+								statBox.y + 50);
 					}
-				} else {
-					g.drawString(
-							item.getStats().prefix + item.getStats().speciality
-									+ " " + item.getStats().itemName,
-							statBox.x + 10, statBox.y + 20);
-					g.setColor(Color.WHITE);
-					g.drawString(
-							"Heal Power: " + item.getStats().itemHealPower,
-							statBox.x + 10, statBox.y + 35);
-					g.drawString("Quality: " + item.getDegradation() + "/"
-							+ item.getMaxDegradation(), statBox.x + 10,
-							statBox.y + 50);
 				}
 			}
 		}

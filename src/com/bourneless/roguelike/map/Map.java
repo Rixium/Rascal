@@ -10,6 +10,7 @@ import com.bourneless.roguelike.entity.Entity;
 import com.bourneless.roguelike.entity.EntityType;
 import com.bourneless.roguelike.entity.destroyableentity.Chest;
 import com.bourneless.roguelike.entity.destroyableentity.Door;
+import com.bourneless.roguelike.entity.destroyableentity.ExitDoor;
 import com.bourneless.roguelike.entity.livingentity.mob.Mob;
 import com.bourneless.roguelike.entity.livingentity.player.Player;
 import com.bourneless.roguelike.game.Instance;
@@ -129,11 +130,6 @@ public class Map {
 						break;
 					}
 				}
-			}
-
-			if (i % 100 == 0) {
-				LoadScreen screen = (LoadScreen) Main.game.getScreen();
-				screen.changeString();
 			}
 
 			if (x / Tile.size + size / Tile.size > tiles.length - 1) {
@@ -307,12 +303,44 @@ public class Map {
 			}
 
 		}
+		addExit();
 
 		populateMap();
 
 		boolean hasPlayer = false;
 
+		if (instance.getPlayer() == null) {
+			hasPlayer = false;
+		} else {
+			hasPlayer = true;
+		}
+
 		int spawnPlayer = 0;
+
+		if (hasPlayer) {
+			boolean hasTile = false;
+
+			while (!hasTile) {
+				for (int i = 0; i < tiles.length; i++) {
+					for (int j = 0; j < tiles[i].length; j++) {
+						if (tiles[i][j] != null) {
+							if (tiles[i][j].getTileClass() == TileClass.FLOOR
+									&& tiles[i][j].getTileType() != TileType.TUNNEL) {
+								spawnPlayer = random.nextInt(1000);
+								if (spawnPlayer == 1 && !hasTile) {
+									instance.getPlayer().setTile(tiles[i][j]);
+									tiles[i][j].setLayer(0);
+									tiles[i][j].addEntity(instance.getPlayer());
+									this.player = instance.getPlayer();
+									entities.add(instance.getPlayer());
+									hasTile = true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		while (!hasPlayer) {
 			for (int i = 0; i < tiles.length; i++) {
@@ -336,6 +364,41 @@ public class Map {
 			}
 		}
 
+	}
+
+	public void addExit() {
+		boolean hasExit = false;
+		while (!hasExit) {
+			addingExit: for (int i = 0; i < tiles.length; i++) {
+				for (int j = 0; j < tiles[i].length; j++) {
+					if (tiles[i][j].getTileClass() == TileClass.FLOOR) {
+						if (!tiles[i][j].hasEntity()) {
+							if (j + 1 < tiles[i].length) {
+								if (tiles[i][j + 1].getTileClass() == TileClass.FLOOR) {
+									int spawnExit = com.bourneless.engine.math.Random
+											.getRandom(1000);
+									if (spawnExit == 1) {
+										ExitDoor exitDoor = new ExitDoor(
+												tiles[i][j],
+												Main.resourceLoader.levelExit);
+										tiles[i][j].addEntity(exitDoor);
+										hasExit = true;
+										entities.add(exitDoor);
+										tiles[i][j].setPassable(false);
+										System.out.println("Exit at: "
+												+ tiles[i][j].getTileX()
+												+ " | "
+												+ tiles[i][j].getTileY());
+										break addingExit;
+									}
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void populateMap() {
